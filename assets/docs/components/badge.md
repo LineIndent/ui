@@ -8,7 +8,6 @@ A badge component that displays a label.
 
 Copy the following code into your app directory.
 
-
 ### CLI
 
 ```bash
@@ -20,15 +19,15 @@ buridan add component badge
 ```python
 from typing import Literal
 
-from reflex.components.el import Span
 from reflex.vars.base import Var
+from reflex_components_core.el import Span
 
-from ..component import CoreComponent
+from .component import CoreComponent
 
 LiteralBadgeVariant = Literal["default", "secondary", "destructive", "outline"]
 
 DEFAULT_BASE_CLASSES = (
-    "inline-flex items-center justify-center rounded-md border px-2 py-0.5 text-xs font-medium "
+    "inline-flex items-center justify-center rounded-radius border px-2 py-0.5 text-xs font-medium "
     "w-fit whitespace-nowrap shrink-0 [&>svg]:size-3 gap-1 [&>svg]:pointer-events-none "
     "focus-visible:border-[var(--ring)] focus-visible:ring-[var(--ring)]/50 focus-visible:ring-[3px] "
     "aria-invalid:ring-[var(--destructive)]/20 dark:aria-invalid:ring-[var(--destructive)]/40 "
@@ -111,11 +110,21 @@ badge = Badge.create
 
 # Usage
 
-Make sure to correctly set your imports relative to the component.
 
 ```python
-from components.base_ui.badge import badge
+from components.ui.badge import badge
 ```
+
+
+# Anatomy 
+Use the following composition to build a `Badge`
+
+
+```python
+badge()
+```
+
+
 
 # Examples
 
@@ -127,7 +136,7 @@ Displays a standard badge using the default variant, ideal for basic labeling.
 
 
 ```python
-def badge_demo():
+def badge_default():
     return rx.box(
         rx.box(
             badge("Badge"),
@@ -206,7 +215,7 @@ Showcases how badges can represent different statuses, like success or error, us
 
 
 ```python
-def badge_status_examples():
+def badge_status():
     return rx.box(
         badge("New", variant="default"),
         badge("Popular", variant="secondary"),

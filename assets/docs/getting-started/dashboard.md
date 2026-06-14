@@ -113,6 +113,28 @@ app.add_page(index)
 The sidebar is a key part of the dashboard layout. It typically contains navigation, branding, or user context and stays fixed on the left side of the screen. We'll start by creating a reusable `sidebar()` component inside `app/layout/sidebar.py`.
 
 
+```python
+def sidebar_example():
+    # Assuming sidebar_header is defined elsewhere
+    def sidebar_header():
+        return rx.box("Sidebar Header")
+
+    return rx.scroll_area(
+        sidebar_header(),
+        rx.box(
+            # Sidebar content (e.g., nav links) goes here
+            class_name="flex flex-col w-full h-full pt-12 px-2",
+        ),
+        class_name=(
+            "flex flex-col max-w-[300px] w-full h-[100vh] gap-y-2 align-start "
+            "sticky top-0 left-0 z-[10] "
+            "[&_.rt-ScrollAreaScrollbar]:mr-[0.1875rem] "
+            "[&_.rt-ScrollAreaScrollbar]:mt-[4rem] "
+            "[&_.rt-ScrollAreaScrollbar]:mb-[1rem]"
+        ),
+    )
+```
+
 
 - `rx.scroll_area(...)` lets the sidebar scroll independently if its content exceeds the viewport height.
 - `sidebar_header()` is a separate component that we'll define next — it's used for a logo, app title, or profile section.

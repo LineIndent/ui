@@ -12,28 +12,28 @@ Custom Slider component.
 
 Copy the following code into your app directory.
 
---CLI_AND_MANUAL_INSTALLATION(["Slider", "buridan add component slider"])--
+--INSTALL(["Slider", "buridan add component slider"])--
 
 # Usage
 
-Make sure to correctly set your imports relative to the component.
+--USAGE(slider)--
 
-```python
-from components.base_ui.slider import slider
-```
+# Anatomy 
+Use the following composition to build a `Slider`
+
+--ANATOMY(slider)--
+
 
 # Examples
 
-Below are examples demonstrating how the component can be used.
+## Basic
+A basic low-level slider demo.
+--DEMO(slider_demo)--
 
-## General
+## Range
+Use an array with two values for a range slider.
+--DEMO(slider_range)--
 
---DEMO_AND_SINGLE_FUNCTION(slider_example)--
-
-## Range Slider
-
---DEMO_AND_SINGLE_FUNCTION(slider_range_example)--
-
-## Min, Max, and Step
-
---DEMO_AND_SINGLE_FUNCTION(slider_min_max_step)--
+## Vertical
+Use `orientation="vertical"` for a vertical slider.
+--DEMO(slider_vertical)--

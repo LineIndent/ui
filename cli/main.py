@@ -1,413 +1,475 @@
-import typer
-import pathlib
-import shutil
+import argparse
 import ast
-import subprocess
-import re
+import os
+import shutil
+import sys
+from pathlib import Path
 
-app = typer.Typer()
-add_app = typer.Typer()
-app.add_typer(add_app, name="add")
+# Import registries
+from app.registry.colors import COLOR_THEMES
+from app.registry.components import COMPONENT_REGISTRY
+from app.registry.fonts import FONT_REGISTRY
+from app.registry.radii import RADIUS_OPTIONS
+from app.registry.styles import STYLE_REGISTRY
+from app.registry.themes import BASE_THEMES
 
-# --- Constants ---
-REPO_URL = "https://github.com/buridan-ui/ui.git"
-CACHE_DIR = pathlib.Path.home() / ".buridan" / "repo"
-
-# Source directories from the cloned repo
-BASE_UI_DIR = CACHE_DIR / "src" / "docs" / "library" / "base_ui"
-BASE_UI_COMPONENTS_DIR = BASE_UI_DIR / "components"
-BASE_UI_BASE_COMPONENTS_DIR = BASE_UI_COMPONENTS_DIR / "base"
-BASE_UI_ICONS_DIR = BASE_UI_DIR / "icons"
-BASE_UI_UTILS_DIR = BASE_UI_DIR / "utils"
-
-WRAPPED_COMPONENTS_DIR = CACHE_DIR / "src" / "docs" / "library" / "wrapped_components"
-THEMES_CSS_FILE = CACHE_DIR / "assets" / "css" / "wrapper.css"
+CHARS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
 
 
-def _run_git_command(command: list[str], cwd: pathlib.Path | None = None):
-    """Runs a git command and handles errors."""
+def from_base62(s):
+    n = 0
+    for i in range(len(s) - 1, -1, -1):
+        n = n * 62 + CHARS.find(s[i])
+    return n
+
+
+def flatten_vars(obj):
+    out = {}
+    for k, v in obj.items():
+        key = "--radius" if k == "radius" else f"--{k}"
+        out[key] = v
+    return out
+
+
+def rebuild_theme(config):
+    base_id = config.get("baseId")
+    color_id = config.get("colorId")
+    chart_id = config.get("chartId")
+    style_id = config.get("styleId")
+    font_id = config.get("fontId")
+    radius = config.get("radius")
+    dark_mode = config.get("darkMode", False)
+
+    base = next((b for b in BASE_THEMES if b["id"] == base_id), None)
+    if not base:
+        return {}
+
+    base_vars = flatten_vars(base["dark"] if dark_mode else base["light"])
+    theme = {**base_vars}
+
+    if color_id:
+        color = next((c for c in COLOR_THEMES if c["id"] == color_id), None)
+        if color:
+            cvars = flatten_vars(color["dark"] if dark_mode else color["light"])
+            for k, v in cvars.items():
+                if not k.startswith("--chart-"):
+                    theme[k] = v
+
+    if chart_id:
+        chart = next((c for c in COLOR_THEMES if c["id"] == chart_id), None)
+        if chart:
+            cvars = flatten_vars(chart["dark"] if dark_mode else chart["light"])
+            for k, v in cvars.items():
+                if k.startswith("--chart-"):
+                    theme[k] = v
+
+    if style_id:
+        style = next((s for s in STYLE_REGISTRY if s["id"] == style_id), None)
+        if style:
+            theme.update(style["vars"])
+
+    if font_id:
+        font = next((f for f in FONT_REGISTRY if f["id"] == font_id), None)
+        if font:
+            theme.update(font["vars"])
+
+    if radius:
+        theme["--radius"] = radius
+
+    return theme
+
+
+def decode_seed(seed):
+    if not seed:
+        return None
+    if seed == "b0":
+        return {
+            "baseId": BASE_THEMES[0]["id"],
+            "colorId": None,
+            "chartId": None,
+            "styleId": STYLE_REGISTRY[0]["id"],
+            "fontId": FONT_REGISTRY[0]["id"],
+            "radius": RADIUS_OPTIONS[2][1],
+        }
+    if len(seed) != 9:
+        return None
+
+    n = from_base62(seed[:4])
+    checksum = from_base62(seed[4:])
+
+    if checksum == (n * 12345) % 916132832 and n < 72600:
+        temp = n
+        r_idx = temp % 4
+        temp //= 4
+        f_idx = temp % 5
+        temp //= 5
+        s_idx = temp % 5
+        temp //= 5
+        ch_idx = temp % 11
+        temp //= 11
+        c_idx = temp % 11
+        temp //= 11
+        b_idx = temp % 6
+
+        return {
+            "baseId": BASE_THEMES[b_idx]["id"],
+            "colorId": COLOR_THEMES[c_idx - 1]["id"] if c_idx > 0 else None,
+            "chartId": COLOR_THEMES[ch_idx - 1]["id"] if ch_idx > 0 else None,
+            "styleId": STYLE_REGISTRY[s_idx]["id"],
+            "fontId": FONT_REGISTRY[f_idx]["id"],
+            "radius": RADIUS_OPTIONS[r_idx][1],
+        }
+    return None
+
+
+def generate_from_seed(seed, dark_mode):
+    config = decode_seed(seed)
+    if not config:
+        # For simplicity in CLI, we only support valid encoded seeds
+        print(f"Error: Invalid preset ID '{seed}'")
+        sys.exit(1)
+
+    config["darkMode"] = dark_mode
+    return rebuild_theme(config)
+
+
+def format_css(config):
+    return "\n".join(
+        [f"    {k}: {v};" for k, v in config.items() if k.startswith("--")]
+    )
+
+
+def generate_full_css(seed):
+    light_config = generate_from_seed(seed, False)
+    dark_config = generate_from_seed(seed, True)
+    return f":root {{\n{format_css(light_config)}\n}}\n\n.dark {{\n{format_css(dark_config)}\n}}"
+
+
+TAILWIND_CONFIG_SNIPPET = """        rx.plugins.TailwindV4Plugin(
+            TailwindConfig(
+                darkMode="class",
+                plugins=["@tailwindcss/typography", "tailwind-scrollbar"],
+                theme={
+                    "extend": {
+                        "colors": {
+                            "background": "var(--background)",
+                            "foreground": "var(--foreground)",
+                            "card": "var(--card)",
+                            "card-foreground": "var(--card-foreground)",
+                            "popover": "var(--popover)",
+                            "popover-foreground": "var(--popover-foreground)",
+                            "primary": "var(--primary)",
+                            "primary-foreground": "var(--primary-foreground)",
+                            "secondary": "var(--secondary)",
+                            "secondary-foreground": "var(--secondary-foreground)",
+                            "muted": "var(--muted)",
+                            "muted-foreground": "var(--muted-foreground)",
+                            "accent": "var(--accent)",
+                            "accent-foreground": "var(--accent-foreground)",
+                            "destructive": "var(--destructive)",
+                            "border": "var(--border)",
+                            "input": "var(--input)",
+                            "ring": "var(--ring)",
+                            "chart-1": "var(--chart-1)",
+                            "chart-2": "var(--chart-2)",
+                            "chart-3": "var(--chart-3)",
+                            "chart-4": "var(--chart-4)",
+                            "chart-5": "var(--chart-5)",
+                            "sidebar": "var(--sidebar)",
+                            "sidebar-foreground": "var(--sidebar-foreground)",
+                            "sidebar-primary": "var(--sidebar-primary)",
+                            "sidebar-primary-foreground": "var(--sidebar-primary-foreground)",
+                            "sidebar-accent": "var(--sidebar-accent)",
+                            "sidebar-accent-foreground": "var(--sidebar-accent-foreground)",
+                            "sidebar-border": "var(--sidebar-border)",
+                            "sidebar-ring": "var(--sidebar-ring)",
+                        },
+                        "fontFamily": {
+                            "theme": "var(--font-family)",
+                        },
+                        "borderRadius": {
+                            "radius": "var(--radius)",
+                        },
+                        "padding": {
+                            "card": "var(--card-padding)",
+                        },
+                        "gap": {
+                            "card": "var(--card-gap)",
+                        },
+                        "boxShadow": {
+                            "default": "var(--shadow)",
+                        },
+                    }
+                },
+            )
+        ),"""
+
+
+def get_source_root():
+    """Locate the Buridan UI source components."""
+    # 1. Check relative to this file (development mode)
+    # cli/main.py -> ROOT
+    source_root = Path(__file__).parent.parent
+    if (source_root / "components").exists():
+        return source_root
+
+    # 2. Try to find the 'components' package
     try:
-        subprocess.run(command, check=True, capture_output=True, text=True)
-    except FileNotFoundError:
-        typer.secho(
-            "Error: git is not installed. Please install git to use this feature.",
-            fg=typer.colors.RED,
-        )
-        raise typer.Exit(1)
-    except subprocess.CalledProcessError as e:
-        typer.secho(f"Git command failed: {e.stderr}", fg=typer.colors.RED)
-        raise typer.Exit(1)
+        import components
+        return Path(components.__file__).parent.parent
+    except (ImportError, AttributeError):
+        return None
 
 
-def _update_repo():
-    """Clones or pulls the Buridan UI repository."""
-    typer.secho("Updating component library...", fg=typer.colors.YELLOW)
-    if not CACHE_DIR.exists():
-        typer.echo(f"Cloning repository into {CACHE_DIR}...")
-        CACHE_DIR.parent.mkdir(parents=True, exist_ok=True)
-        _run_git_command(["git", "clone", REPO_URL, str(CACHE_DIR)])
-    else:
-        typer.echo(f"Pulling latest changes in {CACHE_DIR}...")
-        _run_git_command(["git", "-C", str(CACHE_DIR), "pull"])
-    typer.secho("Component library is up to date.", fg=typer.colors.GREEN)
+def resolve_dependencies(component_names, registry):
+    """Recursively resolve dependencies for a list of components."""
+    required_files = set()
+    visited_components = set()
+
+    def add_component(name):
+        name_lower = name.lower()
+        if name_lower in visited_components:
+            return
+        visited_components.add(name_lower)
+
+        entry = registry.get(name_lower)
+        if not entry:
+            print(f"Warning: Component '{name}' not found in registry.")
+            return
+
+        for file_path in entry["files"]:
+            required_files.add(file_path)
+
+        for dep in entry.get("dependencies", []):
+            add_component(dep)
+
+    for name in component_names:
+        add_component(name)
+
+    return sorted(list(required_files))
 
 
-def _find_base_ui_component_imports(file_path: pathlib.Path) -> list[str]:
-    """Parses a Python file and returns a list of local component dependencies."""
-    if not file_path.exists():
-        return []
-    content = file_path.read_text()
-    tree = ast.parse(content)
-    dependencies = []
-    for node in ast.walk(tree):
-        if isinstance(node, ast.ImportFrom) and node.level == 1:
-            # Assuming level 1 imports are peer dependencies in the same 'base' directory
-            if node.module:
-                dependencies.append(node.module)
-    return list(set(dependencies))
+def add_components_to_project(component_names, target_root=None):
+    """Add components and their dependencies to the target project."""
+    if target_root is None:
+        target_root = Path.cwd()
 
+    if not (target_root / "rxconfig.py").exists():
+        print("Error: rxconfig.py not found. Please run this command in a Reflex project root.")
+        return False
 
-def _copy_base_ui_scaffolding(app_root_dir: pathlib.Path):
-    """Copies the base UI scaffolding (utils, icons, and base component files)."""
-    dest_dir = app_root_dir / "components" / "ui"
-    dest_dir.mkdir(parents=True, exist_ok=True)
-    (dest_dir.parent / "__init__.py").touch()
-    (dest_dir / "__init__.py").touch()
+    source_root = get_source_root()
+    if not source_root:
+        print("Error: Could not locate Buridan source components. Are you in the repo or is it installed?")
+        return False
 
-    # Copy icons and utils directories
-    icons_dest = dest_dir / "icons"
-    if not icons_dest.exists():
-        shutil.copytree(BASE_UI_ICONS_DIR, icons_dest)
-        typer.secho(
-            f"  - Added icons to {icons_dest.relative_to(pathlib.Path.cwd())}",
-            fg=typer.colors.BLUE,
-        )
+    files_to_copy = resolve_dependencies(component_names, COMPONENT_REGISTRY)
+    if not files_to_copy:
+        print("No files to copy.")
+        return False
 
-    utils_dest = dest_dir / "utils"
-    if not utils_dest.exists():
-        shutil.copytree(BASE_UI_UTILS_DIR, utils_dest)
-        typer.secho(
-            f"  - Added utils to {utils_dest.relative_to(pathlib.Path.cwd())}",
-            fg=typer.colors.BLUE,
-        )
+    for rel_path_str in files_to_copy:
+        src_path = source_root / rel_path_str
+        dest_path = target_root / rel_path_str
 
-    # Copy base_ui.py and component.py
-    for base_file in ["base_ui.py", "component.py"]:
-        source = BASE_UI_COMPONENTS_DIR / base_file
-        dest = dest_dir / base_file
-        if not dest.exists():
-            shutil.copy(source, dest)
-            typer.secho(
-                f"  - Added base file '{base_file}' to {dest.relative_to(pathlib.Path.cwd())}",
-                fg=typer.colors.BLUE,
-            )
+        if not src_path.exists():
+            print(f"Warning: Source file {src_path} does not exist.")
+            continue
 
-    # Ensure base component directory exists
-    (dest_dir / "base").mkdir(exist_ok=True)
-    (dest_dir / "base" / "__init__.py").touch()
+        # Create target directory
+        dest_path.parent.mkdir(parents=True, exist_ok=True)
 
-
-def _add_base_ui_component(
-    component_name: str, added_items: set, app_root_dir: pathlib.Path
-):
-    """Adds a single base_ui component and its dependencies."""
-    if component_name in added_items:
-        return
-
-    source_file = BASE_UI_BASE_COMPONENTS_DIR / f"{component_name}.py"
-    if not source_file.exists():
-        typer.secho(
-            f"Component '{component_name}' not found in base_ui components.",
-            fg=typer.colors.RED,
-        )
-        # Check for older components for backward compatibility
-        old_source_file = (
-            CACHE_DIR
-            / "src"
-            / "docs"
-            / "library"
-            / "components"
-            / component_name
-            / f"{component_name}.py"
-        )
-        if old_source_file.exists():
-            typer.secho(
-                f"Note: '{component_name}' seems to be an older component. Please check its dependencies manually.",
-                fg=typer.colors.YELLOW,
-            )
-            # Fallback to old logic if needed, or just inform user. For now, just informing.
-        return
-
-    added_items.add(component_name)
-
-    # Copy scaffolding first
-    if "base_ui_scaffold" not in added_items:
-        _copy_base_ui_scaffolding(app_root_dir)
-        added_items.add("base_ui_scaffold")
-
-    dest_file = app_root_dir / "components" / "ui" / "base" / f"{component_name}.py"
-    shutil.copy(source_file, dest_file)
-    typer.secho(
-        f"  - Added component '{component_name}' to {dest_file.relative_to(pathlib.Path.cwd())}",
-        fg=typer.colors.CYAN,
-    )
-
-    dependencies = _find_base_ui_component_imports(source_file)
-    for dep_name in dependencies:
-        _add_base_ui_component(dep_name, added_items, app_root_dir)
-
-
-@add_app.command("component")
-def add_component(component: str):
-    """
-    Add a component and its dependencies to your Reflex project.
-    """
-    _check_reflex_project()
-    app_name = _get_app_name()
-    app_root_dir = pathlib.Path.cwd() / app_name
-
-    _update_repo()
-    typer.secho(f"Adding component: '{component}'...", fg=typer.colors.GREEN)
-    added_items = set()
-    _add_base_ui_component(component, added_items, app_root_dir)
-    typer.secho("Done.", fg=typer.colors.GREEN)
-
-
-def _find_util_imports(file_path: pathlib.Path) -> list[str]:
-    """Parses a Python file and returns a list of util dependencies."""
-    if not file_path.exists():
-        return []
-    content = file_path.read_text()
-    tree = ast.parse(content)
-    dependencies = []
-    for node in ast.walk(tree):
-        if isinstance(node, ast.ImportFrom):
-            if node.module and node.module.startswith("src.utils"):
-                util_name = node.module.split(".")[2]
-                dependencies.append(util_name)
-    return list(set(dependencies))
-
-
-def _add_wrapped_react(
-    component_name: str, added_items: set, app_root_dir: pathlib.Path
-):
-    """Adds a single wrapped react component and its utility dependencies."""
-    if component_name in added_items:
-        return
-    added_items.add(component_name)
-
-    source_file = WRAPPED_COMPONENTS_DIR / f"{component_name}.py"
-    if not source_file.is_file():
-        source_file = WRAPPED_COMPONENTS_DIR / component_name / f"{component_name}.py"
-
-    if not source_file.exists():
-        typer.secho(
-            f"Wrapped React component '{component_name}' not found in repository.",
-            fg=typer.colors.RED,
-        )
-        return
-
-    dest_dir = app_root_dir / "components" / "wrapped_react"
-    dest_dir.mkdir(parents=True, exist_ok=True)
-    (dest_dir / "__init__.py").touch()
-    (dest_dir.parent / "__init__.py").touch()
-
-    dest_file = dest_dir / f"{component_name}.py"
-    shutil.copy(source_file, dest_file)
-    typer.secho(
-        f"  - Added wrapped react component '{component_name}' to {dest_file.relative_to(pathlib.Path.cwd())}",
-        fg=typer.colors.CYAN,
-    )
-
-    # Wrapped components might have util dependencies from the old structure
-    dependencies = _find_util_imports(dest_file)
-    if dependencies:
-        # This part needs to be thought out. For now, let's assume wrapped components are self-contained
-        # or their utils are handled differently. The user request is about base_ui components.
-        typer.secho(
-            f"  - Note: Wrapped component might have legacy util dependencies: {dependencies}. Please verify.",
-            fg=typer.colors.YELLOW,
-        )
-
-
-@add_app.command("wrapped-react")
-def add_wrapped_react(component: str):
-    """
-    Add a wrapped React component and its dependencies to your Reflex project.
-    """
-    _check_reflex_project()
-    app_name = _get_app_name()
-    app_root_dir = pathlib.Path.cwd() / app_name
-
-    _update_repo()
-    typer.secho(
-        f"Adding wrapped React component: '{component}'...", fg=typer.colors.GREEN
-    )
-    added_items = set()
-    _add_wrapped_react(component, added_items, app_root_dir)
-    typer.secho("Done.", fg=typer.colors.GREEN)
-
-
-def _extract_theme_css(theme_name: str) -> str:
-    """Extracts the CSS for a given theme and its dark variant from wrapper.css."""
-    if not THEMES_CSS_FILE.exists():
-        typer.secho(
-            f"Error: Theme CSS file not found at {THEMES_CSS_FILE}.",
-            fg=typer.colors.RED,
-        )
-        raise typer.Exit(1)
-
-    content = THEMES_CSS_FILE.read_text()
-    extracted_css = []
-
-    # Regex to find the light theme block
-    light_theme_pattern = re.compile(
-        rf"(\.(?:theme-{re.escape(theme_name)}))\s*{{([^}}]*)}}", re.DOTALL
-    )
-    # Regex to find the dark theme block
-    dark_theme_pattern = re.compile(
-        rf"(\.(?:theme-{re.escape(theme_name)}-dark))\s*{{([^}}]*)}}", re.DOTALL
-    )
-
-    light_match = light_theme_pattern.search(content)
-    if light_match:
-        extracted_css.append(f"{light_match.group(1)} {{{light_match.group(2)}}}")
-    else:
-        typer.secho(
-            f"Warning: Light theme '.theme-{theme_name}' not found in wrapper.css.",
-            fg=typer.colors.YELLOW,
-        )
-
-    dark_match = dark_theme_pattern.search(content)
-    if dark_match:
-        extracted_css.append(f"{dark_match.group(1)} {{{dark_match.group(2)}}}")
-    else:
-        typer.secho(
-            f"Warning: Dark theme '.theme-{theme_name}-dark' not found in wrapper.css.",
-            fg=typer.colors.YELLOW,
-        )
-
-    if not extracted_css:
-        typer.secho(
-            f"Error: No CSS found for theme '{theme_name}' or its dark variant.",
-            fg=typer.colors.RED,
-        )
-        raise typer.Exit(1)
-
-    return "\n\n".join(extracted_css)
-
-
-@add_app.command("theme")
-def add_theme(theme_name: str):
-    """
-    Add a theme (light and dark variants) to your Reflex project.
-    """
-    _check_reflex_project()
-    project_root_dir = pathlib.Path.cwd()
-
-    _update_repo()
-    typer.secho(f"Adding theme: '{theme_name}'...", fg=typer.colors.GREEN)
-
-    theme_css_content = _extract_theme_css(theme_name)
-
-    dest_css_dir = project_root_dir / "assets" / "css"
-    dest_css_dir.mkdir(parents=True, exist_ok=True)
-
-    dest_file = dest_css_dir / f"{theme_name}.css"
-    dest_file.write_text(theme_css_content)
-    typer.secho(
-        f"  - Added theme '{theme_name}' to {dest_file.relative_to(pathlib.Path.cwd())}",
-        fg=typer.colors.CYAN,
-    )
-    typer.secho("Done.", fg=typer.colors.GREEN)
-
-
-def _get_app_name() -> str:
-    """Parses rxconfig.py to find the app_name."""
-    rxconfig_path = pathlib.Path.cwd() / "rxconfig.py"
-    content = rxconfig_path.read_text()
-    tree = ast.parse(content)
-
-    app_name = None
-    for node in ast.walk(tree):
-        if isinstance(node, ast.Assign):
-            if isinstance(node.targets[0], ast.Name) and node.targets[0].id == "config":
-                if isinstance(node.value, ast.Call):
-                    if isinstance(node.value.func, (ast.Name, ast.Attribute)):
-                        for keyword in node.value.keywords:
-                            if keyword.arg == "app_name":
-                                if isinstance(keyword.value, ast.Constant):
-                                    app_name = keyword.value.value
-                                    break
-            if app_name:
+        # Ensure __init__.py files exist up to the components root
+        current_dir = dest_path.parent
+        while current_dir != target_root and current_dir.name != "":
+            init_file = current_dir / "__init__.py"
+            if not init_file.exists():
+                init_file.touch()
+            if current_dir.name == "components":
                 break
+            current_dir = current_dir.parent
 
-    if not app_name:
-        typer.secho(
-            "Error: Could not find 'app_name' in rxconfig.py.", fg=typer.colors.RED
+        # Copy the file
+        shutil.copy2(src_path, dest_path)
+        print(f"✓ Added {rel_path_str}")
+
+    return True
+
+
+def init(preset, include):
+    root = Path.cwd()
+    config_path = root / "rxconfig.py"
+
+    if not config_path.exists():
+        print(
+            "Error: rxconfig.py not found. Please run this command in a Reflex project root."
         )
-        raise typer.Exit(1)
-    return app_name
+        return
 
+    # 1. Generate globals.css
+    assets_dir = root / "assets"
+    assets_dir.mkdir(exist_ok=True)
+    css_path = assets_dir / "globals.css"
+    css_content = generate_full_css(preset)
+    css_path.write_text(css_content)
+    print(f"✓ Created {css_path.relative_to(root)}")
 
-def _check_reflex_project():
-    """Check if the command is run from the root of a Reflex project."""
-    if not (pathlib.Path.cwd() / "rxconfig.py").exists():
-        typer.secho(
-            "Error: This command must be run from the root of a Reflex project.",
-            fg=typer.colors.RED,
-        )
-        typer.secho("('rxconfig.py' not found)", fg=typer.colors.RED)
-        raise typer.Exit(1)
+    # 2. Update rxconfig.py Safely
+    config_content = config_path.read_text()
 
+    if "var(--background)" in config_content:
+        print(f"• rxconfig.py already contains Buridan UI theme tokens.")
+    else:
+        try:
+            tree = ast.parse(config_content)
+            modified = False
+            clean_snippet = TAILWIND_CONFIG_SNIPPET.strip().rstrip(",")
 
-@app.command("list")
-def list_all():
-    """
-    List all available items (components, wrapped React components, themes) in the Buridan UI library.
-    """
-    _update_repo()
-    typer.echo("Listing available items from repository...")
+            # Look for ANY assignment that looks like a Reflex config
+            for node in ast.walk(tree):
+                if isinstance(node, ast.Assign):
+                    # Check if the right side is rx.Config(...) or rx.config(...)
+                    call_node = node.value
+                    if (
+                        isinstance(call_node, ast.Call)
+                        and isinstance(call_node.func, ast.Attribute)
+                        and call_node.func.attr.lower() == "config"
+                        and getattr(call_node.func.value, "id", "") == "rx"
+                    ):
+                        # Found it!
+                        lines = config_content.splitlines()
+                        plugins_kw = next(
+                            (kw for kw in call_node.keywords if kw.arg == "plugins"),
+                            None,
+                        )
 
-    # List Standard Components from base_ui
-    if BASE_UI_BASE_COMPONENTS_DIR.exists():
-        components = [
-            p.stem
-            for p in BASE_UI_BASE_COMPONENTS_DIR.iterdir()
-            if p.suffix == ".py" and not p.name.startswith("__")
+                        if plugins_kw:
+                            # Scenario 1: plugins=[] exists
+                            target_line_idx = -1
+                            # Search only within the call node's range
+                            for i in range(call_node.lineno - 1, call_node.end_lineno):
+                                if "plugins=" in lines[i]:
+                                    target_line_idx = i
+                                    break
+                            
+                            if target_line_idx != -1:
+                                lines[target_line_idx] = lines[target_line_idx].replace(
+                                    "plugins=[", f"plugins=[\n{clean_snippet},"
+                                )
+                                config_content = "\n".join(lines)
+                                modified = True
+                        else:
+                            # Scenario 2: plugins keyword is missing
+                            target_line_idx = -1
+                            for i in range(call_node.lineno - 1, call_node.end_lineno):
+                                if "Config(" in lines[i] or "config(" in lines[i]:
+                                    target_line_idx = i
+                                    break
+                            
+                            if target_line_idx != -1:
+                                indent = " " * (len(lines[target_line_idx]) - len(lines[target_line_idx].lstrip()))
+                                lines[target_line_idx] = lines[target_line_idx].replace(
+                                    "(", f"(\n{indent}    plugins=[\n{clean_snippet}\n{indent}    ],"
+                                )
+                                config_content = "\n".join(lines)
+                                modified = True
+                        
+                        if modified:
+                            # Clean up potential duplicates or empty calls
+                            config_content = config_content.replace("rx.plugins.TailwindV4Plugin(),", "")
+                            config_content = config_content.replace("rx.plugins.TailwindV4Plugin()", "")
+                            config_content = config_content.replace(",,", ",")
+                            print(f"✓ Updated rxconfig.py with Buridan UI tokens.")
+                            break
+            
+            if not modified:
+                # Last resort fallback: Simple string replacement if AST failed to identify nodes correctly
+                if "rx.Config(" in config_content or "rx.config(" in config_content:
+                    print("• Using string replacement fallback for rxconfig.py...")
+                    config_content = config_content.replace(
+                        "rx.Config(", f"rx.Config(\n    plugins=[\n{clean_snippet}\n    ],"
+                    ).replace(
+                        "rx.config(", f"rx.config(\n    plugins=[\n{clean_snippet}\n    ],"
+                    )
+                    modified = True
+
+            if modified:
+                import_stmt = "from reflex.plugins.shared_tailwind import TailwindConfig"
+                if import_stmt not in config_content:
+                    config_content = f"{import_stmt}\n{config_content}"
+                config_path.write_text(config_content)
+            else:
+                print("Warning: Could not automatically update rxconfig.py. Please add the Buridan UI Tailwind snippet manually.")
+
+        except Exception as e:
+            print(f"Warning: Could not parse rxconfig.py ({e}). Please configure manually.")
+
+    # 3. Include components if full
+    if include == "full":
+        # For 'full', we'll add ALL components from the registry
+        all_components = [
+            name
+            for name in COMPONENT_REGISTRY.keys()
+            if name
+            not in ["twmerge", "component", "base_ui", "hugeicon", "others_icons"]
         ]
-        typer.echo("\n--- Base UI Components ---")
-        for component in sorted(components):
-            typer.echo(f"- {component}")
+        print(f"Adding all {len(all_components)} components to project...")
+        add_components_to_project(all_components, target_root=root)
 
-    # List Wrapped React Components
-    if WRAPPED_COMPONENTS_DIR.exists():
-        wrapped_components = []
-        for p in WRAPPED_COMPONENTS_DIR.iterdir():
-            if p.name.startswith("__"):
-                continue
-            if p.is_dir():
-                # It's a directory, so it's a component
-                wrapped_components.append(p.name)
-            elif p.suffix == ".py":
-                # It's a file, so it's a component
-                wrapped_components.append(p.stem)
+    print("\nSuccess! Buridan UI has been initialized.")
+    print("Next steps:")
+    print("1. Update your rx.App initialization in your main file:")
+    print('   app = rx.App(stylesheets=["globals.css"])')
+    print("2. You can now add more components using 'buridan add <name>'")
 
-        typer.echo("\n--- Wrapped React Components ---")
-        for component in sorted(list(set(wrapped_components))):
-            typer.echo(f"- {component}")
 
-    # List Themes
-    themes = set()
-    if THEMES_CSS_FILE.exists():
-        content = THEMES_CSS_FILE.read_text()
-        theme_pattern = re.compile(r"\.theme-([a-zA-Z0-9-]+)(?:-dark)?\s*\{")
-        for match in theme_pattern.finditer(content):
-            themes.add(match.group(1))
-    typer.echo("\n--- Themes ---")
-    for theme in sorted(list(themes)):
-        typer.echo(f"- {theme}")
+def main():
+    parser = argparse.ArgumentParser(description="Buridan UI CLI")
+    subparsers = parser.add_subparsers(dest="command")
+
+    # init command
+    init_parser = subparsers.add_parser(
+        "init", help="Initialize Buridan UI in a project"
+    )
+    init_parser.add_argument(
+        "--preset", required=True, help="Theme preset ID (e.g. b0, b2D0wqNxT)"
+    )
+    init_parser.add_argument(
+        "--include",
+        choices=["full", "theme-only"],
+        default="full",
+        help="What to include (default: full)",
+    )
+
+    # add command
+    add_parser = subparsers.add_parser(
+        "add", help="Add components to your project"
+    )
+    add_parser.add_argument(
+        "components", nargs="+", help="Names of components to add"
+    )
+
+    # list command
+    subparsers.add_parser(
+        "list", help="List all available components"
+    )
+
+    args = parser.parse_args()
+
+    if args.command == "init":
+        init(args.preset, args.include)
+    elif args.command == "add":
+        add_components_to_project(args.components)
+    elif args.command == "list":
+        print("Available components:")
+        # Filter out utilities and icons for a cleaner list, or show all?
+        # Let's show all that aren't purely internal utilities
+        for name in sorted(COMPONENT_REGISTRY.keys()):
+            if name not in ["twmerge", "component", "base_ui", "hugeicon", "others_icons"]:
+                print(f"  - {name}")
+    else:
+        parser.print_help()
 
 
 if __name__ == "__main__":
-    app()
+    main()

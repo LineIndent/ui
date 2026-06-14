@@ -12,18 +12,27 @@ Custom tabs component.
 
 Copy the following code into your app directory.
 
---CLI_AND_MANUAL_INSTALLATION(["Tabs", "buridan add component tabs"])--
+--INSTALL(["Tabs", "buridan add component tabs"])--
 
 # Usage
 
-Make sure to correctly set your imports relative to the component.
+--USAGE(tabs)--
 
-```python
-from components.base_ui.tabs import tabs
-```
+# Anatomy 
+Use the following composition to build a `Tabs`
+
+--ANATOMY(tabs)--
+
 
 # Example
 
-Below are examples demonstrating how the component can be used.
+## Basic
+--DEMO(tabs_basic)--
 
---DEMO_AND_SINGLE_FUNCTION(tabs_example)--
+## Vertical
+Use `orientation="vertical"` for vertical tabs.
+--DEMO(tabs_vertical)--
+
+## Disabled
+Use `disabled=True` to disable a tab.
+--DEMO(tabs_disabled)--

@@ -1,8 +1,0 @@
-repos:
-  - repo: https://github.com/charliermarsh/ruff-pre-commit
-    rev: v0.11.2
-    hooks:
-      - id: ruff-format # Ruff will format first
-        args: []
-      - id: ruff # Then Ruff lints, fixing what it can
-        args: ["--fix", "--exit-non-zero-on-fix"]

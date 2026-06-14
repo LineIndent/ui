@@ -8,7 +8,6 @@ Displays a user's profile picture, initials, or fallback icon.
 
 Copy the following code into your app directory.
 
-
 ### CLI
 
 ```bash
@@ -25,7 +24,7 @@ from reflex.event import EventHandler, passthrough_event_spec
 from reflex.utils.imports import ImportVar
 from reflex.vars.base import Var
 
-from ..base_ui import PACKAGE_NAME, BaseUIComponent
+from .base_ui import PACKAGE_NAME, BaseUIComponent
 
 
 class ClassNames:
@@ -149,11 +148,22 @@ avatar = Avatar()
 
 # Usage
 
-Make sure to correctly set your imports relative to the component.
+
+> **Error processing usage for avatar: module, class, method, function, traceback, frame, or code object was expected, got Avatar**
+
+
+# Anatomy 
+Use the following composition to build a `Avatar`
+
 
 ```python
-from components.base_ui.avatar import avatar
+avatar.root(
+    avatar.image(),
+    avatar.fallback(),
+)
 ```
+
+
 
 # Examples
 
@@ -165,7 +175,7 @@ Displays a basic avatar with either a user image or a fallback placeholder.
 
 
 ```python
-def avatar_example():
+def avatar_general():
     return rx.box(
         avatar(
             src="https://avatars.githubusercontent.com/u/84860195?v=4",

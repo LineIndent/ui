@@ -1,15 +1,16 @@
 .states
-*.db
-*.py[cod]
-.DS_Store
-.idea
-.venv
 .web
-__pycache__/
 assets/external/
-.vercel
+*.py[cod]
+*.db
+.DS_Store
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
 dist/
-buridan_ui.egg-info
-.reflex_ui_cache/
-src/components/
-assets/docs/-components/
+wheels/
+*.egg-info
+
+# Virtual environments
+.venv

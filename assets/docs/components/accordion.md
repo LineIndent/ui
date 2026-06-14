@@ -8,11 +8,10 @@ A set of collapsible panels with headings.
 
 Copy the following code into your app directory.
 
-
 ### CLI
 
 ```bash
-buridan add component accordion
+uv run buridan add component accordion
 ```
 
 ### Manual Installation
@@ -23,15 +22,16 @@ buridan add component accordion
 from typing import Any, Literal
 
 from reflex.components.component import Component, ComponentNamespace
-from reflex.components.core.foreach import foreach
-from reflex.components.el import Div
 from reflex.event import EventHandler, passthrough_event_spec
 from reflex.utils.imports import ImportVar
 from reflex.vars.base import Var
 from reflex.vars.object import ObjectVar
+from reflex_components_core.core.foreach import foreach
+from reflex_components_core.el import Div
 
-from ..base_ui import PACKAGE_NAME, BaseUIComponent
-from ...icons.hugeicon import icon
+from ..icons.hugeicon import hi, icon
+from .base_ui import PACKAGE_NAME, BaseUIComponent
+from .button import button
 
 LiteralOrientation = Literal["horizontal", "vertical"]
 
@@ -41,16 +41,12 @@ ITEMS_TYPE = list[dict[str, str | Component]]
 class ClassNames:
     """Class names for accordion components."""
 
-    ROOT = "flex flex-col justify-center overflow-hidden rounded-xl"
-    ITEM = ""
+    ROOT = "flex w-full flex-col divide-y divide-input"
+    ITEM = "not-last:border-b"
     HEADER = ""
-    TRIGGER = "group relative flex w-full items-center justify-between gap-4 px-4 py-2 text-md font-semibold"
-    PANEL = (
-        "overflow-hidden text-sm text-foreground font-medium "
-        "transition-all duration-300 ease-out "
-        "data-[ending-style]:h-0 data-[starting-style]:h-0"
-    )
-    PANEL_DIV = "py-2 px-4"
+    TRIGGER = "group/accordion-trigger relative flex flex-1 items-start justify-between rounded-lg border border-transparent py-2.5 text-left text-sm font-medium transition-all outline-none hover:underline focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:after:border-ring disabled:pointer-events-none disabled:opacity-50 **:data-[slot=accordion-trigger-icon]:ml-auto **:data-[slot=accordion-trigger-icon]:size-4 **:data-[slot=accordion-trigger-icon]:text-muted-foreground"
+    PANEL = "h-[var(--accordion-panel-height)] overflow-hidden transition-[height] ease-out data-[ending-style]:h-0 data-[starting-style]:h-0"
+    PANEL_DIV = ""
     TRIGGER_ICON = "size-4 shrink-0 transition-all ease-out group-data-[panel-open]:scale-110 group-data-[panel-open]:rotate-45"
 
 
@@ -83,13 +79,13 @@ class AccordionRoot(AccordionBaseComponent):
     hidden_until_found: Var[bool]
 
     # Whether multiple items can be open at the same time. Defaults to True.
-    open_multiple: Var[bool]
+    multiple: Var[bool]
 
     # Whether the component should ignore user interaction. Defaults to False.
     disabled: Var[bool]
 
     # Whether to loop keyboard focus back to the first item when the end of the list is reached while using the arrow keys. Defaults to True.
-    loop: Var[bool]
+    loop_focus: Var[bool]
 
     # The visual orientation of the accordion. Controls whether roving focus uses left/right or up/down arrow keys. Defaults to 'vertical'.
     orientation: Var[LiteralOrientation]
@@ -154,17 +150,43 @@ class AccordionTrigger(AccordionBaseComponent):
 
     tag = "Accordion.Trigger"
 
-    # Whether the component renders a native `<button>` element when replacing it via the `render` prop. Set to `false` if the rendered element is not a button (e.g. `<div>`). Defaults to True.
+    title: Var[str]
     native_button: Var[bool]
-
-    # The render prop.
-    render_: Var[Component]
+    render_: Var[Component] = None
 
     @classmethod
     def create(cls, *children, **props) -> BaseUIComponent:
-        """Create the accordion trigger component."""
         props["data-slot"] = "accordion-trigger"
         cls.set_class_name(ClassNames.TRIGGER, props)
+
+        if "render_" not in props or props["render_"] is None:
+            if "title" not in props:
+                if len(children) == 1 and isinstance(children[0], str):
+                    props["title"] = children[0]
+                elif children:
+                    raise TypeError(
+                        "AccordionTrigger expects a single string child "
+                        "when used without a `title` prop."
+                    )
+                else:
+                    raise ValueError("AccordionTrigger requires a `title`.")
+
+            props["render_"] = button(
+                props["title"],
+                hi(
+                    "Add01Icon",
+                    class_name=(
+                        "text-muted-foreground size-4 transition-transform duration-50 ease-in-out "
+                        "group-aria-[expanded=true]:rotate-45"
+                    ),
+                ),
+                variant="ghost",
+                class_name=(
+                    "w-full flex items-center justify-between group py-2 "
+                    "font-medium !text-sm hover:bg-transparent !px-0"
+                ),
+            )
+
         return super().create(*children, **props)
 
 
@@ -324,95 +346,131 @@ accordion = Accordion()
 
 # Usage
 
-Make sure to correctly set your imports relative to the component.
+
+> **Error processing usage for accordion: module, class, method, function, traceback, frame, or code object was expected, got Accordion**
+
+
+# Anatomy 
+Use the following composition to build an `Accordion`
+
 
 ```python
-from components.base_ui.accordion import accordion
+accordion.root(
+    accordion.item(
+        accordion.header(
+            accordion.trigger(),
+        ),
+        accordion.panel(),
+    ),
+    accordion.item(
+        accordion.header(
+            accordion.trigger(),
+        ),
+        accordion.panel(),
+    ),
+)
 ```
+
 
 # Examples
 
 Below are examples demonstrating how the component can be used.
 
-## General
+## Basic
 
-Displays a basic avatar with either a user image or a fallback placeholder.
+A basic accordion that shows one item at a time. The first item is open by default.
 
 
 ```python
-def accordion_example():
-    """Accordion with space exploration data - only one section open at a time."""
-
-    items1 = [
-        "01. Genesis launched a new era of exploration.",
-        "02. Explorer uncovered new planets beyond our reach.",
-        "03. Voyager 1 ventured into interstellar space.",
-        "04. Apollo landed humans on the Moon.",
-    ]
-
-    items2 = [
-        "05. Curiosity sent back valuable data from Mars.",
-        "06. The Hubble Telescope captured distant galaxies.",
-        "07. James Webb will explore the universe's origins.",
-        "08. The ISS orbits Earth, conducting critical experiments.",
-    ]
-
-    items3 = [
-        "09. Saturn's rings have fascinated scientists for years.",
-        "10. The Mars Rover is studying the planet's surface.",
-        "11. NASA's Artemis program aims to return humans to the Moon.",
-        "12. Solar missions help us understand space weather.",
-    ]
-
-    return accordion.root(
-        accordion.item(
-            accordion.header(
-                accordion.trigger(
-                    "Models",
-                    # icon("PlusSignIcon", class_name="size-4 shrink-0 transition-all ease-out group-data-[panel-open]:scale-110 group-data-[panel-open]:rotate-45"),
+def accordion_basic():
+    return rx.el.div(
+        accordion.root(
+            accordion.item(
+                accordion.header(
+                    accordion.trigger("Models"),
                 ),
-            ),
-            accordion.panel(
-                rx.box(
-                    *[rx.text(item, class_name="mb-2") for item in items1],
-                    class_name="py-2 px-4",
+                accordion.panel(
+                    rx.el.div(
+                        rx.el.p(
+                            "- Genesis launched a new era of exploration.",
+                            class_name="mb-2",
+                        ),
+                        rx.el.p(
+                            "- Explorer uncovered new planets beyond our reach.",
+                            class_name="mb-2",
+                        ),
+                        rx.el.p(
+                            "- Voyager 1 ventured into interstellar space.",
+                            class_name="mb-2",
+                        ),
+                        rx.el.p(
+                            "- Apollo landed humans on the Moon.",
+                            class_name="mb-2",
+                        ),
+                        class_name="py-2 text-sm",
+                    ),
                 ),
+                value="section-1",
             ),
-            value="section-1",
+            accordion.item(
+                accordion.header(
+                    accordion.trigger("Spacecraft"),
+                ),
+                accordion.panel(
+                    rx.el.div(
+                        rx.el.p(
+                            "- Curiosity sent back valuable data from Mars.",
+                            class_name="mb-2",
+                        ),
+                        rx.el.p(
+                            "- The Hubble Telescope captured distant galaxies.",
+                            class_name="mb-2",
+                        ),
+                        rx.el.p(
+                            "- James Webb will explore the universe's origins.",
+                            class_name="mb-2",
+                        ),
+                        rx.el.p(
+                            "- The ISS orbits Earth, conducting critical experiments.",
+                            class_name="mb-2",
+                        ),
+                        class_name="py-2 text-sm",
+                    ),
+                ),
+                value="section-2",
+            ),
+            accordion.item(
+                accordion.header(
+                    accordion.trigger("Space Discoveries"),
+                ),
+                accordion.panel(
+                    rx.el.div(
+                        rx.el.p(
+                            "- Saturn's rings have fascinated scientists for years.",
+                            class_name="mb-2",
+                        ),
+                        rx.el.p(
+                            "- The Mars Rover is studying the planet's surface.",
+                            class_name="mb-2",
+                        ),
+                        rx.el.p(
+                            "- NASA's Artemis program aims to return humans to the Moon.",
+                            class_name="mb-2",
+                        ),
+                        rx.el.p(
+                            "- Solar missions help us understand space weather.",
+                            class_name="mb-2",
+                        ),
+                        class_name="py-2 text-sm",
+                    ),
+                ),
+                value="section-3",
+            ),
+            class_name="w-full max-w-md mx-auto",
+            open_multiple=False,
+            default_value=["section-1"],
         ),
-        accordion.item(
-            accordion.header(
-                accordion.trigger(
-                    "Spacecraft",
-                    # icon("PlusSignIcon", class_name="size-4 shrink-0 transition-all ease-out group-data-[panel-open]:scale-110 group-data-[panel-open]:rotate-45"),
-                ),
-            ),
-            accordion.panel(
-                rx.box(
-                    *[rx.text(item, class_name="mb-2") for item in items2],
-                    class_name="py-2 px-4",
-                ),
-            ),
-            value="section-2",
-        ),
-        accordion.item(
-            accordion.header(
-                accordion.trigger(
-                    "Space Discoveries",
-                    # icon("PlusSignIcon", class_name="size-4 shrink-0 transition-all ease-out group-data-[panel-open]:scale-110 group-data-[panel-open]:rotate-45"),
-                ),
-            ),
-            accordion.panel(
-                rx.box(
-                    *[rx.text(item, class_name="mb-2") for item in items3],
-                    class_name="py-2 px-4",
-                ),
-            ),
-            value="section-3",
-        ),
-        class_name="w-full max-w-md mx-auto",
-        open_multiple=False,
-        default_value=[],
+        class_name="h-[45vh] w-full justify-center pt-10 px-8",
     )
 ```
 

@@ -1,0 +1,25 @@
+# buridan/ui
+
+Composable, themeable components designed for Reflex. Built with Python and modern OKLCH colors.
+
+## AI Expert Instructions
+Any AI agent interacting with this repository or helping a user build an app with Buridan UI MUST follow these rules:
+
+- **Always use the CLI**: Use `buridan add <component>` to add components. Do NOT copy code blocks manually unless specifically requested for reference. The CLI handles dependency resolution (e.g., `twmerge`, `base_ui`, `CoreComponent`).
+- **Imports**: Components live in `components/ui/` in the user's project. Icons live in `components/icons/`.
+- **Theming**: Use the OKLCH variables in `assets/globals.css`. Prefer semantic names like `bg-background` and `text-primary`.
+- **Patterns**: Use the `@layout_decorator` for page structures and `ClientStateVar` for client-side state management.
+
+## Documentation
+- [Introduction](https://buridan-ui.reflex.run/docs/getting-started/introduction)
+- [Installation](https://buridan-ui.reflex.run/docs/getting-started/installation)
+- [CLI Reference](https://buridan-ui.reflex.run/docs/getting-started/cli)
+- [Theming Guide](https://buridan-ui.reflex.run/docs/getting-started/theming)
+- [AI Support](https://buridan-ui.reflex.run/docs/getting-started/ai-support)
+
+## Components
+- [Accordion](https://buridan-ui.reflex.run/docs/components/accordion)
+- [Button](https://buridan-ui.reflex.run/docs/components/button)
+- [Dialog](https://buridan-ui.reflex.run/docs/components/dialog)
+- [Select](https://buridan-ui.reflex.run/docs/components/select)
+- (And 25+ more...)

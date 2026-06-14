@@ -94,11 +94,37 @@ To customize the tooltip with a dictionary, use the following code snippet:
 
 ```python
 def tooltip_example():
-    """A basic tooltip example."""
-    return tooltip(
-        trigger=button("Hover Me"),
-        content="This is a tooltip!",
-    )
+    tooltip_styles = {
+        "is_animation_active": False,
+        "separator": "",
+        "cursor": False,
+        "item_style": {
+            "color": "currentColor",
+            "display": "flex",
+            "paddingBottom": "0px",
+            "justifyContent": "space-between",
+            "textTransform": "capitalize",
+        },
+        "label_style": {
+            "color": rx.color("slate", 9),
+            "fontWeight": "500",
+        },
+        "content_style": {
+            "background": rx.color("slate", 1),
+            "borderColor": rx.color("slate", 5),
+            "borderRadius": "5px",
+            "fontFamily": "var(--font-instrument-sans)",
+            "fontSize": "0.875rem",
+            "lineHeight": "1.25rem",
+            "fontWeight": "500",
+            "letterSpacing": "-0.01rem",
+            "minWidth": "8rem",
+            "width": "175px",
+            "padding": "0.375rem 0.625rem",
+            "position": "relative",
+        },
+    }
+    return rx.recharts.tooltip(**tooltip_styles)
 ```
 
 

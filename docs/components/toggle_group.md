@@ -12,34 +12,27 @@ Custom toggle group component.
 
 Copy the following code into your app directory.
 
---CLI_AND_MANUAL_INSTALLATION(["ToggleGroupRoot", "buridan add component toggle_group"])--
+--INSTALL(["toggle_group", "buridan add component toggle_group"])--
 
 # Usage
 
-Make sure to correctly set your imports relative to the component.
+--USAGE(toggle_group)--
 
-```python
-from components.base_ui.toggle_group import toggle_group
-```
+# Anatomy 
+Use the following composition to build a `Toggle Group`
+
+--ANATOMY(toggle_group)--
 
 # Examples
-
-Below are examples demonstrating how the component can be used.
 
 ## General
 
 A basic toggle group with single-selection mode, allowing only one active toggle at a time.
 
---DEMO_AND_SINGLE_FUNCTION(toggle_group_example)--
+--DEMO(toggle_group_general)--
 
 ## Multiple Selection
 
-Allows selecting multiple toggles simultaneously by enabling the multiple property.
+Set `multiple=True` on the `toggle_group()` to allow multiple selections at the same time. 
 
---DEMO_AND_SINGLE_FUNCTION(toggle_group_multiple)--
-
-## Disabled
-
-Demonstrates a toggle group where all items are disabled and non-interactive.
-
---DEMO_AND_SINGLE_FUNCTION(toggle_group_disabled)--
+--DEMO(toggle_group_multiple_selection)--

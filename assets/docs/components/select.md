@@ -1,13 +1,10 @@
 
 
 # Select
-
 Custom select component.
 
 # Installation
-
 Copy the following code into your app directory.
-
 
 ### CLI
 
@@ -23,16 +20,16 @@ buridan add component select
 from typing import Any, Literal
 
 from reflex.components.component import Component, ComponentNamespace
-from reflex.components.core.foreach import foreach
 from reflex.event import EventHandler, passthrough_event_spec
 from reflex.utils.imports import ImportVar
 from reflex.vars.base import Var
+from reflex_components_core.core.foreach import foreach as foreach
 
+from ..icons.hugeicon import hi
+from ..icons.others import select_arrow
+from ..utils.twmerge import cn
+from .base_ui import PACKAGE_NAME, BaseUIComponent
 from .button import button
-from ..base_ui import PACKAGE_NAME, BaseUIComponent
-from ...icons.hugeicon import hi
-from ...icons.others import select_arrow
-from ...utils.twmerge import cn
 
 LiteralSelectSize = Literal["xs", "sm", "md", "lg", "xl"]
 LiteralAlign = Literal["start", "center", "end"]
@@ -44,20 +41,20 @@ LiteralOrientation = Literal["horizontal", "vertical"]
 class ClassNames:
     """Class names for select components."""
 
-    TRIGGER = "flex min-w-48 items-center justify-between gap-3 select-none text-sm [&>span]:line-clamp-1 cursor-pointer focus:outline-none focus-visible:ring-1 focus-visible:ring-primary-4 group/trigger"
-    VALUE = "flex-1 text-left"
+    TRIGGER = "flex w-fit items-center justify-between gap-1.5 rounded-radius border border-input bg-transparent py-2 pr-2 pl-2.5 text-sm whitespace-nowrap transition-colors outline-none select-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 data-placeholder:text-muted-foreground data-[size=default]:h-8 data-[size=sm]:h-7 data-[size=sm]:rounded-[min(var(--radius-md),10px)] *:data-[slot=select-value]:line-clamp-1 *:data-[slot=select-value]:flex *:data-[slot=select-value]:items-center *:data-[slot=select-value]:gap-1.5 dark:bg-input/30 dark:hover:bg-input/50 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4"
+    VALUE = "flex-1 text-left cursor-default"
     ICON = "flex size-4 text-secondary-10 group-data-[disabled]/trigger:text-current"
-    POPUP = "group/popup max-h-[17.25rem] overflow-y-auto origin-(--transform-origin) p-1 border border-secondary-a4 bg-secondary-1 shadow-large transition-[transform,scale,opacity] data-[ending-style]:scale-95 data-[starting-style]:scale-95 data-[ending-style]:opacity-0 data-[starting-style]:opacity-0 outline-none scrollbar-thin scrollbar-thumb-secondary-9 scrollbar-track-transparent"
-    ITEM = "grid min-w-(--anchor-width) grid-cols-[1fr_auto] items-center gap-2 text-sm select-none font-[450] group-data-[side=none]/popup:min-w-[calc(var(--anchor-width)+1rem)] data-[selected]:text-secondary-12 text-secondary-11 cursor-pointer placeholder:text-secondary-9 data-[selected]:font-medium outline-none data-[highlighted]:bg-secondary-3 scroll-m-1"
-    ITEM_INDICATOR = "text-current"
+    POPUP = "relative isolate z-50 max-h-(--available-height) w-(--anchor-width) min-w-36 origin-(--transform-origin) overflow-x-hidden overflow-y-auto rounded-lg bg-popover text-popover-foreground shadow-md ring-1 ring-foreground/10 duration-100 data-[align-trigger=true]:animate-none data-[side=bottom]:slide-in-from-top-2 data-[side=inline-end]:slide-in-from-left-2 data-[side=inline-start]:slide-in-from-right-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95"
+    ITEM = "focus:bg-accent focus:text-accent-foreground [&_svg:not([class*='text-'])]:text-muted-foreground relative flex w-full cursor-default items-center gap-2 rounded-sm py-1.5 px-2 text-sm outline-hidden select-none data-[disabled]:pointer-events-none data-[disabled]:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:flex *:[span]:last:items-center *:[span]:last:gap-2"
+    ITEM_INDICATOR = ""
     ITEM_TEXT = "text-start"
     GROUP = "p-1"
-    GROUP_LABEL = "px-2 py-1.5 text-sm font-semibold"
-    SEPARATOR = "-mx-1 my-1 h-px bg-muted"
+    GROUP_LABEL = "text-muted-foreground px-2 py-1.5 text-xs"
+    SEPARATOR = "bg-border pointer-events-none -mx-1 my-1 h-px"
     ARROW = "data-[side=bottom]:top-[-8px] data-[side=left]:right-[-13px] data-[side=left]:rotate-90 data-[side=right]:left-[-13px] data-[side=right]:-rotate-90 data-[side=top]:bottom-[-8px] data-[side=top]:rotate-180"
     POSITIONER = "outline-none"
-    SCROLL_ARROW_UP = "top-0 z-[1] flex h-4 w-full cursor-default items-center justify-center rounded-ui-md bg-secondary-1 text-center text-xs before:absolute before:top-[-100%] before:left-0 before:h-full before:w-full before:content-[''] data-[direction=down]:bottom-0 data-[direction=down]:before:bottom-[-100%]"
-    SCROLL_ARROW_DOWN = "bottom-0 z-[1] flex h-4 w-full cursor-default items-center justify-center rounded-ui-md bg-secondary-1 text-center text-xs before:absolute before:top-[-100%] before:left-0 before:h-full before:w-full before:content-[''] data-[direction=down]:bottom-0 data-[direction=down]:before:bottom-[-100%]"
+    SCROLL_ARROW_UP = "top-0 z-10 flex w-full cursor-default items-center justify-center bg-popover py-1"
+    SCROLL_ARROW_DOWN = "bottom-0 z-10 flex w-full cursor-default items-center justify-center bg-popover py-1"
 
 
 class SelectBaseComponent(BaseUIComponent):
@@ -274,6 +271,25 @@ class SelectPopup(SelectBaseComponent):
         return super().create(*children, **props)
 
 
+class SelectList(SelectBaseComponent):
+    """A list component that wraps select items. Renders a <div> element."""
+
+    tag = "Select.List"
+
+    # The render prop
+    render_: Var[Component]
+
+    @classmethod
+    def create(cls, *children, **props) -> BaseUIComponent:
+        """Create the select list component.
+
+        Returns:
+            The component.
+        """
+        props["data-slot"] = "select-list"
+        return super().create(*children, **props)
+
+
 class SelectItem(SelectBaseComponent):
     """An individual option in the select menu."""
 
@@ -316,22 +332,38 @@ class SelectItemText(SelectBaseComponent):
 
 
 class SelectItemIndicator(SelectBaseComponent):
-    """Indicates whether the select item is selected."""
-
     tag = "Select.ItemIndicator"
 
-    # Whether to keep the HTML element in the DOM when the item is not selected. Defaults to False.
-    keep_mounted: Var[bool]
-
-    # The render prop
     render_: Var[Component]
 
     @classmethod
-    def create(cls, *children, **props) -> BaseUIComponent:
-        """Create the dialog trigger component."""
+    def create(cls, *children, **props):
         props["data-slot"] = "select-item-indicator"
         cls.set_class_name(ClassNames.ITEM_INDICATOR, props)
+
+        if not children:
+            children = (hi("Tick02Icon", class_name="size-4 text-secondary-10"),)
+
         return super().create(*children, **props)
+
+
+# class SelectItemIndicator(SelectBaseComponent):
+#     """Indicates whether the select item is selected."""
+
+#     tag = "Select.ItemIndicator"
+
+#     # Whether to keep the HTML element in the DOM when the item is not selected. Defaults to False.
+#     keep_mounted: Var[bool]
+
+#     # The render prop
+#     render_: Var[Component]
+
+#     @classmethod
+#     def create(cls, *children, **props) -> BaseUIComponent:
+#         """Create the dialog trigger component."""
+#         props["data-slot"] = "select-item-indicator"
+#         cls.set_class_name(ClassNames.ITEM_INDICATOR, props)
+#         return super().create(*children, **props)
 
 
 class SelectGroup(SelectBaseComponent):
@@ -386,19 +418,35 @@ class SelectSeparator(SelectBaseComponent):
 
 
 class SelectIcon(SelectBaseComponent):
-    """An icon that indicates that the trigger button opens a select menu."""
-
     tag = "Select.Icon"
 
-    # The render prop
     render_: Var[Component]
 
     @classmethod
-    def create(cls, *children, **props) -> BaseUIComponent:
-        """Create the dialog trigger component."""
+    def create(cls, *children, **props):
         props["data-slot"] = "select-icon"
         cls.set_class_name(ClassNames.ICON, props)
+
+        if not children:
+            children = (hi("ArrowDown01Icon", class_name="size-4"),)
+
         return super().create(*children, **props)
+
+
+# class SelectIcon(SelectBaseComponent):
+#     """An icon that indicates that the trigger button opens a select menu."""
+
+#     tag = "Select.Icon"
+
+#     # The render prop
+#     render_: Var[Component]
+
+#     @classmethod
+#     def create(cls, *children, **props) -> BaseUIComponent:
+#         """Create the dialog trigger component."""
+#         props["data-slot"] = "select-icon"
+#         cls.set_class_name(ClassNames.ICON, props)
+#         return super().create(*children, **props)
 
 
 class SelectArrow(SelectBaseComponent):
@@ -422,10 +470,8 @@ class SelectScrollUpArrow(SelectBaseComponent):
 
     tag = "Select.ScrollUpArrow"
 
-    # Whether to keep the component mounted when not visible. Defaults to False.
     keep_mounted: Var[bool]
 
-    # The render prop
     render_: Var[Component]
 
     @classmethod
@@ -433,6 +479,10 @@ class SelectScrollUpArrow(SelectBaseComponent):
         """Create the dialog trigger component."""
         props["data-slot"] = "select-scroll-up-arrow"
         cls.set_class_name(ClassNames.SCROLL_ARROW_UP, props)
+
+        if "render_" not in props or props["render_"] is None:
+            props["render_"] = hi("ArrowUp01Icon", class_name="size-6")
+
         return super().create(*children, **props)
 
 
@@ -441,10 +491,7 @@ class SelectScrollDownArrow(SelectBaseComponent):
 
     tag = "Select.ScrollDownArrow"
 
-    # Whether to keep the component mounted when not visible. Defaults to False.
     keep_mounted: Var[bool]
-
-    # The render prop
     render_: Var[Component]
 
     @classmethod
@@ -452,6 +499,10 @@ class SelectScrollDownArrow(SelectBaseComponent):
         """Create the dialog trigger component."""
         props["data-slot"] = "select-scroll-down-arrow"
         cls.set_class_name(ClassNames.SCROLL_ARROW_DOWN, props)
+
+        if "render_" not in props or props["render_"] is None:
+            props["render_"] = hi("ArrowDown01Icon", class_name="size-6")
+
         return super().create(*children, **props)
 
 
@@ -574,7 +625,7 @@ class HighLevelSelect(SelectRoot):
                         class_name=cn(
                             ClassNames.POPUP,
                             "",
-                            # f"rounded-[calc(var(--radius-ui-{size})+0.25rem)]",
+                            "rounded-radius",
                         ),
                     ),
                     **positioner_props,
@@ -600,6 +651,7 @@ class Select(ComponentNamespace):
     arrow = staticmethod(SelectArrow.create)
     scroll_up_arrow = staticmethod(SelectScrollUpArrow.create)
     scroll_down_arrow = staticmethod(SelectScrollDownArrow.create)
+    list = staticmethod(SelectList.create)
     item = staticmethod(SelectItem.create)
     item_text = staticmethod(SelectItemText.create)
     item_indicator = staticmethod(SelectItemIndicator.create)
@@ -616,56 +668,255 @@ select = Select()
 
 # Usage
 
-Make sure to correctly set your imports relative to the component.
+> **Error processing usage for select: module, class, method, function, traceback, frame, or code object was expected, got Select**
+
+
+# Anatomy 
+Use the following composition to build a `Select`
 
 ```python
-from components.base_ui.select import select
+select.root(
+    select.trigger(
+        select.value(),
+        select.icon(),
+    ),
+    select.portal(
+        select.positioner(
+            select.popup(
+                select.group(
+                    select.group_label(),
+                    select.item(
+                        select.item_text(),
+                        select.item_indicator(),
+                    ),
+                ),
+                select.separator(),
+            ),
+        ),
+    ),
+)
 ```
+
 
 # Examples
 
-Below are examples demonstrating how the component can be used.
-
-## General
+## Align Item
+Use `align_item_with_trigger` on `select.positioner()` to control whether the selected item aligns with the trigger. When true (default), the popup positions so the selected item appears over the trigger. When false, the popup aligns to the trigger edge.
 
 
 ```python
-def select_example():
-    """A basic select example."""
-    return select(
-        items=["Apple", "Banana", "Orange", "Grape"],
-        placeholder="Select a fruit",
-        class_name="w-48",
+def select_align_with_items():
+
+    return rx.el.div(
+        rx.el.div(
+            rx.el.div(
+                rx.el.p("Align Item", class_name="font-medium text-foreground"),
+                rx.el.p(
+                    "Toggle to align the item with the trigger.",
+                    class_name="text-muted-foreground",
+                ),
+                class_name="flex flex-col gap-y-2 text-sm",
+            ),
+            switch.root(
+                switch.thumb(),
+                on_checked_change=align_with_item_trigger.set_value(
+                    ~align_with_item_trigger.value
+                ),
+            ),
+            class_name="flex flex-row items-start justify-between w-full",
+        ),
+        select.root(
+            select.trigger(
+                select.value(),
+                select.icon(hi("ArrowDown01Icon", classs_name="size-4")),
+                class_name="w-full flex items-center justify-between group",
+            ),
+            select.portal(
+                select.positioner(
+                    select.popup(
+                        select.group(
+                            select.group_label("Fruit"),
+                            *[
+                                select.item(
+                                    select.item_text(fruit.capitalize()),
+                                    select.item_indicator(
+                                        hi("Tick02Icon", class_name="size-4")
+                                    ),
+                                    value=fruit,
+                                    class_name="w-full !max-w-sm flex flex-row items-center justify-between",
+                                )
+                                for fruit in items
+                            ],
+                        ),
+                    ),
+                    side_offset=4,
+                    align_item_with_trigger=align_with_item_trigger.value,
+                ),
+            ),
+            name="example_select",
+            default_value="blueberry",
+        ),
+        class_name="flex flex-col gap-y-4 max-w-sm",
     )
 ```
 
 
-## With Default Value
+## Groups
+Use `select.group` to organize items into sections, `select.group_label` to label each section, and `select.separator` to visually divide groups.
 
 
 ```python
-def select_with_default_value():
-    """Select example with a default value."""
-    return select(
-        items=["Apple", "Banana", "Orange", "Grape"],
-        placeholder="Select a fruit",
-        default_value="Banana",
-        class_name="w-48",
+def select_groups():
+    fruits = [
+        {"label": "Apple", "value": "apple"},
+        {"label": "Banana", "value": "banana"},
+        {"label": "Blueberry", "value": "blueberry"},
+    ]
+
+    vegetables = [
+        {"label": "Carrot", "value": "carrot"},
+        {"label": "Broccoli", "value": "broccoli"},
+        {"label": "Spinach", "value": "spinach"},
+    ]
+
+    return select.root(
+        select.trigger(
+            select.value(),
+            select.icon(
+                # hi("ArrowDown01Icon", classs_name="size-4"),
+            ),
+            class_name="w-full max-w-48 flex items-center justify-between",
+        ),
+        select.portal(
+            select.positioner(
+                select.popup(
+                    select.group(
+                        select.group_label("Fruits"),
+                        *[
+                            select.item(
+                                select.item_text(item["label"]),
+                                select.item_indicator(
+                                    # hi("Tick02Icon", class_name="size-4")
+                                ),
+                                value=item["value"],
+                                class_name="flex flex-row items-center justify-between",
+                            )
+                            for item in fruits
+                        ],
+                    ),
+                    select.separator(),
+                    select.group(
+                        select.group_label("Vegetables"),
+                        *[
+                            select.item(
+                                select.item_text(item["label"]),
+                                select.item_indicator(
+                                    # hi("Tick02Icon", class_name="size-4")
+                                ),
+                                value=item["value"],
+                                class_name="flex flex-row items-center justify-between",
+                            )
+                            for item in vegetables
+                        ],
+                    ),
+                ),
+            ),
+        ),
+        items=[*fruits, *vegetables],
+        name="select_groups",
+        default_value="banana",
     )
 ```
 
 
-## Disabled
+## Scrollable
+Use `select.scroll_up_arrow` and `select.scroll_down_arrow` to provide navigation controls for scrolling through long lists of select items within the dropdown.
 
 
 ```python
-def select_disabled():
-    """A disabled select example."""
-    return select(
-        items=["Apple", "Banana", "Orange", "Grape"],
-        placeholder="Select a fruit",
-        disabled=True,
-        class_name="w-48",
+def select_with_scroll_arrows():
+    north_america = [
+        {"label": "Eastern Standard Time", "value": "est"},
+        {"label": "Central Standard Time", "value": "cst"},
+        {"label": "Mountain Standard Time", "value": "mst"},
+        {"label": "Pacific Standard Time", "value": "pst"},
+        {"label": "Alaska Standard Time", "value": "akst"},
+        {"label": "Hawaii Standard Time", "value": "hst"},
+    ]
+
+    europe_africa = [
+        {"label": "Greenwich Mean Time", "value": "gmt"},
+        {"label": "Central European Time", "value": "cet"},
+        {"label": "Eastern European Time", "value": "eet"},
+        {"label": "Central Africa Time", "value": "cat"},
+        {"label": "East Africa Time", "value": "eat"},
+    ]
+
+    asia = [
+        {"label": "Moscow Time", "value": "msk"},
+        {"label": "India Standard Time", "value": "ist"},
+        {"label": "China Standard Time", "value": "cst_china"},
+        {"label": "Japan Standard Time", "value": "jst"},
+    ]
+
+    return select.root(
+        select.trigger(
+            select.value(),
+            select.icon(),
+            class_name="w-full max-w-64 flex items-center justify-between",
+        ),
+        select.portal(
+            select.positioner(
+                select.popup(
+                    select.scroll_up_arrow(),
+                    select.list(
+                        select.group(
+                            select.group_label("North America"),
+                            *[
+                                select.item(
+                                    select.item_text(i["label"]),
+                                    select.item_indicator(),
+                                    value=i["value"],
+                                )
+                                for i in north_america
+                            ],
+                        ),
+                        select.group(
+                            select.group_label("Europe & Africa"),
+                            *[
+                                select.item(
+                                    select.item_text(i["label"]),
+                                    select.item_indicator(),
+                                    value=i["value"],
+                                )
+                                for i in europe_africa
+                            ],
+                        ),
+                        select.group(
+                            select.group_label("Asia"),
+                            *[
+                                select.item(
+                                    select.item_text(i["label"]),
+                                    select.item_indicator(),
+                                    value=i["value"],
+                                )
+                                for i in asia
+                            ],
+                        ),
+                        class_name="max-h-64 overflow-y-auto",
+                    ),
+                    select.scroll_down_arrow(),
+                ),
+            ),
+        ),
+        items=[
+            {"label": "Select timezone", "value": None},
+            *north_america,
+            *europe_africa,
+            *asia,
+        ],
+        name="timezone_select",
+        default_value="est",
     )
 ```
 

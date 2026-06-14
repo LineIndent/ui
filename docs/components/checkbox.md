@@ -12,15 +12,17 @@ Checkbox component from base-ui components.
 
 Copy the following code into your app directory.
 
---CLI_AND_MANUAL_INSTALLATION(["checkbox", "buridan add component checkbox"])--
+--INSTALL(["checkbox", "buridan add component checkbox"])--
 
 # Usage
 
-Make sure to correctly set your imports relative to the component.
+--USAGE(checkbox)--
 
-```python
-from components.base_ui.checkbox import checkbox
-```
+# Anatomy 
+Use the following composition to build a `Checkbox`
+
+--ANATOMY(checkbox)--
+
 
 # Examples
 
@@ -30,4 +32,4 @@ Below are examples demonstrating how the component can be used.
 
 Displays a simple checkbox with a label.
 
---DEMO_AND_SINGLE_FUNCTION(checkbox_example)--
+--DEMO(checkbox_example)--

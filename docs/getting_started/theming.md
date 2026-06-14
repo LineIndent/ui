@@ -82,7 +82,7 @@ fill="var(--chart-1)"
 
 This will set the fill color to the default value and theme (from inside the **.root**). Buridan ships with multiple pre-defined color themes for charts. To switch themes, apply one of the pre-defined theme system crated inside your **theme.css** file. For example, the following will set the **--chart-1** color to the **red theme** if we apply that theme to an outter component:
 
---SHOW_CODE_WITH_LANGUAGE(["theme_red_example", "python"])--
+--CODE(["theme_red_example", "python"])--
 
 The theme system is fully CSS-based, so switching themes won’t trigger any extra rendering — it’s instant, clean, and declarative.
 

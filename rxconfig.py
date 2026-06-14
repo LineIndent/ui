@@ -1,19 +1,24 @@
 import reflex as rx
 from reflex.plugins.shared_tailwind import TailwindConfig
+from reflex.plugins.sitemap import SitemapPlugin
 
 config = rx.Config(
-    app_name="src",
+    app_name="app",
     show_built_with_reflex=False,
-    disable_plugins=["reflex.plugins.sitemap.SitemapPlugin"],
+    disable_plugins=[SitemapPlugin],
     plugins=[
+        rx.plugins.RadixThemesPlugin(theme=rx.theme(appearance="light")),
         rx.plugins.TailwindV4Plugin(
             TailwindConfig(
                 darkMode="class",
-                plugins=["@tailwindcss/typography", "tailwind-scrollbar"],
+                plugins=[
+                    "@tailwindcss/typography",
+                    "tailwind-scrollbar",
+                    "tailwindcss-animate",
+                ],
                 theme={
                     "extend": {
                         "colors": {
-                            # Light/dark mode colors via CSS variables
                             "background": "var(--background)",
                             "foreground": "var(--foreground)",
                             "card": "var(--card)",
@@ -46,10 +51,22 @@ config = rx.Config(
                             "sidebar-border": "var(--sidebar-border)",
                             "sidebar-ring": "var(--sidebar-ring)",
                         },
-                        "borderRadius": {
-                            "default": "var(--radius)",
+                        "fontFamily": {
+                            "theme": "var(--font-family)",
                         },
-                    },
+                        "borderRadius": {
+                            "radius": "var(--radius)",
+                        },
+                        "padding": {
+                            "card": "var(--card-padding)",
+                        },
+                        "gap": {
+                            "card": "var(--card-gap)",
+                        },
+                        "boxShadow": {
+                            "default": "var(--shadow)",
+                        },
+                    }
                 },
             )
         ),

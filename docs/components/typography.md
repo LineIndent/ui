@@ -6,77 +6,34 @@ order: 0
 
 # Typography
 
-Styles for headings, paragraphs, lists, and other text elements using Tailwind utility classes.
+Styles for headings, paragraphs, lists, etc.
 
 # Installation
-Copy the following code into your app directory.
+No installation is used for typographies. This page is an example of how you can use utility classes to style your text.
 
---CLI_AND_MANUAL_INSTALLATION(["typography_h1", "buridan add component typography"])--
+## h1
+--DEMO(header_1)--
 
-# Examples
-Below are examples demonstrating how the component can be used.
+## h2
+--DEMO(header_2)--
 
-## All Styles
-A showcase of all typography styles in one example.
+## h3
+--DEMO(header_3)--
 
---DEMO_AND_SINGLE_FUNCTION(typography_demo)--
+## h4
+--DEMO(header_4)--
 
-## H1
-An example of a large primary heading style.
+## p
+--DEMO(paragraph)--
 
---DEMO_AND_SINGLE_FUNCTION(typography_h1_example)--
+## blockquote
+--DEMO(blockquote)--
 
-## H2
-A secondary heading with slightly smaller text.
+## table
+--DEMO(table_list)--
 
---DEMO_AND_SINGLE_FUNCTION(typography_h2_example)--
+## list
+--DEMO(list)--
 
-## H3
-A tertiary heading for subsection titles.
-
---DEMO_AND_SINGLE_FUNCTION(typography_h3_example)--
-
-## H4
-A small heading used for minor sections or labels.
-
---DEMO_AND_SINGLE_FUNCTION(typography_h4_example)--
-
-## Paragraph
-A standard paragraph text style for body content.
-
---DEMO_AND_SINGLE_FUNCTION(typography_p_example)--
-
-## Blockquote
-A styled blockquote element for quoted text.
-
---DEMO_AND_SINGLE_FUNCTION(typography_blockquote_example)--
-
-## List
-A demonstration of styled ordered and unordered lists.
-
---DEMO_AND_SINGLE_FUNCTION(typography_list_example)--
-
-## Inline Code
-Inline code styling for short snippets within text.
-
---DEMO_AND_SINGLE_FUNCTION(typography_inline_code_example)--
-
-## Lead
-A larger, attention-grabbing paragraph for introductions.
-
---DEMO_AND_SINGLE_FUNCTION(typography_lead_example)--
-
-## Large
-An example of text with a slightly larger font size.
-
---DEMO_AND_SINGLE_FUNCTION(typography_large_example)--
-
-## Small
-A smaller, subdued text style for fine print or notes.
-
---DEMO_AND_SINGLE_FUNCTION(typography_small_example)--
-
-## Muted
-A muted text style with reduced contrast for secondary information.
-
---DEMO_AND_SINGLE_FUNCTION(typography_muted_example)--
+## Inline code
+--DEMO(inline_code)--

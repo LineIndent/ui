@@ -8,7 +8,6 @@ A custom button component.
 
 Copy the following code into your app directory.
 
-
 ### CLI
 
 ```bash
@@ -20,12 +19,12 @@ buridan add component button
 ```python
 from typing import Literal
 
-from reflex.components.core.cond import cond
-from reflex.components.el import Button as BaseButton
 from reflex.vars.base import Var
+from reflex_components_core.core import cond
+from reflex_components_core.el import Button as BaseButton
 
-from ..component import CoreComponent
-from ...icons.others import spinner
+from ..icons.others import spinner
+from .component import CoreComponent
 
 LiteralButtonVariant = Literal[
     "primary", "destructive", "outline", "secondary", "ghost", "link", "dark"
@@ -35,8 +34,8 @@ LiteralButtonSize = Literal[
 ]
 
 DEFAULT_CLASS_NAME = (
-    "inline-flex items-center justify-center gap-2 whitespace-nowrap "
-    "rounded-md text-sm font-medium transition-all "
+    "font-theme inline-flex items-center justify-center gap-2 whitespace-nowrap "
+    "rounded-radius text-sm font-medium transition-all "
     "disabled:pointer-events-none disabled:opacity-50 outline-none "
     "[&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 "
     "[&_svg]:shrink-0 shrink-0"
@@ -52,7 +51,7 @@ BUTTON_VARIANTS = {
             "dark:bg-[var(--destructive)]/60"
         ),
         "outline": (
-            "border border-input bg-background shadow-xs "
+            "border border-input bg-background shadow-xs text-foreground "
             "hover:bg-[var(--accent)] hover:text-[var(--accent-foreground)] "
             "dark:bg-[var(--input)]/30 dark:border-input "
             "dark:hover:bg-[var(--input)]/50"
@@ -66,8 +65,8 @@ BUTTON_VARIANTS = {
     },
     "size": {
         "default": "h-9 px-4 py-2 has-[>svg]:px-3",
-        "sm": "h-8 rounded-md gap-1.5 px-3 has-[>svg]:px-2.5",
-        "lg": "h-10 rounded-md px-6 has-[>svg]:px-4",
+        "sm": "h-8 rounded-radius gap-1.5 px-2 has-[>svg]:px-2.5",
+        "lg": "h-10 rounded-radius px-6 has-[>svg]:px-4",
         "icon": "size-9",
         "icon-sm": "size-8",
         "icon-lg": "size-10",
@@ -147,11 +146,21 @@ button = Button.create
 
 # Usage
 
-Make sure to correctly set your imports relative to the component.
 
 ```python
-from components.base_ui.button import button
+from components.ui.button import button
 ```
+
+
+# Anatomy 
+Use the following composition to build a `Button`
+
+
+```python
+button()
+```
+
+
 
 # Examples
 
@@ -163,7 +172,7 @@ Showcases buttons in different predefined sizes (default, small, large, icon, et
 
 
 ```python
-def button_size_examples():
+def button_sizes():
     return rx.el.div(
         button("Small", size="sm"),
         button("Default", size="default"),
@@ -179,8 +188,8 @@ The default visual style for buttons with standard background and hover effects.
 
 
 ```python
-def button_default_example():
-    return button("Default", variant="default")
+def button_default():
+    return button("Default", variant="default", size="sm")
 ```
 
 
@@ -190,8 +199,8 @@ A more muted alternative to the default button, useful for less prominent action
 
 
 ```python
-def button_secondary_example():
-    return button("Secondary", variant="secondary")
+def button_secondary():
+    return button("Secondary", variant="secondary", size="sm")
 ```
 
 
@@ -201,7 +210,7 @@ Buttons with a bordered outline, blending well with minimal UIs or light themes.
 
 
 ```python
-def button_outline_example():
+def button_outline():
     return button("Outline", variant="outline")
 ```
 
@@ -212,7 +221,7 @@ A button style with no background or border, ideal for subtle UI actions.
 
 
 ```python
-def button_ghost_example():
+def button_ghost():
     return button("Ghost", variant="ghost")
 ```
 
@@ -223,7 +232,7 @@ A button styled to look like a hyperlink — useful for inline actions or naviga
 
 
 ```python
-def button_link_example():
+def button_link():
     return button("Link", variant="link")
 ```
 
@@ -234,7 +243,7 @@ A bold style used for destructive or dangerous actions like “Delete”.
 
 
 ```python
-def button_destructive_example():
+def button_destructive():
     return button("Destructive", variant="destructive")
 ```
 
@@ -245,9 +254,9 @@ Examples showing icon-only buttons with varying sizes for compact UI elements.
 
 
 ```python
-def button_icon_examples():
-    return (
-        button(rx.icon("mail", class_name="size-4"), variant="outline", size="icon-sm"),
+def button_icon():
+    return button(
+        hi("Mail01Icon", class_name="size-4"), variant="outline", size="icon-sm"
     )
 ```
 

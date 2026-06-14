@@ -8,7 +8,6 @@ Custom popover component.
 
 Copy the following code into your app directory.
 
-
 ### CLI
 
 ```bash
@@ -26,9 +25,10 @@ from reflex.components.component import Component, ComponentNamespace
 from reflex.event import EventHandler, passthrough_event_spec
 from reflex.utils.imports import ImportVar
 from reflex.vars.base import Var
+from reflex_components_core.el import Div
 
-from ..base_ui import PACKAGE_NAME, BaseUIComponent
-from ...utils.twmerge import cn
+from ..utils.twmerge import cn
+from .base_ui import PACKAGE_NAME, BaseUIComponent
 
 LiteralAlign = Literal["start", "center", "end"]
 LiteralSide = Literal["bottom", "inline-end", "inline-start", "left", "right", "top"]
@@ -43,10 +43,11 @@ class ClassNames:
     BACKDROP = ""
     PORTAL = ""
     POSITIONER = ""
-    POPUP = "origin-(--transform-origin) rounded-ui-xl p-1 border border-secondary-a4 bg-secondary-1 shadow-large transition-[transform,scale,opacity] data-[ending-style]:scale-95 data-[starting-style]:scale-95 data-[ending-style]:opacity-0 data-[starting-style]:opacity-0 outline-none min-w-36 flex flex-col gap-2"
+    POPUP = "z-50 flex w-72 origin-(--transform-origin) flex-col gap-2.5 rounded-lg bg-popover p-2.5 text-sm text-popover-foreground shadow-md ring-1 ring-foreground/10 outline-hidden duration-100 data-[side=bottom]:slide-in-from-top-2 data-[side=inline-end]:slide-in-from-left-2 data-[side=inline-start]:slide-in-from-right-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95"
     ARROW = "data-[side=bottom]:top-[-8px] data-[side=left]:right-[-13px] data-[side=left]:rotate-90 data-[side=right]:left-[-13px] data-[side=right]:-rotate-90 data-[side=top]:bottom-[-8px] data-[side=top]:rotate-180"
-    TITLE = "text-lg font-semibold text-secondary-12"
-    DESCRIPTION = "text-sm text-secondary-11 font-[450]"
+    HEADER = "flex flex-col gap-0.5 text-sm"
+    TITLE = "font-medium"
+    DESCRIPTION = "text-muted-foreground"
     CLOSE = ""
 
 
@@ -238,6 +239,17 @@ class PopoverArrow(PopoverBaseComponent):
         return super().create(*children, **props)
 
 
+class PopoverHeader(Div):
+    """A custom layout header for popovers."""
+
+    @classmethod
+    def create(cls, *children, **props):
+        props.setdefault("data-slot", "popover-header")
+
+        props["class_name"] = cn(ClassNames.HEADER, props.get("class_name", ""))
+        return super().create(*children, **props)
+
+
 class PopoverTitle(PopoverBaseComponent):
     """A heading that labels the popover. Renders an <h2> element."""
 
@@ -377,6 +389,7 @@ class Popover(ComponentNamespace):
     positioner = staticmethod(PopoverPositioner.create)
     popup = staticmethod(PopoverPopup.create)
     arrow = staticmethod(PopoverArrow.create)
+    header = staticmethod(PopoverHeader.create)
     title = staticmethod(PopoverTitle.create)
     description = staticmethod(PopoverDescription.create)
     close = staticmethod(PopoverClose.create)
@@ -390,8 +403,102 @@ popover = Popover()
 
 # Usage
 
-Make sure to correctly set your imports relative to the component.
+
+> **Error processing usage for popover: module, class, method, function, traceback, frame, or code object was expected, got Popover**
+
+
+# Anatomy 
+Use the following composition to build a `Popover`
+
 
 ```python
-from components.base_ui.popover import popover
+popover.root(
+    popover.trigger(),
+    popover.portal(
+        popover.backdrop(),
+        popover.positioner(
+            popover.popup(
+                popover.header(
+                    popover.title(),
+                    popover.description(),
+                ),
+                popover.close(),
+            ),
+        ),
+    ),
+)
 ```
+
+
+
+# Example
+A basic popover that appears when the user clicks the trigger button.
+
+
+## Basic
+A simple popover with a header, title, and description.
+
+
+```python
+def popover_basic():
+    return popover.root(
+        popover.trigger(render_=button("Open Popover", variant="outline")),
+        popover.portal(
+            popover.backdrop(),
+            popover.positioner(
+                popover.popup(
+                    popover.header(
+                        popover.title("Dimensions"),
+                        popover.description("Set the dimensions for the layer."),
+                    ),
+                ),
+            ),
+        ),
+    )
+```
+
+
+## Aligns
+Use the `align` prop to control the alignment.
+
+
+```python
+def popover_aligns():
+    sides = [
+        "left",
+        "top",
+        "bottom",
+        "right",
+        "inline-start",
+        "inline-end",
+    ]
+
+    return rx.el.div(
+        *[
+            popover.root(
+                popover.trigger(
+                    render_=button(
+                        side.replace("-", " ").title(), variant="outline", size="sm"
+                    )
+                ),
+                popover.portal(
+                    popover.backdrop(),
+                    popover.positioner(
+                        popover.popup(
+                            popover.header(
+                                popover.title(f"Align: {side.capitalize()}"),
+                                popover.description(
+                                    "Set the dimensions for the layer."
+                                ),
+                            ),
+                        ),
+                        side=side,
+                    ),
+                ),
+            )
+            for side in sides
+        ],
+        class_name="w-full max-w-xs flex flex-row flex-wrap gap-2.5 items-center justify-center",
+    )
+```
+

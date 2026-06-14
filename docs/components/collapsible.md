@@ -12,15 +12,17 @@ Custom collapsible component.
 
 Copy the following code into your app directory.
 
---CLI_AND_MANUAL_INSTALLATION(["Collapsible", "buridan add component collapsible"])--
+--INSTALL(["Collapsible", "buridan add component collapsible"])--
 
 # Usage
 
-Make sure to correctly set your imports relative to the component.
+--USAGE(collapsible)--
 
-```python
-from components.base_ui.collapsible import collapsible
-```
+# Anatomy 
+Use the following composition to build a `Collapsible`
+
+--ANATOMY(collapsible)--
+
 
 # Examples
 
@@ -30,10 +32,10 @@ Below are examples demonstrating how the component can be used.
 
 Uses the simplified collapsible() API with trigger and content props for quick implementation.
 
---DEMO_AND_SINGLE_FUNCTION(collapsible_example)--
+--DEMO(collapsible_high_level_demo)--
 
 ## Low Level Demo
 
 Uses the low-level collapsible.root(), collapsible.panel(), and ClientStateVar for full control over state and structure.
 
---DEMO_AND_SINGLE_FUNCTION(collapsible_demo)--
+--DEMO(collapsible_low_level_demo)--

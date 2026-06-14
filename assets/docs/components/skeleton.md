@@ -8,7 +8,6 @@ Custom skeleton component.
 
 Copy the following code into your app directory.
 
-
 ### CLI
 
 ```bash
@@ -21,16 +20,16 @@ buridan add component skeleton
 """Custom skeleton component."""
 
 from reflex.components.component import Component
-from reflex.components.el import Div
 from reflex.vars.base import Var
+from reflex_components_core.el import Div
 
-from ...utils.twmerge import cn
+from ..utils.twmerge import cn
 
 
 class ClassNames:
     """Class names for skeleton component."""
 
-    ROOT = "animate-pulse bg-secondary-6"
+    ROOT = "animate-pulse bg-secondary"
 
 
 def skeleton_component(
@@ -46,44 +45,69 @@ skeleton = skeleton_component
 
 # Usage
 
-Make sure to correctly set your imports relative to the component.
 
 ```python
-from components.base_ui.skeleton import skeleton_component
+from components.ui.skeleton import skeleton
 ```
 
-# Examples
 
-Below are examples demonstrating how the component can be used.
+# Anatomy 
+Use the following composition to build a `Skeleton`
+
+
+```python
+skeleton_component()
+```
+
+
+# Examples
 
 ## General
 
 
 ```python
-def skeleton_example():
-    """A basic skeleton example."""
+def skeleton_general():
     return skeleton_component(class_name="h-8 w-32 rounded-md")
 ```
 
 
-## Card Loading State
+## Card
 
 
 ```python
-def skeleton_card_example():
-    """A skeleton example simulating a loading card."""
-    return rx.box(
-        rx.flex(
-            skeleton_component(class_name="h-12 w-12 rounded-full"),
-            rx.flex(
-                skeleton_component(class_name="h-4 w-[250px] rounded-md"),
-                skeleton_component(class_name="h-4 w-[200px] rounded-md"),
-                direction="column",
-                spacing="2",
-            ),
-            spacing="4",
+def skeleton_card():
+    return card.root(
+        card.header(
+            skeleton_component(class_name="h-4 w-2/3 rounded-md"),
+            skeleton_component(class_name="h-4 w-1/2 rounded-md"),
         ),
-        class_name="flex items-center space-x-4 rounded-md border p-4 w-96",
+        card.content(
+            skeleton_component(class_name="aspect-video w-full rounded-md"),
+        ),
+        class_name="w-full max-w-xs border border-input rounded-radius",
+    )
+```
+
+
+## Table
+
+
+```python
+def skeleton_table():
+    """Skeleton table matching shadcn SkeletonTable layout."""
+
+    return rx.el.div(
+        *[
+            rx.el.div(
+                skeleton_component(class_name="h-4 flex-1"),
+                skeleton_component(class_name="h-4 w-24"),
+                skeleton_component(class_name="h-4 w-20"),
+                class_name="flex gap-4",
+                key=str(i),
+            )
+            for i in range(5)
+        ],
+        class_name="flex w-full max-w-sm flex-col gap-2",
     )
 ```
 

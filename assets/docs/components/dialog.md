@@ -8,7 +8,6 @@ Custom dialog component.
 
 Copy the following code into your app directory.
 
-
 ### CLI
 
 ```bash
@@ -23,27 +22,27 @@ buridan add component dialog
 from typing import Literal
 
 from reflex.components.component import Component, ComponentNamespace
-from reflex.components.el import Div
 from reflex.event import EventHandler, passthrough_event_spec
 from reflex.utils.imports import ImportVar
 from reflex.vars.base import Var
+from reflex_components_core.el import Div
 
+from ..icons.hugeicon import hi
+from .base_ui import PACKAGE_NAME, BaseUIComponent
 from .button import button
-from ..base_ui import PACKAGE_NAME, BaseUIComponent
-from ...icons.hugeicon import hi
 
 
 class ClassNames:
     """Class names for dialog components."""
 
-    BACKDROP = "data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 fixed inset-0 z-50 bg-black/50"
-    POPUP = "bg-background data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 fixed top-[50%] left-[50%] z-50 grid w-full max-w-[calc(100%-2rem)] translate-x-[-50%] translate-y-[-50%] gap-4 rounded-lg border border-input p-6 shadow-lg duration-200 sm:max-w-lg"
-    TITLE = "text-lg leading-none font-semibold"
+    BACKDROP = "data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 fixed inset-0 z-50"
+    POPUP = "w-full bg-background data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 fixed top-[50%] left-[50%] z-50 grid w-full translate-x-[-50%] translate-y-[-50%] gap-4 rounded-lg border border-input p-6 shadow-lg duration-200"
+    TITLE = "text-lg leading-none font-medium text-foreground"
     DESCRIPTION = "text-muted-foreground text-sm"
     HEADER = "flex flex-col"
     CONTENT = "flex flex-col"
     TRIGGER = ""
-    CLOSE = ""
+    CLOSE = "text-foreground"
 
 
 class DialogBaseComponent(BaseUIComponent):
@@ -234,7 +233,7 @@ class HighLevelDialog(DialogRoot):
         return DialogRoot.create(
             DialogTrigger.create(render_=trigger) if trigger is not None else None,
             DialogPortal.create(
-                DialogBackdrop.create(),
+                DialogBackdrop.create(class_name="backdrop-blur-[5px]"),
                 DialogPopup.create(
                     Div.create(
                         Div.create(
@@ -244,7 +243,7 @@ class HighLevelDialog(DialogRoot):
                                     hi("Cancel01Icon"),
                                     variant="ghost",
                                     size="icon-sm",
-                                    class_name="text-secondary-11",
+                                    class_name=ClassNames.CLOSE,
                                 ),
                             ),
                             class_name="flex flex-row justify-between items-baseline gap-1",
@@ -300,11 +299,29 @@ dialog = Dialog()
 
 # Usage
 
-Make sure to correctly set your imports relative to the component.
+
+> **Error processing usage for dialog: module, class, method, function, traceback, frame, or code object was expected, got Dialog**
+
+
+# Anatomy 
+Use the following composition to build a `Dialog`
+
 
 ```python
-from components.base_ui.dialog import dialog
+dialog.root(
+    dialog.trigger(),
+    dialog.portal(
+        dialog.backdrop(),
+        dialog.popup(
+            dialog.title(),
+            dialog.description(),
+            dialog.close(),
+        ),
+    ),
+)
 ```
+
+
 
 # Examples
 
@@ -316,7 +333,7 @@ Uses the simplified dialog() API with trigger, title, description, and content p
 
 
 ```python
-def dialog_hh():
+def dialog_high_level():
     return dialog(
         trigger=button("Open Dialog", variant="outline"),
         title="Are you absolutely sure?",
@@ -326,6 +343,7 @@ def dialog_hh():
             button("Continue", class_name="flex-1"),
             class_name="flex gap-2 w-full",
         ),
+        class_name="!w-full max-w-md",
     )
 ```
 
@@ -336,19 +354,14 @@ Uses the low-level dialog.root(), dialog.trigger(), dialog.portal() etc. for ful
 
 
 ```python
-def dialog_ll():
+def dialog_low_level():
     return dialog.root(
-        # Trigger button
-        dialog.trigger(
-            render_=button("Open Dialog"),
-        ),
-        # Portal with backdrop and popup
+        dialog.trigger(render_=button("Open Dialog")),
         dialog.portal(
-            dialog.backdrop(),
+            dialog.backdrop(class_name="backdrop-blur-[5px]"),
             dialog.popup(
-                # Header section
-                rx.box(
-                    rx.flex(
+                rx.el.div(
+                    rx.el.div(
                         dialog.title("Edit Profile"),
                         dialog.close(
                             render_=button(
@@ -366,16 +379,16 @@ def dialog_ll():
                     class_name="flex flex-col gap-2",
                 ),
                 # Content section
-                rx.box(
-                    rx.box(
-                        rx.text("Name", class_name="text-sm font-medium mb-2"),
+                rx.el.div(
+                    rx.el.div(
+                        rx.el.p("Name", class_name="text-sm font-medium mb-2"),
                         input(placeholder="Enter your name"),
                     ),
-                    rx.box(
-                        rx.text("Email", class_name="text-sm font-medium mb-2"),
+                    rx.el.div(
+                        rx.el.p("Email", class_name="text-sm font-medium mb-2"),
                         input(placeholder="Enter your email", type="email"),
                     ),
-                    rx.flex(
+                    rx.el.div(
                         dialog.close(
                             render_=button(
                                 "Cancel", variant="outline", class_name="flex-1"
@@ -386,6 +399,7 @@ def dialog_ll():
                     ),
                     class_name="flex flex-col gap-4",
                 ),
+                class_name="!w-full max-w-lg",
             ),
         ),
     )

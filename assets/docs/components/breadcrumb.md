@@ -8,7 +8,6 @@ Displays the path to the current resource using a hierarchy of links.
 
 Copy the following code into your app directory.
 
-
 ### CLI
 
 ```bash
@@ -116,6 +115,26 @@ def breadcrumb_ellipsis(class_name: str = "", **props):
 ```
 
 
+
+# Anatomy 
+Use the following composition to build a `Breadcrumb`
+
+
+```python
+breadcrumb(
+    breadcrumb_list(
+        breadcrumb_item(
+            breadcrumb_link(),
+        ),
+        breadcrumb_separator(),
+        breadcrumb_item(
+            breadcrumb_page(),
+        ),
+    ),
+)
+```
+
+
 # Examples
 Below are examples demonstrating how the component can be used.
 
@@ -124,7 +143,7 @@ A basic breadcrumb showing the default navigation structure.
 
 
 ```python
-def breadcrumb_demo():
+def breadcrumb_basic_demo():
     return rx.el.div(
         breadcrumb(
             breadcrumb_list(
@@ -169,7 +188,7 @@ A minimal breadcrumb with plain text links.
 
 
 ```python
-def breadcrumb_simple():
+def breadcrumb_simple_breadcrumb():
     return rx.box(
         breadcrumb(
             breadcrumb_list(
@@ -200,7 +219,7 @@ A breadcrumb that includes icons alongside link labels.
 
 
 ```python
-def breadcrumb_with_icons():
+def breadcrumb_icon_breadcrumb():
     return rx.el.div(
         breadcrumb(
             breadcrumb_list(

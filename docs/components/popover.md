@@ -12,17 +12,28 @@ Custom popover component.
 
 Copy the following code into your app directory.
 
---CLI_AND_MANUAL_INSTALLATION(["Popover", "buridan add component popover"])--
+--INSTALL(["Popover", "buridan add component popover"])--
 
 # Usage
 
-Make sure to correctly set your imports relative to the component.
+--USAGE(popover)--
 
-```python
-from components.base_ui.popover import popover
-```
+# Anatomy 
+Use the following composition to build a `Popover`
+
+--ANATOMY(popover)--
+
 
 # Example
 A basic popover that appears when the user clicks the trigger button.
 
---DEMO_AND_SINGLE_FUNCTION(popover_demo)--
+
+## Basic
+A simple popover with a header, title, and description.
+
+--DEMO(popover_basic)--
+
+## Aligns
+Use the `align` prop to control the alignment.
+
+--DEMO(popover_aligns)--

@@ -12,31 +12,31 @@ Custom toggle component.
 
 Copy the following code into your app directory.
 
---CLI_AND_MANUAL_INSTALLATION(["Toggle", "buridan add component toggle"])--
+--INSTALL(["Toggle", "buridan add component toggle"])--
 
 # Usage
 
-Make sure to correctly set your imports relative to the component.
+--USAGE(toggle)--
 
-```python
-from components.base_ui.toggle import toggle
-```
+# Anatomy 
+Use the following composition to build a `Toggle`
+
+--ANATOMY(toggle)--
+
 
 # Examples
 
-Below are examples demonstrating how the component can be used.
+## Icon Toggle Variants
+Use `toggle()` for a pressable on/off control. Control icon behavior with `icon_variant="fill"` to fill icons on press, or omit it and style manually using `data-[pressed] selectors` (e.g. text-* or fill-*).
 
-## General
-A simple toggle component that can be pressed to switch between active and inactive states.
-
---DEMO_AND_SINGLE_FUNCTION(toggle_example)--
+--DEMO(toggle_general)--
 
 ## Pressed State
-Demonstrates a toggle that starts in the pressed state by default.
+Use `default_pressed=True` to set the default pressed state of a toggle.
 
---DEMO_AND_SINGLE_FUNCTION(toggle_pressed)--
+--DEMO(toggle_pressed_state)--
 
 ## Disabled
-Shows a toggle that is disabled and cannot be interacted with.
+Set `disabled=True` to disable a toggle.
 
---DEMO_AND_SINGLE_FUNCTION(toggle_disabled)--
+--DEMO(toggle_disabled)--

@@ -1,35 +1,19 @@
-[build-system]
-requires = ["setuptools"]
-build-backend = "setuptools.build_meta"
-
 [project]
-name = "buridan-ui"
-version = "0.7.7-beta"
-description = "Buridan UI – The UI Library for Reflex Developers"
-authors = [
-    { name = "Ahmad Al Hakim", email = "ahmad@reflex.dev" }
-]
-readme = "README.md"
+name = "buridan-create"
+version = "0.1.7"
+description = "CLI to initialize Buridan UI design system in Reflex apps"
 requires-python = ">=3.11"
+dependencies = ["reflex==0.9.2", "reflex-hosting-cli>=0.1.66", "reflex-components-internal"]
 
-# Runtime dependencies (installed for users)
-dependencies = [
-    "reflex>=0.8.27a0",
-    "typer>=0.12.3",
-    "buridan-ui>=0.7.5b0",
-]
+[tool.uv]
+prerelease = "allow"
 
-# CLI entrypoint
 [project.scripts]
-buridan = "cli.main:app"
+buridan = "cli.main:main"
 
-# Dev / tooling dependencies
-[dependency-groups]
-dev = [
-    "pre-commit>=4.2.0",
-    "black>=25.1.0",
-]
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
 
-
-[tool.setuptools.packages.find]
-where = ["."]
+[tool.hatch.build.targets.wheel]
+packages = ["app", "cli", "components"]

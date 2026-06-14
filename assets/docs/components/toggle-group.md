@@ -8,7 +8,6 @@ Custom toggle group component.
 
 Copy the following code into your app directory.
 
-
 ### CLI
 
 ```bash
@@ -27,7 +26,7 @@ from reflex.event import EventHandler, passthrough_event_spec
 from reflex.utils.imports import ImportVar
 from reflex.vars.base import Var
 
-from ..base_ui import PACKAGE_NAME, BaseUIComponent
+from .base_ui import PACKAGE_NAME, BaseUIComponent
 
 LiteralOrientation = Literal["horizontal", "vertical"]
 
@@ -35,7 +34,7 @@ LiteralOrientation = Literal["horizontal", "vertical"]
 class ClassNames:
     """Class names for toggle group components."""
 
-    ROOT = "inline-flex items-center gap-1 p-1 rounded-ui-md bg-secondary-3 data-[orientation=vertical]:flex-col data-[disabled]:opacity-50 data-[disabled]:cursor-not-allowed"
+    ROOT = ""
 
 
 class ToggleGroupBaseComponent(BaseUIComponent):
@@ -64,7 +63,7 @@ class ToggleGroupRoot(ToggleGroupBaseComponent):
     on_value_change: EventHandler[passthrough_event_spec(list[str | int], dict)]
 
     # When false only one item in the group can be pressed. If any item in the group becomes pressed, the others will become unpressed. When true multiple items can be pressed. Defaults to False.
-    toggle_multiple: Var[bool]
+    multiple: Var[bool]
 
     # Whether the toggle group should ignore user interaction. Defaults to False.
     disabled: Var[bool]
@@ -92,58 +91,57 @@ toggle_group = ToggleGroupRoot.create
 
 # Usage
 
-Make sure to correctly set your imports relative to the component.
 
 ```python
-from components.base_ui.toggle_group import toggle_group
+from components.ui.toggle_group import toggle_group
 ```
+
+
+# Anatomy 
+Use the following composition to build a `Toggle Group`
+
+
+```python
+toggle_group(
+    toggle(),
+    toggle(),
+)
+```
+
 
 # Examples
 
-Below are examples demonstrating how the component can be used.
-
 ## General
+
+A basic toggle group with single-selection mode, allowing only one active toggle at a time.
 
 
 ```python
-def toggle_group_example():
-    """A basic toggle group example."""
+def toggle_group_general():
     return toggle_group(
-        toggle(rx.icon("bold"), value="bold"),
-        toggle(rx.icon("italic"), value="italic"),
-        toggle(rx.icon("underline"), value="underline"),
+        toggle(hi("TextBoldIcon"), value="bold", class_name=toggle_style),
+        toggle(hi("TextItalicIcon"), value="italic", class_name=toggle_style),
+        toggle(hi("TextUnderlineIcon"), value="underline", class_name=toggle_style),
         default_value=["bold"],
+        class_name="flex gap-px rounded-md border border-input bg-background p-0.5",
     )
 ```
 
 
 ## Multiple Selection
 
+Set `multiple=True` on the `toggle_group()` to allow multiple selections at the same time. 
+
 
 ```python
-def toggle_group_multiple():
-    """A toggle group example allowing multiple selections."""
+def toggle_group_multiple_selection():
     return toggle_group(
-        toggle(rx.icon("align-left"), value="left"),
-        toggle(rx.icon("align-center"), value="center"),
-        toggle(rx.icon("align-right"), value="right"),
-        toggle_multiple=True,
+        toggle(hi("TextAlignLeftIcon"), value="left", class_name=toggle_style),
+        toggle(hi("TextAlignCenterIcon"), value="center", class_name=toggle_style),
+        toggle(hi("TextAlignRightIcon"), value="right", class_name=toggle_style),
         default_value=["left", "right"],
-    )
-```
-
-
-## Disabled
-
-
-```python
-def toggle_group_disabled():
-    """A disabled toggle group example."""
-    return toggle_group(
-        toggle(rx.icon("bold"), value="bold"),
-        toggle(rx.icon("italic"), value="italic"),
-        toggle(rx.icon("underline"), value="underline"),
-        disabled=True,
+        multiple=True,
+        class_name="flex gap-px rounded-md border border-input bg-background p-0.5",
     )
 ```
 

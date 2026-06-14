@@ -8,7 +8,6 @@ Custom scroll area component.
 
 Copy the following code into your app directory.
 
-
 ### CLI
 
 ```bash
@@ -23,12 +22,12 @@ buridan add component scroll_area
 from typing import Literal
 
 from reflex.components.component import Component, ComponentNamespace
-from reflex.components.core.cond import cond
 from reflex.utils.imports import ImportVar
 from reflex.vars.base import Var
+from reflex_components_core.core.cond import cond
 
-from ..base_ui import PACKAGE_NAME, BaseUIComponent
-from ...utils.twmerge import cn
+from ..utils.twmerge import cn
+from .base_ui import PACKAGE_NAME, BaseUIComponent
 
 LiteralOrientation = Literal["horizontal", "vertical"]
 
@@ -42,8 +41,8 @@ class ClassNames:
     SCROLLBAR_BASE = "flex touch-none p-0.5 opacity-0 transition-[colors,opacity] delay-200 select-none data-hovering:opacity-100 data-hovering:delay-0 data-hovering:duration-100 data-scrolling:opacity-100 data-scrolling:delay-0 data-scrolling:duration-100"
     SCROLLBAR_VERTICAL = "w-2"
     SCROLLBAR_HORIZONTAL = "h-2"
-    THUMB = "w-full rounded-full bg-secondary-a5"
-    CORNER = "bg-secondary-a3"
+    THUMB = "w-full rounded-full bg-secondary"
+    CORNER = "bg-secondary"
 
 
 class ScrollAreaBaseComponent(BaseUIComponent):
@@ -229,27 +228,88 @@ scroll_area = ScrollArea()
 
 # Usage
 
-Make sure to correctly set your imports relative to the component.
+
+> **Error processing usage for scroll_area: module, class, method, function, traceback, frame, or code object was expected, got ScrollArea**
+
+
+# Anatomy 
+Use the following composition to build a `Scroll Area`
+
 
 ```python
-from components.base_ui.scroll_area import scroll_area
+scroll_area.root(
+    scroll_area.viewport(
+        scroll_area.content(),
+    ),
+    scroll_area.scrollbar(
+        scroll_area.thumb(),
+    ),
+    scroll_area.corner(),
+)
 ```
+
+
 
 # Examples
 
 Below are examples demonstrating how the component can be used.
 
 ## General
+A simple vertical scroll area.
 
 
 ```python
-def scroll_area_example():
+def scroll_area_general():
     """A basic scroll area example."""
-    return scroll_area(
-        rx.box(
-            *[rx.text(f"Item {i}", class_name="p-2") for i in range(50)],
+    return rx.el.div(
+        scroll_area(
+            rx.el.div(
+                *[rx.el.p(f"buridan v0.{i}", class_name="p-2") for i in range(30)],
+            ),
+            class_name="h-72 w-48 rounded-md border border-input",
         ),
-        class_name="h-72 w-48 rounded-md border",
+        class_name="py-6",
+    )
+```
+
+
+## Horizontal
+Use `scroll_area.scrollbar()` with `orientation="horizontal"` for horizontal scrolling.
+
+
+```python
+def scroll_area_horizontal():
+    return scroll_area.root(
+        scroll_area.viewport(
+            scroll_area.content(
+                *[
+                    rx.el.figure(
+                        rx.el.div(
+                            rx.el.image(
+                                src=work["art"],
+                                alt=f"Photo by {work['artist']}",
+                                class_name="aspect-[3/4] h-64 object-cover",
+                            ),
+                            class_name="overflow-hidden rounded-md",
+                        ),
+                        rx.el.figcaption(
+                            "Photo by ",
+                            rx.el.span(
+                                work["artist"],
+                                class_name="font-semibold text-foreground",
+                            ),
+                            class_name="pt-2 text-xs text-muted-foreground",
+                        ),
+                        class_name="shrink-0",
+                    )
+                    for work in works
+                ],
+                class_name="flex w-max space-x-4 p-4",
+            ),
+        ),
+        scroll_area.scrollbar(scroll_area.thumb(), orientation="horizontal"),
+        scroll_area.corner(),
+        class_name="w-96 rounded-radius border border-input",
     )
 ```
 

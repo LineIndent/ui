@@ -12,24 +12,27 @@ Custom skeleton component.
 
 Copy the following code into your app directory.
 
---CLI_AND_MANUAL_INSTALLATION(["skeleton_component", "buridan add component skeleton"])--
+--INSTALL(["skeleton_component", "buridan add component skeleton"])--
 
 # Usage
 
-Make sure to correctly set your imports relative to the component.
+--USAGE(skeleton)--
 
-```python
-from components.base_ui.skeleton import skeleton_component
-```
+# Anatomy 
+Use the following composition to build a `Skeleton`
+
+--ANATOMY(skeleton)--
 
 # Examples
 
-Below are examples demonstrating how the component can be used.
-
 ## General
 
---DEMO_AND_SINGLE_FUNCTION(skeleton_example)--
+--DEMO(skeleton_general)--
 
-## Card Loading State
+## Card
 
---DEMO_AND_SINGLE_FUNCTION(skeleton_card_example)--
+--DEMO(skeleton_card)--
+
+## Table
+
+--DEMO(skeleton_table)--
