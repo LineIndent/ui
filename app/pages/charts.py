@@ -20,6 +20,7 @@ GRID_LAYOUT = " ".join(
         "grid grid-cols-1 lg:grid-cols-3",
         "divide-y lg:divide-y-0",
         "lg:divide-x",
+        "[&>div]:p-7",
         "divide-input/40",
         "border-x border-input/40",
     ]
@@ -30,42 +31,37 @@ GRID_LAYOUT = " ".join(
     title="Beautiful Charts & Graphs",
     description="A collection of ready-to-use chart components built with Recharts. From basic charts to rich data displays, copy and paste into your apps.",
     ctas=[
-        rx.el.a(button("Chart Theme", size="sm"), href="#"),
-        rx.el.a(button("Documentation", variant="secondary", size="sm"), href="#"),
+        rx.el.a(
+            button("Chart Themes", size="sm"),
+            href="/create",
+        ),
+        rx.el.a(
+            button("Documentation", variant="secondary", size="sm"),
+            href="/docs/charts/area-chart",
+        ),
     ],
 )
 def chart_page():
     return rx.el.div(
-        areachart_v5(),
+        rx.el.div(areachart_v5(), class_name="w-full p-7"),
         rx.el.hr(class_name="border border-input/40"),
         rx.el.div(
-            linechart_v8(),
-            barchart_v1(),
-            doughnutchart_v1(),
-            class_name=GRID_LAYOUT,
+            linechart_v8(), barchart_v1(), doughnutchart_v1(), class_name=GRID_LAYOUT
         ),
         rx.el.hr(class_name="border border-input/40"),
-        barchart_v5(),
+        rx.el.div(barchart_v5(), class_name="w-full p-7"),
         rx.el.hr(class_name="border border-input/40"),
         rx.el.div(
-            areachart_v9(),
-            radar_v6(),
-            scatterchart_v1(),
-            class_name=GRID_LAYOUT,
+            areachart_v9(), radar_v6(), scatterchart_v1(), class_name=GRID_LAYOUT
         ),
         rx.el.hr(class_name="border border-input/40"),
-        linechart_v7(),
+        rx.el.div(linechart_v7(), class_name="w-full p-7"),
         rx.el.hr(class_name="border border-input/40"),
-        rx.el.div(
-            linechart_v5(),
-            barchart_v9(),
-            piechart_v1(),
-            class_name=GRID_LAYOUT,
-        ),
+        rx.el.div(linechart_v5(), barchart_v9(), piechart_v1(), class_name=GRID_LAYOUT),
         rx.el.hr(class_name="border border-input/40"),
         class_name=" ".join(
             [
-                "max-w-[96rem] mx-auto px-0 md:px-6",
+                "max-w-[96rem] mx-auto px-0 md:px-8",
                 "py-6 space-y-10",
             ]
         ),
