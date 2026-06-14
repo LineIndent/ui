@@ -43,4 +43,4 @@ case $MODE in
 esac
 
 # Run Reflex
-reflex run
+uv run reflex run

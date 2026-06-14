@@ -8,7 +8,6 @@ Custom Slider component.
 
 Copy the following code into your app directory.
 
-
 ### CLI
 
 ```bash
@@ -27,7 +26,7 @@ from reflex.event import EventHandler, passthrough_event_spec
 from reflex.utils.imports import ImportVar
 from reflex.vars.base import Var
 
-from ..base_ui import PACKAGE_NAME, BaseUIComponent
+from .base_ui import PACKAGE_NAME, BaseUIComponent
 
 LiteralOrientation = Literal["horizontal", "vertical"]
 
@@ -43,12 +42,37 @@ on_value_event_spec = (
 class ClassNames:
     """Class names for slider components."""
 
-    ROOT = "flex max-w-64 w-full touch-none items-center select-none"
     VALUE = "text-sm text-primary-11 font-medium"
-    CONTROL = "flex items-center justify-center w-full"
-    TRACK = "h-2 w-full rounded-full bg-secondary-4 select-none"
-    INDICATOR = "absolute h-full rounded-full bg-primary-9 select-none"
-    THUMB = "h-4 w-[0.575rem] rounded-[2px] bg-white outline outline-black/30 select-none box-shadow:[0_0_0_1px_rgba(0,0,0,1),0_1px_2px_rgba(0,0,0,.04)] data-[dragging]:h-5 transition-[height,scale] hover:h-4.5"
+
+    ROOT = (
+        "flex max-w-64 w-full touch-none items-center select-none "
+        "data-[orientation=vertical]:h-64 data-[orientation=vertical]:w-auto "
+        "data-[orientation=vertical]:flex-col"
+    )
+
+    CONTROL = (
+        "flex items-center justify-center w-full "
+        "data-[orientation=vertical]:flex-col "
+        "data-[orientation=vertical]:h-full"
+    )
+
+    TRACK = (
+        "h-1 w-full rounded-radius bg-secondary select-none "
+        "data-[orientation=vertical]:h-full "
+        "data-[orientation=vertical]:w-1"
+    )
+
+    INDICATOR = (
+        "absolute h-full rounded-radius bg-primary select-none "
+        "data-[orientation=vertical]:w-full "
+        "data-[orientation=vertical]:h-auto"
+    )
+
+    THUMB = (
+        "size-3 rounded-radius bg-white outline-[1px] outline-black "
+        "select-none box-shadow:[0_0_0_1px_rgba(0,0,0,1),0_1px_2px_rgba(0,0,0,.04)] "
+        "data-[dragging]:h-5 transition-[height,scale] hover:h-4.5"
+    )
 
 
 class SliderBaseComponent(BaseUIComponent):
@@ -255,42 +279,94 @@ slider = Slider()
 
 # Usage
 
-Make sure to correctly set your imports relative to the component.
+
+> **Error processing usage for slider: module, class, method, function, traceback, frame, or code object was expected, got Slider**
+
+
+# Anatomy 
+Use the following composition to build a `Slider`
+
 
 ```python
-from components.base_ui.slider import slider
+slider.root(
+    slider.control(
+        slider.track(
+            slider.indicator(),
+            slider.thumb(),
+        ),
+    ),
+)
 ```
+
+
 
 # Examples
 
-Below are examples demonstrating how the component can be used.
-
-## General
-
+## Basic
+A basic low-level slider demo.
 
 ```python
-def slider_example():
-    """A basic slider example."""
-    return slider(default_value=50)
+def slider_demo():
+    return rx.el.div(
+        slider.root(
+            slider.control(slider.track(slider.indicator(), slider.thumb())),
+            default_value=20,
+        ),
+        class_name="w-full max-w-md flex justify-center",
+    )
 ```
 
 
-## Range Slider
-
+## Range
+Use an array with two values for a range slider.
 
 ```python
-def slider_range_example():
-    """A slider example with a range."""
-    return slider(default_value=[20, 80])
+def slider_range():
+    return rx.el.div(
+        slider.root(
+            slider.control(
+                slider.track(
+                    slider.indicator(),
+                    slider.thumb(),
+                    slider.thumb(),
+                ),
+            ),
+            default_value=[25, 50],
+            max=100,
+            step=5,
+        ),
+        class_name="w-full max-w-xs mx-auto flex justify-center",
+    )
 ```
 
 
-## Min, Max, and Step
-
+## Vertical
+Use `orientation="vertical"` for a vertical slider.
 
 ```python
-def slider_min_max_step():
-    """A slider example with custom min, max, and step values."""
-    return slider(default_value=25, min=0, max=100, step=5)
+def slider_vertical():
+    return rx.el.div(
+        slider.root(
+            slider.control(
+                slider.track(slider.indicator(), slider.thumb()),
+            ),
+            default_value=[50],
+            max=100,
+            step=1,
+            orientation="vertical",
+            class_name="h-40",
+        ),
+        slider.root(
+            slider.control(
+                slider.track(slider.indicator(), slider.thumb()),
+            ),
+            default_value=[25],
+            max=100,
+            step=1,
+            orientation="vertical",
+            class_name="h-40",
+        ),
+        class_name="h-full mx-auto flex w-full max-w-xs items-center justify-center gap-6",
+    )
 ```
 

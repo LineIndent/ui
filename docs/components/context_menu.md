@@ -12,15 +12,17 @@ Custom context menu component.
 
 Copy the following code into your app directory.
 
---CLI_AND_MANUAL_INSTALLATION(["ContextMenu", "buridan add component context_menu"])--
+--INSTALL(["ContextMenu", "buridan add component context_menu"])--
 
 # Usage
 
-Make sure to correctly set your imports relative to the component.
+--USAGE(context_menu)--
 
-```python
-from components.base_ui.context_menu import context_menu
-```
+# Anatomy 
+Use the following composition to build a `Context Menu`
+
+--ANATOMY(context_menu)--
+
 
 # Examples
 
@@ -30,4 +32,4 @@ Below are examples demonstrating how the component can be used.
 
 Uses the low-level context_menu API for full control over state and structure.
 
---DEMO_AND_SINGLE_FUNCTION(context_menu_demo)--
+--DEMO(context_menu_low_level_demo)--

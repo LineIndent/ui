@@ -8,7 +8,6 @@ Checkbox component from base-ui components.
 
 Copy the following code into your app directory.
 
-
 ### CLI
 
 ```bash
@@ -21,22 +20,22 @@ buridan add component checkbox
 """Checkbox component from base-ui components."""
 
 from reflex.components.component import ComponentNamespace
-from reflex.components.el import Label
 from reflex.event import EventHandler, passthrough_event_spec
 from reflex.utils.imports import ImportVar
 from reflex.vars.base import Var
+from reflex_components_core.el import Label
 
-from ..base_ui import PACKAGE_NAME, BaseUIComponent
-from ...icons.hugeicon import hi
-from ...utils.twmerge import cn
+from ..icons.hugeicon import hi
+from ..utils.twmerge import cn
+from .base_ui import PACKAGE_NAME, BaseUIComponent
 
 
 class ClassNames:
     """Class names for the checkbox component."""
 
     ROOT = "flex size-4 items-center justify-center rounded-[4px] data-[checked]:bg-primary data-[unchecked]:border data-[unchecked]:border-input data-[disabled]:cursor-not-allowed data-[disabled]:border data-[disabled]:border-input/50 data-[disabled]:bg-secondary hover:bg-secondary transition-colors cursor-default"
-    INDICATOR = "flex text-primary-foreground data-[unchecked]:hidden data-[disabled]:text-secondary-foreground/50"
-    LABEL = "text-sm text-secondary-foreground font-medium flex items-center gap-2"
+    INDICATOR = "flex text-primary-foreground data-[unchecked]:hidden data-[disabled]:text-foreground/50"
+    LABEL = "text-sm text-foreground font-medium flex items-center gap-2"
     CONTAINER = "flex flex-row items-center gap-2"
 
 
@@ -161,11 +160,21 @@ checkbox = Checkbox()
 
 # Usage
 
-Make sure to correctly set your imports relative to the component.
+
+> **Error processing usage for checkbox: module, class, method, function, traceback, frame, or code object was expected, got Checkbox**
+
+
+# Anatomy 
+Use the following composition to build a `Checkbox`
+
 
 ```python
-from components.base_ui.checkbox import checkbox
+checkbox.root(
+    checkbox.indicator(),
+)
 ```
+
+
 
 # Examples
 
@@ -176,10 +185,5 @@ Below are examples demonstrating how the component can be used.
 Displays a simple checkbox with a label.
 
 
-```python
-def checkbox_example():
-    return checkbox(
-        label="Subscribe to newsletter",
-    )
-```
+> **Error: 'checkbox_example' not found in registry**
 

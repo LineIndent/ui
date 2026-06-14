@@ -12,15 +12,17 @@ Custom dialog component.
 
 Copy the following code into your app directory.
 
---CLI_AND_MANUAL_INSTALLATION(["Dialog", "buridan add component dialog"])--
+--INSTALL(["Dialog", "buridan add component dialog"])--
 
 # Usage
 
-Make sure to correctly set your imports relative to the component.
+--USAGE(dialog)--
 
-```python
-from components.base_ui.dialog import dialog
-```
+# Anatomy 
+Use the following composition to build a `Dialog`
+
+--ANATOMY(dialog)--
+
 
 # Examples
 
@@ -30,10 +32,10 @@ Below are examples demonstrating how the component can be used.
 
 Uses the simplified dialog() API with trigger, title, description, and content props for quick implementation.
 
---DEMO_AND_SINGLE_FUNCTION(dialog_hh)--
+--DEMO(dialog_high_level)--
 
 ## Low Level
 
 Uses the low-level dialog.root(), dialog.trigger(), dialog.portal() etc. for full control over structure and styling
 
---DEMO_AND_SINGLE_FUNCTION(dialog_ll)--
+--DEMO(dialog_low_level)--

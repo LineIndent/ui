@@ -1,33 +1,33 @@
-name: Deploy Reflex App
+# name: Deploy Reflex App
 
-on:
-  push:
-    branches:
-      - main
+# on:
+#   push:
+#     branches:
+#       - main
 
-jobs:
-  deploy:
-    name: Deploy to Reflex Cloud
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+# jobs:
+#   deploy:
+#     name: Deploy to Reflex Cloud
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Checkout code
+#         uses: actions/checkout@v4
 
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: "3.12"
+#       - name: Set up Python
+#         uses: actions/setup-python@v4
+#         with:
+#           python-version: "3.12"
 
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install uv
-          uv pip install --system -e .
+#       - name: Install dependencies
+#         run: |
+#           python -m pip install --upgrade pip
+#           pip install uv
+#           uv pip install --system -e .
 
-      - name: Generate Markdown Files
-        run: python -m scripts.generate_markdown
+#       - name: Generate Markdown Files
+#         run: python -m scripts.generate_markdown
 
-      - name: Deploy to Reflex
-        id: deploy
-        run: |
-          reflex deploy --app-name ui --project ${{ secrets.REFLEX_PROJECT_ID }} --token ${{ secrets.REFLEX_AUTH_TOKEN }} --no-interactive
+#       - name: Deploy to Reflex
+#         id: deploy
+#         run: |
+#           reflex deploy --app-name ui --project ${{ secrets.REFLEX_PROJECT_ID }} --token ${{ secrets.REFLEX_AUTH_TOKEN }} --no-interactive

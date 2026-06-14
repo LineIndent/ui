@@ -8,7 +8,6 @@ Custom context menu component.
 
 Copy the following code into your app directory.
 
-
 ### CLI
 
 ```bash
@@ -23,14 +22,14 @@ buridan add component context_menu
 from typing import Literal
 
 from reflex.components.component import Component, ComponentNamespace
-from reflex.components.core.foreach import foreach
 from reflex.event import EventHandler, passthrough_event_spec
 from reflex.utils.imports import ImportVar
 from reflex.vars.base import Var
+from reflex_components_core.core.foreach import foreach
 
+from ..utils.twmerge import cn
+from .base_ui import PACKAGE_NAME, BaseUIComponent
 from .button import button
-from ..base_ui import PACKAGE_NAME, BaseUIComponent
-from ...utils.twmerge import cn
 
 LiteralOpenChangeReason = Literal[
     "arrowKey",
@@ -701,11 +700,49 @@ context_menu = ContextMenu()
 
 # Usage
 
-Make sure to correctly set your imports relative to the component.
+
+> **Error processing usage for context_menu: module, class, method, function, traceback, frame, or code object was expected, got ContextMenu**
+
+
+# Anatomy 
+Use the following composition to build a `Context Menu`
+
 
 ```python
-from components.base_ui.context_menu import context_menu
+context_menu.root(
+    context_menu.trigger(),
+    context_menu.portal(
+        context_menu.positioner(
+            context_menu.popup(
+                context_menu.item(),
+                context_menu.separator(),
+                context_menu.group(
+                    context_menu.group_label(),
+                    context_menu.item(),
+                ),
+                context_menu.checkbox_item(
+                    context_menu.checkbox_item_indicator(),
+                ),
+                context_menu.radio_group(
+                    context_menu.radio_item(
+                        context_menu.radio_item_indicator(),
+                    ),
+                ),
+                context_menu.submenu_root(
+                    context_menu.submenu_trigger(),
+                    context_menu.portal(
+                        context_menu.positioner(
+                            context_menu.popup(),
+                        ),
+                    ),
+                ),
+            ),
+        ),
+    ),
+)
 ```
+
+
 
 # Examples
 
@@ -717,7 +754,7 @@ Uses the low-level context_menu API for full control over state and structure.
 
 
 ```python
-def context_menu_demo():
+def context_menu_low_level_demo():
     return context_menu.root(
         context_menu.trigger(
             "Right click here",

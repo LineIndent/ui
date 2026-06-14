@@ -8,7 +8,6 @@ Custom menu component.
 
 Copy the following code into your app directory.
 
-
 ### CLI
 
 ```bash
@@ -23,15 +22,16 @@ buridan add component menu
 from typing import Literal
 
 from reflex.components.component import Component, ComponentNamespace
-from reflex.components.core.foreach import foreach
 from reflex.event import EventHandler, passthrough_event_spec
 from reflex.utils.imports import ImportVar
 from reflex.vars.base import Var
+from reflex_components_core.core.foreach import foreach
 
+from ..icons.hugeicon import hi
+from ..icons.others import select_arrow
+from ..utils.twmerge import cn
+from .base_ui import PACKAGE_NAME, BaseUIComponent
 from .button import button
-from ..base_ui import PACKAGE_NAME, BaseUIComponent
-from ...icons.others import select_arrow
-from ...utils.twmerge import cn
 
 LiteralOpenChangeReason = Literal[
     "arrowKey",
@@ -53,26 +53,95 @@ LiteralMenuSize = Literal["xs", "sm", "md", "lg", "xl"]
 
 
 class ClassNames:
-    """Class names for menu components."""
+    TRIGGER = ""
+    PORTAL = ""
+    POSITIONER = "isolate z-50 outline-none"
+    POPUP = (
+        "z-50 max-h-[var(--available-height)] w-[var(--anchor-width)] min-w-32 "
+        "origin-[var(--transform-origin)] overflow-x-hidden overflow-y-auto "
+        "rounded-radius bg-popover p-1 text-popover-foreground shadow-md "
+        "ring-1 ring-foreground/10 duration-100 outline-none "
+        "data-[side=bottom]:slide-in-from-top-2 "
+        "data-[side=left]:slide-in-from-right-2 "
+        "data-[side=right]:slide-in-from-left-2 "
+        "data-[side=top]:slide-in-from-bottom-2 "
+        "data-[open]:animate-in data-[open]:fade-in-0 data-[open]:zoom-in-95 "
+        "data-[closed]:animate-out data-[closed]:fade-out-0 data-[closed]:zoom-out-95"
+    )
+    ITEM = (
+        "group/menu-item relative flex cursor-default items-center gap-1.5 "
+        "rounded-radius px-1.5 py-1 text-sm outline-hidden select-none "
+        "focus:bg-accent focus:text-accent-foreground "
+        "not-data-[variant=destructive]:focus:**:text-accent-foreground "
+        "data-inset:pl-7 "
+        "data-[variant=destructive]:text-destructive "
+        "data-[variant=destructive]:focus:bg-destructive/10 "
+        "data-[variant=destructive]:focus:text-destructive "
+        "dark:data-[variant=destructive]:focus:bg-destructive/20 "
+        "data-disabled:pointer-events-none data-disabled:opacity-50 "
+        "[&_svg]:pointer-events-none [&_svg]:shrink-0 "
+        "[&_svg:not([class*='size-'])]:size-4"
+    )
+    SEPARATOR = "-mx-1 my-1 h-px bg-border"
+    POSITIONER_SUB = "isolate z-50 outline-none"
+    POPUP_SUB = (
+        "z-50 w-auto min-w-24 origin-(--transform-origin) overflow-x-hidden "
+        "overflow-y-auto rounded-radius bg-popover p-1 text-popover-foreground "
+        "shadow-lg ring-1 ring-foreground/10 duration-100 "
+        "data-[side=bottom]:slide-in-from-top-2 "
+        "data-[side=left]:slide-in-from-right-2 "
+        "data-[side=right]:slide-in-from-left-2 "
+        "data-[side=top]:slide-in-from-bottom-2 "
+        "data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 "
+        "data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95"
+    )
+    GROUP_LABEL = (
+        "px-1.5 py-1 text-xs font-medium text-muted-foreground data-inset:pl-7"
+    )
+    SUBMENU_TRIGGER = (
+        "flex cursor-default items-center justify-between gap-1.5 rounded-radius px-1.5 py-1 "
+        "text-sm outline-hidden select-none "
+        "focus:bg-accent focus:text-accent-foreground "
+        "not-data-[variant=destructive]:focus:**:text-accent-foreground "
+        "data-inset:pl-7 "
+        "data-popup-open:bg-accent data-popup-open:text-accent-foreground "
+        "data-open:bg-accent data-open:text-accent-foreground "
+        "[&_svg]:pointer-events-none [&_svg]:shrink-0 "
+        "[&_svg:not([class*='size-'])]:size-4"
+    )
 
-    TRIGGER = "flex min-w-48 items-center justify-between gap-3 select-none text-sm [&>span]:line-clamp-1 cursor-pointer focus:outline-none focus-visible:ring-1 focus-visible:ring-primary-4 group/trigger"
-    PORTAL = "relative"
-    ICON = "flex size-4 text-secondary-10 group-data-[disabled]/trigger:text-current"
-    POPUP = "group/popup max-h-[17.25rem] overflow-y-auto origin-(--transform-origin) p-1 border border-secondary-a4 bg-secondary-1 shadow-large transition-[transform,scale,opacity] data-[ending-style]:scale-95 data-[starting-style]:scale-95 data-[ending-style]:opacity-0 data-[starting-style]:opacity-0 outline-none scrollbar-thin scrollbar-thumb-secondary-9 scrollbar-track-transparent"
-    ITEM = "grid min-w-(--anchor-width) grid-cols-[1fr_auto] items-center gap-2 text-sm select-none font-medium group-data-[side=none]/popup:min-w-[calc(var(--anchor-width)+1rem)] text-secondary-12 cursor-pointer outline-none data-[highlighted]:bg-secondary-3 scroll-m-1 text-start"
-    ITEM_INDICATOR = "text-current"
-    ITEM_TEXT = "text-start"
-    GROUP = "p-1"
-    GROUP_LABEL = "px-2 py-1.5 text-sm font-semibold"
-    SEPARATOR = "-mx-1 my-1 h-px bg-muted"
-    ARROW = "data-[side=bottom]:top-[-8px] data-[side=left]:right-[-13px] data-[side=left]:rotate-90 data-[side=right]:left-[-13px] data-[side=right]:-rotate-90 data-[side=top]:bottom-[-8px] data-[side=top]:rotate-180"
-    POSITIONER = "outline-none"
+    RADIO_ITEM = (
+        "relative flex cursor-default items-center gap-2 rounded-sm "
+        "py-1 pr-8 pl-1.5 text-sm outline-hidden select-none "
+        "data-disabled:pointer-events-none data-disabled:opacity-50 "
+        "focus:bg-accent focus:text-accent-foreground "
+        "[&_svg]:pointer-events-none [&_svg]:shrink-0 "
+        "[&_svg:not([class*='size-'])]:size-4"
+    )
+    RADIO_ITEM_INDICATOR = (
+        "pointer-events-none absolute right-2 flex items-center justify-center"
+    )
+    CHECKBOX_ITEM = (
+        "relative flex cursor-default items-center gap-1.5 rounded-md "
+        "py-1 pr-8 pl-1.5 text-sm outline-hidden select-none "
+        "data-disabled:pointer-events-none data-disabled:opacity-50 "
+        "focus:bg-accent focus:text-accent-foreground "
+        "[&_svg]:pointer-events-none [&_svg]:shrink-0 "
+        "[&_svg:not([class*='size-'])]:size-4"
+    )
+    CHECKBOX_ITEM_INDICATOR = (
+        "pointer-events-none absolute right-2 flex items-center justify-center"
+    )
+    ARROW = (
+        "data-[side=bottom]:top-[-8px] data-[side=left]:right-[-13px] "
+        "data-[side=left]:rotate-90 data-[side=right]:left-[-13px] "
+        "data-[side=right]:-rotate-90 data-[side=top]:bottom-[-8px] "
+        "data-[side=top]:rotate-180"
+    )
+    GROUP = ""
     RADIO_GROUP = ""
-    RADIO_ITEM = "grid min-w-(--anchor-width) grid-cols-[1fr_auto] items-center gap-2 text-sm select-none font-[450] group-data-[side=none]/popup:min-w-[calc(var(--anchor-width)+1rem)] text-secondary-11 cursor-pointer outline-none data-[highlighted]:bg-secondary-3 scroll-m-1"
-    RADIO_ITEM_INDICATOR = "text-current"
-    CHECKBOX_ITEM = "grid min-w-(--anchor-width) grid-cols-[1fr_auto] items-center gap-2 text-sm select-none font-[450] group-data-[side=none]/popup:min-w-[calc(var(--anchor-width)+1rem)] text-secondary-11 cursor-pointer outline-none data-[highlighted]:bg-secondary-3 scroll-m-1"
-    CHECKBOX_ITEM_INDICATOR = "text-current"
-    SUBMENU_TRIGGER = "grid min-w-(--anchor-width) grid-cols-[1fr_auto] items-center gap-2 text-sm select-none font-[450] group-data-[side=none]/popup:min-w-[calc(var(--anchor-width)+1rem)] text-secondary-11 cursor-pointer outline-none data-[highlighted]:bg-secondary-3 scroll-m-1"
+    ITEM_TEXT = "text-start"
+    ITEM_INDICATOR = "text-current"
 
 
 class MenuBaseComponent(BaseUIComponent):
@@ -243,7 +312,22 @@ class MenuPopup(MenuBaseComponent):
         """Create the menu popup component."""
         props["data-slot"] = "menu-popup"
         cls.set_class_name(ClassNames.POPUP, props)
-        return super().create(*children, **props)
+        return super().create(
+            *children,
+            **props,
+            # style={
+            #     "keyframes": {
+            #         "animate-in": {
+            #             "from": {"opacity": "0", "transform": "scale(0.95)"},
+            #             "to": {"opacity": "1", "transform": "scale(1)"},
+            #         },
+            #         "animate-out": {
+            #             "from": {"opacity": "1", "transform": "scale(2)"},
+            #             "to": {"opacity": "0", "transform": "scale(0.95)"},
+            #         },
+            #     },
+            # },
+        )
 
 
 class MenuArrow(MenuBaseComponent):
@@ -293,7 +377,7 @@ class MenuItem(MenuBaseComponent):
 class MenuSubMenuRoot(MenuBaseComponent):
     """Groups all parts of a submenu. Doesn't render its own HTML element."""
 
-    tag = "Menu.SubMenuRoot"
+    tag = "Menu.SubmenuRoot"
 
     # Whether the menu is initially open. To render a controlled menu, use the open prop instead. Defaults to False.
     default_open: Var[bool]
@@ -342,7 +426,7 @@ class MenuSubMenuRoot(MenuBaseComponent):
 class MenuSubMenuTrigger(MenuBaseComponent):
     """A menu item that opens a submenu."""
 
-    tag = "Menu.SubMenuTrigger"
+    tag = "Menu.SubmenuTrigger"
 
     # Overrides the text label to use when the item is matched during keyboard text navigation.
     label: Var[str]
@@ -358,7 +442,14 @@ class MenuSubMenuTrigger(MenuBaseComponent):
         """Create the menu submenu trigger component."""
         props["data-slot"] = "menu-submenu-trigger"
         cls.set_class_name(ClassNames.SUBMENU_TRIGGER, props)
-        return super().create(*children, **props)
+
+        # Automatically add the chevron if it's a submenu trigger
+        # We append it to the children tuple
+        return super().create(
+            *children,
+            hi("ArrowRight01Icon"),
+            **props,
+        )
 
 
 class MenuGroup(MenuBaseComponent):
@@ -524,7 +615,7 @@ class MenuCheckboxItemIndicator(MenuBaseComponent):
         """Create the menu checkbox item indicator component."""
         props["data-slot"] = "menu-checkbox-item-indicator"
         cls.set_class_name(ClassNames.CHECKBOX_ITEM_INDICATOR, props)
-        return super().create(*children, **props)
+        return super().create(*children, hi("Tick02Icon"), **props)
 
 
 class MenuSeparator(MenuBaseComponent):
@@ -662,7 +753,6 @@ class HighLevelMenu(MenuRoot):
                         class_name=cn(
                             ClassNames.POPUP,
                             "",
-                            # f"rounded-[calc(var(--radius-ui-{size})+0.25rem)]",
                         ),
                     ),
                     **positioner_props,
@@ -704,8 +794,198 @@ menu = Menu()
 
 # Usage
 
-Make sure to correctly set your imports relative to the component.
+
+> **Error processing usage for menu: module, class, method, function, traceback, frame, or code object was expected, got Menu**
+
+
+# Anatomy 
+Use the following composition to build a `Menu`
+
 
 ```python
-from components.base_ui.menu import menu
+menu.root(
+    menu.trigger(),
+    menu.portal(
+        menu.positioner(
+            menu.popup(
+                menu.item(),
+                menu.separator(),
+                menu.group(
+                    menu.group_label(),
+                    menu.item(),
+                ),
+                menu.checkbox_item(
+                    menu.checkbox_item_indicator(),
+                ),
+                menu.radio_group(
+                    menu.radio_item(
+                        menu.radio_item_indicator(),
+                    ),
+                ),
+                menu.submenu_root(
+                    menu.submenu_trigger(),
+                    menu.portal(
+                        menu.positioner(
+                            menu.popup(),
+                        ),
+                    ),
+                ),
+            ),
+        ),
+    ),
+)
 ```
+
+
+
+# Example
+A basic dropdown menu that opens when the user clicks a trigger button.
+
+## High Level
+Uses low-level API to create a menu component.
+
+
+```python
+def menu_high_level():
+    return menu.root(
+        menu.trigger(render_=button("Open", variant="outline")),
+        menu.portal(
+            menu.positioner(
+                menu.popup(
+                    menu.group(
+                        menu.group_label("My Account"),
+                        menu.item("Profile"),
+                        menu.item("Billing"),
+                        menu.item("Settings"),
+                    ),
+                    menu.separator(),
+                    menu.group(
+                        menu.item("Team"),
+                        menu.submenu_root(
+                            menu.submenu_trigger("Invite users"),
+                            menu.portal(
+                                menu.positioner(
+                                    menu.popup(
+                                        menu.item("Email"),
+                                        menu.item("Message"),
+                                        menu.separator(),
+                                        menu.item("More..."),
+                                    ),
+                                    side="right",
+                                    align="start",
+                                    align_offset=-3,
+                                    side_offset=0,
+                                ),
+                            ),
+                        ),
+                        menu.item("New Team"),
+                    ),
+                    menu.separator(),
+                    menu.group(
+                        menu.item("GitHub"),
+                        menu.item("Support"),
+                        menu.item("API", disabled=True),
+                    ),
+                    menu.separator(),
+                    menu.group(menu.item("Log out")),
+                    class_name="w-40",
+                ),
+                align="start",
+            ),
+        ),
+    )
+```
+
+
+## Submenu
+Use `menu.submenu_root()` to nest secondary actions.
+
+
+```python
+def menu_submenu():
+    return menu.root(
+        menu.trigger(render_=button("Open", variant="outline")),
+        menu.portal(
+            menu.positioner(
+                menu.popup(
+                    menu.group(
+                        menu.item("Team"),
+                        menu.submenu_root(
+                            menu.submenu_trigger("Invite users"),
+                            menu.portal(
+                                menu.positioner(
+                                    menu.popup(
+                                        menu.item("Email"),
+                                        menu.item("Message"),
+                                        menu.submenu_root(
+                                            menu.submenu_trigger("More options"),
+                                            menu.portal(
+                                                menu.positioner(
+                                                    menu.popup(
+                                                        menu.item("Calendly"),
+                                                        menu.item("Slack"),
+                                                        menu.separator(),
+                                                        menu.item("Webhook"),
+                                                    ),
+                                                    side="right",
+                                                    align="start",
+                                                ),
+                                            ),
+                                        ),
+                                        menu.separator(),
+                                        menu.item("Advanced..."),
+                                    ),
+                                    side="right",
+                                    align="start",
+                                ),
+                            ),
+                        ),
+                        menu.item("New Team"),
+                    ),
+                ),
+                align="start",
+            ),
+        ),
+    )
+```
+
+
+## Checkboxes
+Use `menu.checkbox_item()` for toggles. 
+
+
+```python
+def menu_checkboxes():
+    return menu.root(
+        menu.trigger(render_=button("Open", variant="outline")),
+        menu.portal(
+            menu.positioner(
+                menu.popup(
+                    menu.group(
+                        menu.group_label("Appearance"),
+                        menu.checkbox_item(
+                            "Status Bar",
+                            menu.checkbox_item_indicator(),
+                            default_checked=show_status_bar.value,
+                            on_checked_change=show_status_bar.set_value(
+                                ~show_status_bar.value
+                            ),
+                        ),
+                        menu.checkbox_item(
+                            "Activity Bar",
+                            disabled=True,
+                        ),
+                        menu.checkbox_item(
+                            "Panel",
+                            menu.checkbox_item_indicator(),
+                            default_checked=show_panel.value,
+                            on_checked_change=show_panel.set_value,
+                        ),
+                    ),
+                    class_name="w-40",
+                ),
+            ),
+        ),
+    )
+```
+

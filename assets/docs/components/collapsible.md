@@ -8,7 +8,6 @@ Custom collapsible component.
 
 Copy the following code into your app directory.
 
-
 ### CLI
 
 ```bash
@@ -25,7 +24,7 @@ from reflex.event import EventHandler, passthrough_event_spec
 from reflex.utils.imports import ImportVar
 from reflex.vars.base import Var
 
-from ..base_ui import PACKAGE_NAME, BaseUIComponent
+from .base_ui import PACKAGE_NAME, BaseUIComponent
 
 
 class ClassNames:
@@ -164,11 +163,22 @@ collapsible = Collapsible()
 
 # Usage
 
-Make sure to correctly set your imports relative to the component.
+
+> **Error processing usage for collapsible: module, class, method, function, traceback, frame, or code object was expected, got Collapsible**
+
+
+# Anatomy 
+Use the following composition to build a `Collapsible`
+
 
 ```python
-from components.base_ui.collapsible import collapsible
+collapsible.root(
+    collapsible.trigger(),
+    collapsible.panel(),
+)
 ```
+
+
 
 # Examples
 
@@ -180,7 +190,7 @@ Uses the simplified collapsible() API with trigger and content props for quick i
 
 
 ```python
-def collapsible_example():
+def collapsible_high_level_demo():
     return collapsible(
         trigger=button(
             "Trigger",
@@ -203,7 +213,7 @@ Uses the low-level collapsible.root(), collapsible.panel(), and ClientStateVar f
 
 
 ```python
-def collapsible_demo():
+def collapsible_low_level_demo():
     return collapsible.root(
         collapsible.trigger(
             button(

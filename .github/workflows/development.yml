@@ -1,42 +1,42 @@
-name: Development Preview
+# name: Development Preview
 
-on:
-  pull_request:
-    types: [opened, synchronize, reopened]
-    branches:
-      - main
+# on:
+#   pull_request:
+#     types: [opened, synchronize, reopened]
+#     branches:
+#       - main
 
-jobs:
-  preview:
-    name: Run Dev Preview
-    runs-on: ubuntu-latest
+# jobs:
+#   preview:
+#     name: Run Dev Preview
+#     runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+#     steps:
+#       - name: Checkout code
+#         uses: actions/checkout@v3
 
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: "3.x"
+#       - name: Set up Python
+#         uses: actions/setup-python@v4
+#         with:
+#           python-version: "3.x"
 
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install uv
-          uv pip install --system -e .
+#       - name: Install dependencies
+#         run: |
+#           python -m pip install --upgrade pip
+#           pip install uv
+#           uv pip install --system -e .
 
-      - name: Generate Markdown Files
-        run: |
-          python -m scripts.generate_markdown
+#       - name: Generate Markdown Files
+#         run: |
+#           python -m scripts.generate_markdown
 
-      - name: Run Reflex App (prod env)
-        run: |
-          nohup reflex run --env prod > reflex.log 2>&1 &
-          sleep 15
-          echo "Reflex app started for PR #${{ github.event.pull_request.number }}"
+#       - name: Run Reflex App (prod env)
+#         run: |
+#           nohup reflex run --env prod > reflex.log 2>&1 &
+#           sleep 15
+#           echo "Reflex app started for PR #${{ github.event.pull_request.number }}"
 
-      - name: Deploy to UI-Dev
-        id: deploy
-        run: |
-          reflex deploy --app-name ui-dev --project ${{ secrets.REFLEX_PROJECT_ID }} --token ${{ secrets.REFLEX_AUTH_TOKEN }} --no-interactive
+#       - name: Deploy to UI-Dev
+#         id: deploy
+#         run: |
+#           reflex deploy --app-name ui-dev --project ${{ secrets.REFLEX_PROJECT_ID }} --token ${{ secrets.REFLEX_AUTH_TOKEN }} --no-interactive

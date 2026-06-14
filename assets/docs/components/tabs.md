@@ -8,7 +8,6 @@ Custom tabs component.
 
 Copy the following code into your app directory.
 
-
 ### CLI
 
 ```bash
@@ -27,7 +26,7 @@ from reflex.event import EventHandler, passthrough_event_spec
 from reflex.utils.imports import ImportVar
 from reflex.vars.base import Var
 
-from ..base_ui import PACKAGE_NAME, BaseUIComponent
+from .base_ui import PACKAGE_NAME, BaseUIComponent
 
 LiteralOrientation = Literal["horizontal", "vertical"]
 
@@ -35,10 +34,32 @@ LiteralOrientation = Literal["horizontal", "vertical"]
 class ClassNames:
     """Class names for tabs components."""
 
-    ROOT = "flex flex-col gap-2"
-    LIST = "bg-secondary-3 inline-flex gap-1 p-1 items-center justify-start rounded-ui-md relative z-0"
-    TAB = "h-7 px-1.5 rounded-ui-sm justify-center items-center gap-1.5 inline-flex text-sm font-medium text-secondary-11 cursor-pointer z-[1] hover:text-secondary-12 transition-color text-nowrap data-[selected]:text-secondary-12 data-[disabled]:cursor-not-allowed data-[disabled]:text-secondary-8"
-    INDICATOR = "absolute top-1/2 left-0 -z-1 h-7 w-(--active-tab-width) -translate-y-1/2 translate-x-(--active-tab-left) rounded-ui-sm bg-secondary-1 shadow-small transition-all duration-200 ease-in-out"
+    LIST = (
+        "relative bg-muted text-muted-foreground inline-flex h-9 w-fit items-center "
+        "justify-center rounded-radius p-[3px] "
+        "data-[orientation=vertical]:flex data-[orientation=vertical]:flex-col "
+        "data-[orientation=vertical]:h-auto "
+        "data-[orientation=vertical]:p-1 data-[orientation=vertical]:gap-1"
+    )
+    TAB = (
+        "relative z-[1] flex items-center justify-center text-sm font-medium "
+        "text-foreground dark:text-muted-foreground "
+        "data-[selected]:text-foreground "
+        "rounded-radius px-2 py-1 transition-all "
+        "data-[orientation=vertical]:justify-start data-[orientation=vertical]:w-full "
+        "data-[orientation=vertical]:text-left"
+    )
+    ROOT = (
+        "flex flex-col gap-2 "
+        "data-[orientation=vertical]:flex-row data-[orientation=vertical]:gap-4"
+    )
+
+    INDICATOR = (
+        "absolute z-[0] rounded-radius bg-background shadow-sm dark:border dark:border-input dark:bg-input/30 "
+        "transition-all duration-200 ease-in-out "
+        "[left:var(--active-tab-left)] [top:var(--active-tab-top)] "
+        "[width:var(--active-tab-width)] [height:var(--active-tab-height)]"
+    )
     PANEL = "flex flex-col gap-2"
 
 
@@ -174,62 +195,141 @@ tabs = Tabs()
 
 # Usage
 
-Make sure to correctly set your imports relative to the component.
+
+> **Error processing usage for tabs: module, class, method, function, traceback, frame, or code object was expected, got Tabs**
+
+
+# Anatomy 
+Use the following composition to build a `Tabs`
+
 
 ```python
-from components.base_ui.tabs import tabs
+tabs.root(
+    tabs.list(
+        tabs.tab(),
+        tabs.indicator(),
+    ),
+    tabs.panel(),
+)
 ```
 
-# Examples
 
-Below are examples demonstrating how the component can be used.
 
-## General
+# Example
 
+## Basic
 
 ```python
-def tabs_example():
-    """A basic tabs example."""
-    return tabs.root(
-        tabs.list(
-            tabs.tab("Account", value="account"),
-            tabs.tab("Password", value="password"),
+def tabs_basic():
+    return rx.el.div(
+        tabs.root(
+            tabs.list(
+                tabs.indicator(),
+                tabs.tab("Overview", value="overview"),
+                tabs.tab("Analytics", value="analytics"),
+                tabs.tab("Reports", value="reports"),
+                tabs.tab("Settings", value="settings"),
+            ),
+            tabs.panel(
+                card.root(
+                    card.header(
+                        card.title("Overview"),
+                        card.description(
+                            "View your key metrics and recent project activity. Track progress across all your active projects."
+                        ),
+                    ),
+                    card.content("You have 12 active projects and 3 pending tasks."),
+                    class_name="ring-1 ring-foreground/10 rounded-[1rem] dark:bg-card",
+                ),
+                value="overview",
+            ),
+            tabs.panel(
+                card.root(
+                    card.header(
+                        card.title("Analytics"),
+                        card.description(
+                            "Track performance and user engagement metrics. Monitor trends and identify growth opportunities."
+                        ),
+                    ),
+                    card.content("Page views are up 25% compared to last month."),
+                    class_name="ring-1 ring-foreground/10 rounded-[1rem] dark:bg-card",
+                ),
+                value="analytics",
+            ),
+            tabs.panel(
+                card.root(
+                    card.header(
+                        card.title("Reports"),
+                        card.description(
+                            "Generate and download your detailed reports. Export data in multiple formats for analysis."
+                        ),
+                    ),
+                    card.content("You have 5 reports ready and available to export."),
+                    class_name="ring-1 ring-foreground/10 rounded-[1rem] dark:bg-card",
+                ),
+                value="reports",
+            ),
+            tabs.panel(
+                card.root(
+                    card.header(
+                        card.title("Settings"),
+                        card.description(
+                            "Manage your account preferences and options. Customize your experience to fit your needs."
+                        ),
+                    ),
+                    card.content("Configure notifications, security, and themes."),
+                    class_name="ring-1 ring-foreground/10 rounded-[1rem]",
+                ),
+                value="settings",
+            ),
+            default_value="overview",
+            class_name="w-[400px]",
         ),
-        tabs.panel(
-            rx.text("Make changes to your account here."),
-            value="account",
-        ),
-        tabs.panel(
-            rx.text("Change your password here."),
-            value="password",
-        ),
-        default_value="account",
-        class_name="w-96",
+        class_name="flex justify-center w-full",
     )
 ```
 
 
-## With Icons
-
+## Vertical
+Use `orientation="vertical"` for vertical tabs.
 
 ```python
-def tabs_with_icons():
-    """Tabs example with icons."""
+def tabs_vertical():
+    return rx.el.div(
+        tabs.root(
+            tabs.list(
+                tabs.indicator(),
+                tabs.tab("Account", value="account"),
+                tabs.tab("Password", value="password"),
+                tabs.tab("Notifications", value="notifications"),
+            ),
+            default_value="account",
+            orientation="vertical",
+        ),
+        class_name="flex justify-center text-sm",
+    )
+```
+
+
+## Disabled
+Use `disabled=True` to disable a tab.
+
+```python
+def tabs_disabled():
     return tabs.root(
         tabs.list(
-            tabs.tab(rx.icon("user"), "Account", value="account"),
-            tabs.tab(rx.icon("lock"), "Password", value="password"),
+            tabs.indicator(),
+            tabs.tab(
+                "Home",
+                value="home",
+            ),
+            tabs.tab(
+                "Disabled",
+                value="settings",
+                disabled=True,
+            ),
         ),
-        tabs.panel(
-            rx.text("Account settings with icons."),
-            value="account",
-        ),
-        tabs.panel(
-            rx.text("Password settings with icons."),
-            value="password",
-        ),
-        default_value="account",
-        class_name="w-96",
+        default_value="home",
     )
 ```
 

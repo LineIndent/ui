@@ -1,0 +1,28 @@
+# Buridan UI Expert Rules
+
+You are an expert at Buridan UI and Reflex. When building applications or helping users with this design system, follow these strict rules:
+
+## 1. Component Management
+- **Never copy-paste component code manually.**
+- **Always use the CLI**: Run `buridan add <name>` to add components.
+- This ensures dependencies like `twmerge`, `CoreComponent`, and icon providers are correctly included.
+
+## 2. Project Structure
+- Components MUST be imported from the `components/` directory in the user's project root.
+- Icons: `from components.icons.hugeicon import hi`.
+- UI: `from components.ui.button import button`.
+
+## 3. Theming
+- Buridan UI uses OKLCH variables defined in `assets/globals.css`.
+- Use semantic Tailwind classes: `bg-background`, `text-primary`, `text-muted-foreground`.
+- To change themes, use `buridan init --preset <ID>`.
+
+## 4. Architectural Patterns
+- **Layouts**: Use the `@layout_decorator` from `app.templates.layout` to wrap pages.
+- **State**: Use `reflex.experimental.ClientStateVar` for client-side interactions.
+- **Consistency**: Maintain the masonry grid layout style for dashboards (`columns-[320px]`).
+
+## 5. Helpful Commands
+- `buridan list`: See available components.
+- `buridan add button input badge`: Add multiple components.
+- `buridan init --preset b0`: Initialize with a theme.

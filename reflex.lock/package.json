@@ -1,0 +1,52 @@
+{
+  "name": "reflex",
+  "type": "module",
+  "scripts": {
+    "dev": "react-router dev --host",
+    "export": "react-router build"
+  },
+  "dependencies": {
+    "@base-ui/react": "1.5.0",
+    "@hugeicons/core-free-icons": "1.1.0",
+    "@hugeicons/react": "1.1.1",
+    "@radix-ui/themes": "3.3.0",
+    "@react-router/node": "7.15.0",
+    "clsx-for-tailwind": "^1.0.0",
+    "isbot": "5.1.40",
+    "lucide-react": "1.14.0",
+    "react": "19.2.6",
+    "react-dom": "19.2.6",
+    "react-error-boundary": "6.1.1",
+    "react-helmet": "6.1.0",
+    "react-markdown": "10.1.0",
+    "react-router": "7.15.0",
+    "react-router-dom": "7.15.0",
+    "react-syntax-highlighter": "16.1.1",
+    "recharts": "3.8.1",
+    "rehype-katex": "7.0.1",
+    "rehype-raw": "7.0.0",
+    "rehype-unwrap-images": "1.0.0",
+    "remark-gfm": "4.0.1",
+    "remark-math": "6.0.0",
+    "socket.io-client": "4.8.3",
+    "sonner": "2.0.7",
+    "universal-cookie": "7.2.2"
+  },
+  "devDependencies": {
+    "@emotion/react": "11.14.0",
+    "@react-router/dev": "7.15.0",
+    "@react-router/fs-routes": "7.15.0",
+    "@tailwindcss/postcss": "4.3.0",
+    "@tailwindcss/typography": "^0.5.19",
+    "autoprefixer": "10.5.0",
+    "postcss": "8.5.14",
+    "postcss-import": "16.1.1",
+    "tailwind-scrollbar": "^4.0.2",
+    "tailwindcss": "4.3.0",
+    "tailwindcss-animate": "^1.0.7",
+    "vite": "8.0.14"
+  },
+  "overrides": {
+    "cookie": "1.1.1"
+  }
+}

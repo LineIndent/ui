@@ -8,7 +8,6 @@ Display keyboard keys and shortcuts with proper styling.
 
 Copy the following code into your app directory.
 
-
 ### CLI
 
 ```bash
@@ -69,6 +68,21 @@ def kbd_group(*children, class_name: str = "", **props):
 ```
 
 
+
+# Anatomy 
+Use the following composition to build a `Kbd`
+
+
+```python
+kbd()
+# or
+kbd_group(
+    kbd(),
+    kbd(),
+)
+```
+
+
 # Examples
 Below are examples demonstrating how the component can be used.
 
@@ -77,7 +91,7 @@ A basic example showing a single styled keyboard key.
 
 
 ```python
-def kbd_demo():
+def kbd_default():
     """
     Example matching the shadcn KbdDemo component.
     Shows keyboard shortcuts with modifier keys.
@@ -106,7 +120,7 @@ Displays familiar keyboard shortcuts like copy or paste.
 
 
 ```python
-def kbd_shortcuts():
+def kbd_common_shortcuts():
     """Common keyboard shortcuts"""
     return rx.box(
         rx.box(

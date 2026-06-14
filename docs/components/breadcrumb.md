@@ -12,7 +12,13 @@ Displays the path to the current resource using a hierarchy of links.
 
 Copy the following code into your app directory.
 
---CLI_AND_MANUAL_INSTALLATION(["breadcrumb", "buridan add component breadcrumb"])--
+--INSTALL(["breadcrumb", "buridan add component breadcrumb"])--
+
+
+# Anatomy 
+Use the following composition to build a `Breadcrumb`
+
+--ANATOMY(breadcrumb)--
 
 # Examples
 Below are examples demonstrating how the component can be used.
@@ -20,19 +26,19 @@ Below are examples demonstrating how the component can be used.
 ## Basic Demo
 A basic breadcrumb showing the default navigation structure.
 
---DEMO_AND_SINGLE_FUNCTION(breadcrumb_demo)--
+--DEMO(breadcrumb_basic_demo)--
 
 ## Simple Breadcrumb
 A minimal breadcrumb with plain text links.
 
---DEMO_AND_SINGLE_FUNCTION(breadcrumb_simple)--
+--DEMO(breadcrumb_simple_breadcrumb)--
 
 ## Icon Breadcrumb
 A breadcrumb that includes icons alongside link labels.
 
---DEMO_AND_SINGLE_FUNCTION(breadcrumb_with_icons)--
+--DEMO(breadcrumb_icon_breadcrumb)--
 
 ## Custom Separator
 A breadcrumb with a customized separator between items.
 
---DEMO_AND_SINGLE_FUNCTION(breadcrumb_custom_separator)--
+--DEMO(breadcrumb_custom_separator)--

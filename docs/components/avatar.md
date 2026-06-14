@@ -12,15 +12,17 @@ Displays a user's profile picture, initials, or fallback icon.
 
 Copy the following code into your app directory.
 
---CLI_AND_MANUAL_INSTALLATION(["Avatar", "buridan add component avatar"])--
+--INSTALL(["Avatar", "buridan add component avatar"])--
 
 # Usage
 
-Make sure to correctly set your imports relative to the component.
+--USAGE(avatar)--
 
-```python
-from components.base_ui.avatar import avatar
-```
+# Anatomy 
+Use the following composition to build a `Avatar`
+
+--ANATOMY(avatar)--
+
 
 # Examples
 
@@ -30,16 +32,16 @@ Below are examples demonstrating how the component can be used.
 
 Displays a basic avatar with either a user image or a fallback placeholder.
 
---DEMO_AND_SINGLE_FUNCTION(avatar_example)--
+--DEMO(avatar_general)--
 
 ## Sizes
 
 Demonstrates how to scale the avatar component using Tailwind utility classes.
 
---DEMO_AND_SINGLE_FUNCTION(avatar_sizes)--
+--DEMO(avatar_sizes)--
 
 ## With Badge
 
 Shows how to combine an avatar with status or notification badges for added context.
 
---DEMO_AND_SINGLE_FUNCTION(avatar_with_badge)--
+--DEMO(avatar_with_badge)--

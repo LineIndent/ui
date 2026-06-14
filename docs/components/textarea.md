@@ -12,30 +12,35 @@ Custom Textarea component.
 
 Copy the following code into your app directory.
 
---CLI_AND_MANUAL_INSTALLATION(["Textarea", "buridan add component textarea"])--
+--INSTALL(["Textarea", "buridan add component textarea"])--
 
 # Usage
 
-Make sure to correctly set your imports relative to the component.
+--USAGE(textarea)--
 
-```python
-from components.base_ui.textarea import textarea
-```
+# Anatomy 
+Use the following composition to build a `Textarea`
+
+--ANATOMY(textarea)--
 
 # Examples
-Below are examples demonstrating how the component can be used.
 
 ## Basic Demo
 A standard multiline text area for general text input.
 
---DEMO_AND_SINGLE_FUNCTION(textarea_demo)--
+--DEMO(textarea_basic_demo)--
+
+## Field
+Use `field.root`, `field.label`, and `field.description` together with a form control (such as textarea) to build a structured field with a label and helper text.
+
+--DEMO(textarea_field)--
 
 ## Disabled
-A text area shown in a disabled, non-editable state.
+Use the `disabled` prop on textarea to disable user input. Apply `data-disabled` on `field.root` to propagate disabled styling to all field-related elements and ensure consistent visual state handling.
 
---DEMO_AND_SINGLE_FUNCTION(textarea_disabled)--
+--DEMO(textarea_disabled)--
 
-## Custom Text Area
-A text area with custom styling or dimensions.
+## Invalid
+Apply `data-disabled` on Field to represent a disabled state and propagate styling, and apply data-invalid to represent validation errors.
 
---DEMO_AND_SINGLE_FUNCTION(textarea_custom)--
+--DEMO(textarea_invalid)--

@@ -8,7 +8,6 @@ Custom link component.
 
 Copy the following code into your app directory.
 
-
 ### CLI
 
 ```bash
@@ -22,11 +21,11 @@ buridan add component link
 
 from typing import Literal
 
-from reflex.components.react_router.dom import ReactRouterLink, To
 from reflex.vars.base import Var
+from reflex_components_core.react_router.dom import ReactRouterLink, To
 
-from ...icons.hugeicon import hi
-from ...utils.twmerge import cn
+from ..icons.hugeicon import hi
+from ..utils.twmerge import cn
 
 LiteralLinkVariant = Literal["primary", "secondary"]
 LiteralLinkSize = Literal["xs", "sm", "md", "lg", "xl"]
@@ -128,11 +127,21 @@ link = Link.create
 
 # Usage
 
-Make sure to correctly set your imports relative to the component.
 
 ```python
-from components.base_ui.link import link
+from components.ui.link import link
 ```
+
+
+# Anatomy 
+Use the following composition to build a `Link`
+
+
+```python
+link()
+```
+
+
 
 # Examples
 
@@ -142,7 +151,7 @@ Below are examples demonstrating how the component can be used.
 
 
 ```python
-def link_example():
+def link_general():
     """A basic link example."""
     return link("This is a link", href="#")
 ```

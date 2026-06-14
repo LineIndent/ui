@@ -2,12 +2,11 @@
 
 # Tooltip
 
-Tooltip component from base-ui components.
+A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.
 
 # Installation
 
 Copy the following code into your app directory.
-
 
 ### CLI
 
@@ -27,8 +26,8 @@ from reflex.event import EventHandler, passthrough_event_spec
 from reflex.utils.imports import ImportVar
 from reflex.vars.base import Var
 
-from ..base_ui import PACKAGE_NAME, BaseUIComponent
-from ...icons.others import arrow_svg
+from ..icons.others import arrow_svg
+from .base_ui import PACKAGE_NAME, BaseUIComponent
 
 LiteralSide = Literal["top", "right", "bottom", "left", "inline-end", "inline-start"]
 LiteralAlign = Literal["start", "center", "end"]
@@ -41,7 +40,7 @@ class ClassNames:
     """Class names for tooltip components."""
 
     TRIGGER = "inline-flex items-center justify-center"
-    POPUP = "rounded-ui-sm bg-secondary-12 px-2.5 py-1.5 text-balance text-sm font-medium text-secondary-1 shadow-small transition-all duration-150 data-[ending-style]:scale-90 data-[ending-style]:opacity-0 data-[starting-style]:scale-90 data-[starting-style]:opacity-0"
+    POPUP = "z-50 inline-flex w-fit max-w-xs origin-(--transform-origin) items-center gap-1.5 rounded-md bg-foreground px-3 py-1.5 text-xs text-background has-data-[slot=kbd]:pr-1.5 data-[side=bottom]:slide-in-from-top-2 data-[side=inline-end]:slide-in-from-left-2 data-[side=inline-start]:slide-in-from-right-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 **:data-[slot=kbd]:relative **:data-[slot=kbd]:isolate **:data-[slot=kbd]:z-50 **:data-[slot=kbd]:rounded-sm data-[state=delayed-open]:animate-in data-[state=delayed-open]:fade-in-0 data-[state=delayed-open]:zoom-in-95 data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95"
     ARROW = "data-[side=bottom]:top-[-7.5px] data-[side=left]:right-[-12.5px] data-[side=left]:rotate-90 data-[side=right]:left-[-12.5px] data-[side=right]:-rotate-90 data-[side=top]:bottom-[-7.5px] data-[side=top]:rotate-180"
 
 
@@ -227,6 +226,10 @@ class TooltipArrow(TooltipBaseComponent):
         """Create the tooltip arrow component."""
         props["data-slot"] = "tooltip-arrow"
         cls.set_class_name(ClassNames.ARROW, props)
+
+        if not children:
+            return super().create(arrow_svg(), **props)
+
         return super().create(*children, **props)
 
 
@@ -339,11 +342,28 @@ tooltip = Tooltip()
 
 # Usage
 
-Make sure to correctly set your imports relative to the component.
+
+> **Error processing usage for tooltip: module, class, method, function, traceback, frame, or code object was expected, got Tooltip**
+
+
+# Anatomy 
+Use the following composition to build a `Tooltip`
 
 ```python
-from components.base_ui.tooltip import tooltip
+tooltip.root(
+    tooltip.trigger(),
+    tooltip.portal(
+        tooltip.positioner(
+            tooltip.popup(
+                tooltip.arrow(),
+                content=...,
+            ),
+        ),
+    ),
+)
 ```
+
+
 
 # Examples
 
@@ -351,40 +371,51 @@ Below are examples demonstrating how the component can be used.
 
 ## General
 
+A simple tooltip example. Use the `dealy` prop to change how fast the tootip shows.
 
 ```python
-def tooltip_example():
-    """A basic tooltip example."""
-    return tooltip(
-        trigger=button("Hover Me"),
-        content="This is a tooltip!",
+def tooltip_general():
+    return tooltip.provider(
+        tooltip.root(
+            tooltip.trigger(
+                render_=button("Hover", variant="outline", size="sm"),
+            ),
+            tooltip.portal(
+                tooltip.positioner(
+                    tooltip.popup(tooltip.arrow(), "Add to library"),
+                ),
+            ),
+        ),
+        delay=0,
     )
 ```
 
 
-## With Long Content
-
-
-```python
-def tooltip_with_long_content():
-    """Tooltip with longer content."""
-    return tooltip(
-        trigger=button("Hover for details"),
-        content="This is a much longer tooltip content that provides more detailed information.",
-    )
-```
-
-
-## Custom Placement
-
+## Side
+Use the `side` prop in `tooltip.positioner()` to change the position of the tooltip.
 
 ```python
-def tooltip_with_custom_placement():
-    """Tooltip with custom placement (e.g., bottom)."""
-    return tooltip(
-        trigger=button("Hover for bottom tooltip"),
-        content="This tooltip appears at the bottom.",
-        side="bottom",
+def tooltip_sides():
+
+    return rx.el.div(
+        *[
+            tooltip.provider(
+                tooltip.root(
+                    tooltip.trigger(
+                        render_=button(side.capitalize(), variant="outline", size="sm"),
+                    ),
+                    tooltip.portal(
+                        tooltip.positioner(
+                            tooltip.popup(tooltip.arrow(), "Add to library"),
+                            side=side,
+                        ),
+                    ),
+                ),
+                delay=0,
+            )
+            for side in sides
+        ],
+        class_name="flex flex-wrap gap-2",
     )
 ```
 

@@ -6,21 +6,22 @@ order: 27
 
 # Tooltip
 
-Tooltip component from base-ui components.
+A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.
 
 # Installation
 
 Copy the following code into your app directory.
 
---CLI_AND_MANUAL_INSTALLATION(["Tooltip", "buridan add component tooltip"])--
+--INSTALL(["Tooltip", "buridan add component tooltip"])--
 
 # Usage
 
-Make sure to correctly set your imports relative to the component.
+--USAGE(tooltip)--
 
-```python
-from components.base_ui.tooltip import tooltip
-```
+# Anatomy 
+Use the following composition to build a `Tooltip`
+--ANATOMY(tooltip)--
+
 
 # Examples
 
@@ -28,24 +29,9 @@ Below are examples demonstrating how the component can be used.
 
 ## General
 
-Basic example of a tooltip using the high-level API.
+A simple tooltip example. Use the `dealy` prop to change how fast the tootip shows.
+--DEMO(tooltip_general)--
 
---DEMO_AND_SINGLE_FUNCTION(tooltip_example)--
-
-## With Long Content
-
-Demonstrates a tooltip with multi-line or long content.
-
---DEMO_AND_SINGLE_FUNCTION(tooltip_with_long_content)--
-
-## Custom Placement
-
-Shows tooltips positioned in non-default locations using side and align settings.
-
---DEMO_AND_SINGLE_FUNCTION(tooltip_with_custom_placement)--
-
-## Low Level Tooltip
-
-Shows how to build a group of icon tooltips using the low-level API.
-
---DEMO_AND_SINGLE_FUNCTION(tooltip_group_example)--
+## Side
+Use the `side` prop in `tooltip.positioner()` to change the position of the tooltip.
+--DEMO(tooltip_sides)--

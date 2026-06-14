@@ -12,20 +12,28 @@ Custom scroll area component.
 
 Copy the following code into your app directory.
 
---CLI_AND_MANUAL_INSTALLATION(["ScrollArea", "buridan add component scroll_area"])--
+--INSTALL(["ScrollArea", "buridan add component scroll_area"])--
 
 # Usage
 
-Make sure to correctly set your imports relative to the component.
+--USAGE(scroll_area)--
 
-```python
-from components.base_ui.scroll_area import scroll_area
-```
+# Anatomy 
+Use the following composition to build a `Scroll Area`
+
+--ANATOMY(scroll_area)--
+
 
 # Examples
 
 Below are examples demonstrating how the component can be used.
 
 ## General
+A simple vertical scroll area.
 
---DEMO_AND_SINGLE_FUNCTION(scroll_area_example)--
+--DEMO(scroll_area_general)--
+
+## Horizontal
+Use `scroll_area.scrollbar()` with `orientation="horizontal"` for horizontal scrolling.
+
+--DEMO(scroll_area_horizontal)--
