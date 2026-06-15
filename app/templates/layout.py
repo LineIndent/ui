@@ -22,7 +22,7 @@ def layout_decorator(
         def wrapper(*args, **kwargs):
             page_content = func(*args, **kwargs)
 
-            return rx.el.body(
+            return rx.el.div(
                 rx.el.div(
                     rx.el.header(
                         navbar(with_create_page_cta=with_create_page_cta),

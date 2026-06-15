@@ -13,7 +13,7 @@ MAIN = "flex flex-col gap-x-6 lg:flex-row w-full h-full min-h-0 overflow-hidden 
 
 
 def mainpage() -> rx.Component:
-    return rx.el.body(
+    return rx.el.div(
         seed_engine(),
         url_sync_engine(),
         welcome_dialog(),
