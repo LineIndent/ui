@@ -42,6 +42,8 @@ is_export_command_copied = ClientStateVar.create("is_export_command_copied", Fal
 
 welcome_open = ClientStateVar.create("welcome_open", False)
 
+on_create_page = ClientStateVar.create("on_create_page", False)
+
 selected_component_category = ClientStateVar.create(
     "selected_component_category", "All"
 )

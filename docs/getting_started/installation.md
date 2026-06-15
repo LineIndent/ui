@@ -8,7 +8,7 @@ order: 2
 
 To use Buridan UI components, you need to have **Python version 3.11 or above** installed on your system.
 
-```bash
+```copy 
 python3 --version
 ```
 

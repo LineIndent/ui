@@ -16,7 +16,7 @@ class ClassNames:
     """Class names for tabs components."""
 
     LIST = (
-        "relative bg-muted text-muted-foreground inline-flex h-9 w-fit items-center "
+        "relative bg-muted text-muted-foreground inline-flex h-9 w-full w-fit items-center "
         "justify-center rounded-radius p-[3px] "
         "data-[orientation=vertical]:flex data-[orientation=vertical]:flex-col "
         "data-[orientation=vertical]:h-auto "

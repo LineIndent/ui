@@ -310,9 +310,9 @@ def card_four() -> rx.Component:
         tabs.root(
             tabs.list(
                 tabs.indicator(),
-                tabs.tab("General", value="general"),
-                tabs.tab("Billings", value="billings"),
-                class_name="w-full border-b border-input/60 pb-1",
+                tabs.tab("General", value="general", class_name="w-full"),
+                tabs.tab("Billings", value="billings", class_name="w-full"),
+                class_name="!w-full border-b border-input/60 pb-1",
             ),
             rx.el.div(
                 tabs.panel(accordion_general(), value="general", class_name="w-full"),
@@ -842,13 +842,13 @@ def local_panel() -> rx.Component:
                 rx.el.div(
                     rx.el.div(
                         input_with_addons(
-                            value="https://github.com/shadcn-ui/ui.git",
+                            value="https://github.com/LineIndent/ui.git",
                             placeholder="",
                             suffix=hi(
                                 "Copy01Icon",
                                 class_name="size-4 text-muted-foreground cursor-pointer",
                             ),
-                            class_name="!bg-secondary text-xs",
+                            class_name="!bg-secondary text-xs pr-2",
                         ),
                         rx.el.p(
                             "Clone using the web URL.",
@@ -865,13 +865,13 @@ def local_panel() -> rx.Component:
             tabs.panel(
                 rx.el.div(
                     input_with_addons(
-                        value="git@github.com:shadcn-ui/ui.git",
+                        value="git@github.com:LineIndent/ui.git",
                         placeholder="",
                         suffix=hi(
                             "Copy01Icon",
                             class_name="size-4 text-muted-foreground cursor-pointer",
                         ),
-                        class_name="!bg-secondary text-xs",
+                        class_name="!bg-secondary text-xs pr-2",
                     ),
                     class_name="w-full pt-3",
                 ),
@@ -882,13 +882,13 @@ def local_panel() -> rx.Component:
             tabs.panel(
                 rx.el.div(
                     input_with_addons(
-                        value="gh repo clone shadcn-ui/ui",
+                        value="gh repo clone LineIndent/ui",
                         placeholder="",
                         suffix=hi(
                             "Copy01Icon",
                             class_name="size-4 text-muted-foreground cursor-pointer",
                         ),
-                        class_name="!bg-secondary text-xs",
+                        class_name="!bg-secondary text-xs pr-2",
                     ),
                     class_name="w-full pt-3",
                 ),
@@ -940,8 +940,8 @@ def card_eleven() -> rx.Component:
         tabs.root(
             tabs.list(
                 tabs.indicator(),
-                tabs.tab("Codespaces", value="codespaces"),
-                tabs.tab("Local", value="local"),
+                tabs.tab("Codespaces", value="codespaces", class_name="w-full"),
+                tabs.tab("Local", value="local", class_name="w-full"),
                 class_name="w-full",
             ),
             rx.el.div(

@@ -1,7 +1,7 @@
 import reflex as rx
 
 from app.engine.actions import TOGGLE_DARK_JS
-from app.hooks import seed, theme_preset_option
+from app.hooks import on_create_page, seed, theme_preset_option
 from components.icons.hugeicon import hi
 from components.ui.button import button
 
@@ -62,8 +62,8 @@ def light_and_dark_toggle() -> rx.Component:
     </svg>"""
     return button(
         icon_wrapper(svg, "size-4"),
-        # on_click=rx.call_script(TOGGLE_DARK_JS),
-        on_click=rx.toggle_color_mode,
+        # on_click=rx.toggle_color_mode,
+        on_click=rx.call_script(TOGGLE_DARK_JS),
         variant="ghost",
         size="sm",
     )
