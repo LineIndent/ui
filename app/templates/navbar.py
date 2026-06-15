@@ -1,7 +1,8 @@
 import reflex as rx
 
 from app.engine.actions import TOGGLE_DARK_JS
-from app.hooks import on_create_page, seed, theme_preset_option
+from app.hooks import seed, theme_preset_option
+from app.templates.docsidebar import mobile_menu
 from components.icons.hugeicon import hi
 from components.ui.button import button
 
@@ -19,7 +20,7 @@ def icon_wrapper(svg_str: str, class_name: str = "size-5"):
 
 
 def separator():
-    return rx.el.p("︲", class_name="text-muted-foreground/50 font-thin hidden lg:flex")
+    return rx.el.p("︲", class_name="text-muted-foreground/50 font-thin")
 
 
 def open_in_reflex_build() -> rx.Component:
@@ -62,8 +63,7 @@ def light_and_dark_toggle() -> rx.Component:
     </svg>"""
     return button(
         icon_wrapper(svg, "size-4"),
-        # on_click=rx.toggle_color_mode,
-        on_click=rx.call_script(TOGGLE_DARK_JS),
+        on_click=[rx.toggle_color_mode, rx.call_script(TOGGLE_DARK_JS)],
         variant="ghost",
         size="sm",
     )
@@ -112,18 +112,17 @@ def navbar(with_create_page_cta: bool = False) -> rx.Component:
 
     return rx.el.header(
         rx.el.div(
-            # Links
             rx.el.div(
                 *[
                     rx.el.a(
                         button(item["name"], variant="ghost", size="sm"),
                         href=item["path"],
-                        # target="_blank",
                     )
                     for item in NAV_LIST
                 ],
-                class_name="hidden lg:flex flex-row items-center text-foreground",
+                class_name="hidden md:flex flex-row items-center text-foreground",
             ),
+            rx.el.div(mobile_menu(), class_name="flex md:hidden"),
             rx.el.div(*actions, class_name="flex flex-row gap-x-2 items-center"),
             class_name="w-full max-w-[96rem] mx-auto flex flex-row items-center justify-between px-7",
         ),
