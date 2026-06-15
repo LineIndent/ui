@@ -59,15 +59,10 @@ def generate_doc_routes(section_folder, base_path) -> list[dict]:
 
 # --- Static: Each generation corresponds to a file in the docs/ folder ---
 GET_STARTED_URLS = generate_doc_routes("getting_started", "docs/getting-started/")
+RESOURCES_URLS = generate_doc_routes("resources", "docs/resources/")
 BASE_UI_COMPONENTS = sorted(
     generate_doc_routes("components", "docs/components/"), key=lambda x: x["title"]
 )
 CHARTS_URLS = sorted(
     generate_doc_routes("charts", "docs/charts/"), key=lambda x: x["title"]
 )
-# WRAPPED_COMPONENTS_URLS = generate_doc_routes(
-#     "wrapped_components", "docs/wrapped-components/"
-# )
-# JS_INTEGRATIONS_URLS = generate_doc_routes(
-#     "javascript_integrations", "docs/javascript-integrations/"
-# )

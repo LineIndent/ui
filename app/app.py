@@ -64,6 +64,7 @@ app = rx.App(
         "https://cdn.jsdelivr.net/npm/geist@1.3.0/dist/font/mono.css",  # Geist Mono
     ],
 )
+
 app.add_page(
     component=mainpage(),
     route="/create",

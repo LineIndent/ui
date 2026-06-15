@@ -19,6 +19,7 @@ class SidebarSection:
 
 SIDEBAR_SECTIONS = [
     SidebarSection(title="Getting Started", routes=routes.GET_STARTED_URLS),
+    SidebarSection(title="Resources", routes=routes.RESOURCES_URLS),
     SidebarSection(title="Charts", routes=routes.CHARTS_URLS),
     SidebarSection(title="Components", routes=routes.BASE_UI_COMPONENTS),
 ]
@@ -64,7 +65,8 @@ def sidebar_section(section: SidebarSection):
         rx.el.div(
             rx.el.div(
                 rx.el.p(
-                    section.title, class_name="text-muted-foreground font-medium px-2"
+                    section.title,
+                    class_name="text-muted-foreground font-medium px-2 text-xs",
                 ),
                 class_name="flex flex-row items-center gap-x-2",
             ),

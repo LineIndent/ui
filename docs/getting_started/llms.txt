@@ -6,15 +6,20 @@
 - [Introduction](/docs/getting_started/introduction): Introduction to the project.
 - [Installation](/docs/getting_started/installation): How to install and set up the project.
 - [CLI](/docs/getting_started/cli): How to use the command-line tool.
-- [Theming](/docs/getting_started/theming): How to customize the theme.
+- [Theming](/docs/resources/theming): How to customize the theme.
 - [Who Is Buridan](/docs/getting_started/who_is_buridan): The story behind the name.
 - [Changelog](/docs/getting_started/changelog): Information about the project's changelog.
 
+## Resources
+- [Client State Var](/docs/resources/client-state-var): Explanation of client state variables.
+- [State Structure](/docs/resources/state): Mastering Reflex's backend-driven state management.
+- [Tailwind Integration](/docs/resources/tailwind): How Buridan and Reflex leverage Tailwind CSS for styling.
+- [Events & Actions](/docs/resources/events): Handling user interactions and logic flow in Reflex.
+- [Tailwind CN](/docs/resources/tailwind-cn): Using Tailwind CSS with the project.
+
 ## Supplementary Material
 - [Charting](/docs/getting_started/charting): Guide to using charts.
-- [Client State Var](/docs/getting_started/client_state_var): Explanation of client state variables.
 - [Dashboard](/docs/getting_started/dashboard): Overview of the dashboard.
-- [Tailwind CN](/docs/getting_started/tailwind_cn): Using Tailwind CSS with the project.
 
 ## Components
 - [Accordion](/docs/components/accordion): The Accordion component.

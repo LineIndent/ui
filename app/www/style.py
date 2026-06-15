@@ -1,11 +1,4 @@
-import hashlib
-import json
-import random
-import string
-
 import reflex as rx
-
-from components.icons.hugeicon import hi
 
 PARAGRAPH_CLASS = "text-sm leading-7 mb-4"
 
@@ -15,7 +8,14 @@ HEADING_2_CLASS = "text-xl font-semibold mt-6 mb-2"
 
 LIST_ITEM_CLASS = "text-sm leading-7 text-slate-11"
 
-LINK_CLASS = "text-accent-8 underline-offset-2 hover:underline"
+LINK_CLASS = (
+    "font-medium "
+    "text-foreground "
+    "underline underline-offset-4 "
+    "decoration-foreground "
+    "hover:!text-foreground "
+    "hover:!decoration-foreground"
+)
 
 
 # --- Helper error functions during parsing ---
@@ -38,37 +38,49 @@ def render_list_item(text: str) -> rx.Component:
     return rx.list_item(rx.el.p(text, class_name=LIST_ITEM_CLASS))
 
 
-def render_link(text: str, **props) -> rx.Component:
-    return rx.el.a(text, class_name=LINK_CLASS, **props)
+def render_link(*args, **props) -> rx.Component:
+    return rx.link(*args, class_name=LINK_CLASS, **props)
 
 
 def render_pre(*children, **props) -> rx.Component:
-    # code name -> language = props.get(["langauge"])
+    language = props.get("language")
+
     return rx.el.div(
         rx.el.div(
             rx.el.div(
                 rx.el.p(
-                    "uv",
+                    language,
                     class_name="text-muted-foreground text-sm font-normal px-[1rem] py-2",
                 ),
                 class_name="w-full border-b border-input/70 flex flex-row items-center justify-between",
             ),
             rx.el.div(
-                rx.el.code(
-                    *children,
-                    style={
-                        "white-space": "pre",
-                        "color": "var(--foreground)",
-                        "font-size": "13px",
-                        "padding": "1rem 1rem",
-                        "display": "block",
-                    },
+                rx.el.pre(
+                    rx.el.code(
+                        *children,
+                        style={
+                            "white-space": "pre",
+                            "color": "var(--foreground)",
+                            "font-size": "13px",
+                            "padding": "1rem 1rem",
+                            "display": "block",
+                        },
+                    ),
+                    style={"data-line": "2,4,6"},
                 ),
                 class_name="overflow-x-auto overflow-y-auto scrollbar-none flex-1 min-h-0 pr-[1rem]",
             ),
             class_name="w-full flex-1 min-h-0 flex flex-col h-full",
         ),
-        class_name="rounded-radius flex-1 min-h-0 flex flex-col bg-secondary dark:bg-card",
+        class_name="rounded-[1rem] flex-1 min-h-0 flex flex-col bg-secondary dark:bg-card my-4",
+    )
+
+
+def render_blockquote(*children, **props) -> rx.Component:
+    return rx.el.div(
+        *children,
+        class_name="w-full rounded-[1rem] bg-secondary dark:bg-card flex items-center justify-center p-4 mb-4 "
+        + "[&>p]:mb-0 [&>p]:leading-6",
     )
 
 
@@ -79,6 +91,49 @@ markdown_component_map = {
     "p": render_paragraph,
     "li": render_list_item,
     "a": render_link,
+    "blockquote": render_blockquote,
     "code": lambda text: rx.el.span(text, class_name="bg-secondary rounded-md p-1"),
     "pre": render_pre,
+    "table": lambda *children, **props: rx.el.div(
+        rx.el.div(
+            rx.el.table(
+                *children,
+                **props,
+                class_name="w-max min-w-full",
+            ),
+            class_name="w-full overflow-x-auto scrollbar-none",
+        ),
+        class_name="w-full !text-sm rounded-[1rem] border border-input",
+    ),
+    "thead": lambda *children, **props: rx.el.thead(
+        *children, **props, class_name="border-input border-b"
+    ),
+    "tbody": lambda *children, **props: rx.el.tbody(
+        *children, **props, class_name="divide-input divide-y"
+    ),
+    "tr": lambda *children, **props: rx.el.tr(
+        *children,
+        **props,
+        class_name="m-0 p-0",
+    ),
+    "th": lambda *children, **props: rx.el.th(
+        *children,
+        **props,
+        class_name=(
+            "px-4 py-2 text-left font-bold "
+            "[&[align=center]]:text-center "
+            "whitespace-nowrap "
+            "[&[align=right]]:text-right"
+        ),
+    ),
+    "td": lambda *children, **props: rx.el.td(
+        *children,
+        **props,
+        class_name=(
+            "px-4 py-2 text-left "
+            "[&[align=center]]:text-center "
+            "whitespace-nowrap "
+            "[&[align=right]]:text-right"
+        ),
+    ),
 }
