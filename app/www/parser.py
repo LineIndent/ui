@@ -112,7 +112,7 @@ class DocParser:
                             "display": "block",
                         },
                     ),
-                    class_name="w-full mt-4 mb-8 rounded-[0.625rem] outline outline-input flex-1 min-h-0 flex flex-col bg-secondary dark:bg-card",
+                    class_name="overflow-x-auto overflow-y-auto scrollbar-none w-full mt-4 mb-8 rounded-[1rem] outline outline-input flex-1 min-h-0 flex flex-col bg-secondary dark:bg-card",
                 )
 
             return render_parse_error(f"Unknown command: {cmd}")
