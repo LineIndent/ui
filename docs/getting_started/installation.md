@@ -8,7 +8,7 @@ order: 2
 
 To use Buridan UI components, you need to have **Python version 3.11 or above** installed on your system.
 
-```copy 
+```bash 
 python3 --version
 ```
 
@@ -47,4 +47,4 @@ cd my_app_name
 
 # Using the Buridan UI CLI
 
-For detailed instructions on how to use the Buridan UI CLI to add components, wrapped React components, and themes to your project, please refer to the [CLI Documentation](/getting-started/cli).
+For detailed instructions on how to use the Buridan UI CLI to add components, wrapped React components, and themes to your project, please refer to the [CLI Documentation](/docs/getting-started/cli).

@@ -20,4 +20,4 @@ Inspired by the design of [shadcn/ui](https://ui.shadcn.com/), Buridan UI offers
 
 Think of Buridan UI as a starter kit and a powerful resource for your Reflex projects. It provides well-structured, reusable UI elements that save you time and effort. Whether you're building a quick prototype or a large-scale application, these components provide a solid foundation, allowing you to focus on what makes your project unique.
 
-Ready to get started? Check out the [Installation](./installation.md) guide to set up the CLI and add your first component.
+Ready to get started? Check out the [Installation](/docs/getting-started/installation.md) guide to set up the CLI and add your first component.
