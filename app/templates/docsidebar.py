@@ -27,6 +27,7 @@ SIDEBAR_SECTIONS = [
 
 def create_menu_item(data: dict):
     """Create a single menu item."""
+
     return button(
         rx.el.a(
             rx.el.p(data["title"], class_name="cursor-pointer"),
@@ -87,7 +88,7 @@ def sidebar():
     )
 
     return rx.el.div(
-        rx.el.div(content, id="sidebar"),
+        rx.el.div(content, id="doc-sidebar"),
         class_name=(
             "hidden lg:flex flex-col "
             "max-w-[18rem] w-full "
@@ -98,6 +99,42 @@ def sidebar():
             "sm:mask-size-[100%_100%] "
             "sm:mask-repeat-no-repeat "
         ),
+        on_mount=rx.call_script("""
+            const currentPath = window.location.pathname.substring(1);
+            const activeElement = document.getElementById(currentPath);
+
+            if (activeElement) {
+                const sidebar = document.getElementById('sidebar');
+                    if (sidebar) {
+                        sidebar.querySelectorAll('.bg-secondary').forEach(el => {
+                            el.classList.remove('bg-secondary');
+                        });
+                    }
+
+                // 2. Add highlight to the current one
+                activeElement.classList.add('bg-secondary');
+
+                // 3. Scroll into view
+                activeElement.scrollIntoView({
+                    behavior: 'instant',
+                    block: 'center'
+                });
+            }
+        """),
+        # on_mount=rx.call_script("""
+        #             // 1. Get current path and remove the leading '/'
+        #             // Example: '/docs/getting-started/dashboard' -> 'docs/getting-started/dashboard'
+        #             const currentPath = window.location.pathname.substring(1);
+        #             // 2. Find the element where the ID attribute matches exactly
+        #             const activeElement = document.getElementById(currentPath);
+        #             // 3. Scroll it into view
+        #             if (activeElement) {
+        #                 activeElement.scrollIntoView({
+        #                     behavior: 'instant',
+        #                     block: 'center'
+        #                 });
+        #             }
+        #         """),
     )
 
 
