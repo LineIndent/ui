@@ -3,7 +3,7 @@ name = "buridan-create"
 version = "0.1.7"
 description = "CLI to initialize Buridan UI design system in Reflex apps"
 requires-python = ">=3.11"
-dependencies = ["reflex==0.9.2", "reflex-hosting-cli>=0.1.66", "reflex-components-internal"]
+dependencies = ["reflex==0.9.2", "reflex-hosting-cli>=0.1.66", "reflex-components-internal", "pillow>=12.2.0", "PyYAML>=6.0.3"]
 
 [tool.uv]
 prerelease = "allow"

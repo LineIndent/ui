@@ -10,6 +10,7 @@ class DocDataStruct:
     """The data structure for the generated doc page"""
 
     url: str
+    description: str
     component: List[rx.Component]
     table_of_content: List[Dict]
 

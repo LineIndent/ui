@@ -121,20 +121,6 @@ def sidebar():
                 });
             }
         """),
-        # on_mount=rx.call_script("""
-        #             // 1. Get current path and remove the leading '/'
-        #             // Example: '/docs/getting-started/dashboard' -> 'docs/getting-started/dashboard'
-        #             const currentPath = window.location.pathname.substring(1);
-        #             // 2. Find the element where the ID attribute matches exactly
-        #             const activeElement = document.getElementById(currentPath);
-        #             // 3. Scroll it into view
-        #             if (activeElement) {
-        #                 activeElement.scrollIntoView({
-        #                     behavior: 'instant',
-        #                     block: 'center'
-        #                 });
-        #             }
-        #         """),
     )
 
 

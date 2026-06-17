@@ -1,6 +1,6 @@
 ---
 title: "Accordion"
-description: "A set of collapsible panels with headings."
+description: "A vertically stacked set of interactive headings that each reveal a section of content."
 order: 0
 ---
 

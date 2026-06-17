@@ -4,6 +4,13 @@ description: "Steps to install and start using Buridan in your project."
 order: 2
 ---
 
+# Installation
+How to install dependencies and structure your app.
+
+>Recommended for new projects: Use [buridan/create](/create) to build your preset visually and generate the right setup command for your framework.
+
+# Use buridan/crate
+
 # Check your Python version
 
 To use Buridan UI components, you need to have **Python version 3.11 or above** installed on your system.

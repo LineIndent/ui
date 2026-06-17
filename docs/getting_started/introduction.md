@@ -1,23 +1,42 @@
 ---
-title: "Introduction"
-description: "An overview of Buridan UI, a component library for Reflex developers."
+title: Introduction
+description: Buridan UI is a collection of high-end, accessible components for Reflex developers. It’s not a library you install, but a system you adopt and own.
 order: 0
 ---
 
 # Introduction
 
-Welcome to Buridan UI, a collection of beautifully designed, accessible, and customizable components built specifically for the [Reflex](https://reflex.dev/) framework.
+Buridan UI is a set of beautifully designed, accessible components built specifically for the [Reflex](https://reflex.dev/) framework. 
 
-Buridan UI is not a typical Python package. Instead of installing a library and importing components you can't control, you add them directly to your project using our CLI. This makes the code yours, giving you the freedom to understand, modify, and extend it to fit your exact needs.
+**This is not just a component library. It is a philosophy for how you build your design system in Python.**
 
-# What makes this different?
+## The Burden of Choice (and restrictive libraries)
 
-Inspired by the design of [shadcn/ui](https://ui.shadcn.com/), Buridan UI offers a unique approach to building user interfaces in your Reflex applications.
+In traditional web development, you often have to choose between a rigid component library that’s hard to customize or building everything from scratch. Python developers using Reflex have faced a similar dilemma: use the built-in primitives or fight with complex CSS and JavaScript wrappers.
 
-**You Own the Code**: Unlike traditional libraries, components are added directly to your project's directory, giving you full control over their code, styling, and behavior—no black boxes or hidden abstractions. It's **Built for Reflex**, designed from the ground up to integrate seamlessly with Reflex's architecture and state management. Our **CLI-Powered** approach means a simple command-line interface allows you to add components, themes, and dependencies effortlessly. Because the components become part of your codebase, they are **Fully Customizable**; you can tweak everything from styles to logic to match your brand and functionality perfectly. This means you can **Copy, Paste, and Extend** with ease: the CLI handles the heavy lifting of component integration, making it simple to find a component, add it to your project, and start building.
+Buridan UI offers a third path. Inspired by the principles of shadcn/ui but built natively for the Reflex ecosystem, it provides high-end aesthetics without the "black box" of a traditional package.
 
-# An Essential Toolkit for Reflex Developers
+## The Buridan Principles
 
-Think of Buridan UI as a starter kit and a powerful resource for your Reflex projects. It provides well-structured, reusable UI elements that save you time and effort. Whether you're building a quick prototype or a large-scale application, these components provide a solid foundation, allowing you to focus on what makes your project unique.
+### 1. Radical Ownership (Open Code)
+When you add a component with Buridan UI, you aren't just importing it; you're owning it. Our CLI injects the raw Python source code directly into your project. This means the top layer of your UI is always open for modification. Want to change how a `Button` handles its loading state? Just edit the file.
 
-Ready to get started? Check out the [Installation](/docs/getting-started/installation.md) guide to set up the CLI and add your first component.
+### 2. Composition over Abstraction
+Every component is built using a common, composable interface. We don't hide the underlying Reflex primitives; we arrange them into predictable, beautiful patterns. This makes the API intuitive for your team and exceptionally clear for LLMs to reason about.
+
+### 3. CLI-First Distribution
+We treat your UI as a living part of your codebase. Our CLI handles the complexities of dependency management, theme synchronization, and component scaffolding. It’s a distribution platform that keeps you in the flow of building, not configuring.
+
+### 4. High-End Defaults
+We believe that "functional" shouldn't mean "unpolished." Buridan UI comes with a sophisticated theme system—supporting everything from Neutral to Mauve—with carefully chosen spacing, typography, and dark mode support out of the box.
+
+### 5. LLM-Native
+In the age of AI, code visibility is a feature. Because Buridan UI provides clean, typed Python source code instead of compiled binaries, LLMs can "read" your entire UI stack. This allows AI tools to suggest accurate refactors, generate new components that match your style, and help you scale faster.
+
+---
+
+## Why "Buridan"?
+
+Named after Buridan's Ass—the paradox of a creature that starves while unable to choose between two identical options—our goal is to eliminate the paradox of choice for developers. We give you the best of both worlds: the speed of a library and the flexibility of custom code.
+
+Ready to start building? Check out the [Installation](/docs/getting-started/installation.md) guide.

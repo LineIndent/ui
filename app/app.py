@@ -6,9 +6,10 @@ from app.pages.landing import landing_page
 from app.templates.docpage import docpage
 from app.templates.mainpage import mainpage
 from app.templates.toc import table_of_content
+from app.utils.metatags import generate_site_meta_tags
 from app.www.generator import generate_docs_library
 
-BURIDAN_URL = "https://buridan-create.reflex.run/"
+BURIDAN_URL = "https://buridan.reflex.run/"
 BURIDAN_SLOGAN = (
     "Beautifully designed Reflex components to build your web apps faster. Open source."
 )
@@ -100,10 +101,16 @@ for doc in generate_docs_library():
 
     title_s = doc.url.split("/")[-1].replace("-", " ").title()
     title = f"{title_s} – buridan/ui"
-
+    card_path = f"https://raw.githubusercontent.com/LineIndent/ui/refs/heads/main/assets/social/{doc.url.split('/')[-1]}.webp"
+    print(card_path)
     app.add_page(
         docpage(main_content, toc_content),
         route=f"/{doc.url}",
         title=title,
-        # meta=meta.SITE_META_TAGS,
+        meta=generate_site_meta_tags(
+            title=title_s,
+            url=f"https://buridan.reflex.run/{doc.url}",
+            description=doc.description,
+            social_card=card_path,
+        ),
     )

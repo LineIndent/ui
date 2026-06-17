@@ -6,7 +6,9 @@ import app.www.constants as constants
 from app.www.frontmatter import parse_frontmatter
 from app.www.parser import DocParser
 
-parser = DocParser(dynamic_load_dirs=[constants.DOCS_LIBRARY_ROOT, constants.COMPONENTS_ROOT])
+parser = DocParser(
+    dynamic_load_dirs=[constants.DOCS_LIBRARY_ROOT, constants.COMPONENTS_ROOT]
+)
 
 
 def generate_docs_library() -> List[constants.DocDataStruct]:
@@ -56,7 +58,7 @@ def generate_docs_library() -> List[constants.DocDataStruct]:
         with open(md_file_path, "r") as f:
             md_content = f.read()
 
-        __, md_content = parse_frontmatter(md_content)
+        md_data, md_content = parse_frontmatter(md_content)
 
         # Extract headings for TOC from THIS file's content
         toc_data = []
@@ -75,6 +77,7 @@ def generate_docs_library() -> List[constants.DocDataStruct]:
         # Create the doc component (no need for inner function)
         doc = constants.DocDataStruct(
             url=url_path,
+            description=md_data["description"],
             component=parser.parse_and_render(md_content),
             table_of_content=toc_data,
         )
