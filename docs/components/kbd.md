@@ -21,7 +21,6 @@ Use the following composition to build a `Kbd`
 --ANATOMY(kbd)--
 
 # Examples
-Below are examples demonstrating how the component can be used.
 
 ## Default
 A basic example showing a single styled keyboard key.

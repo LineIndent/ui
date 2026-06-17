@@ -12,18 +12,16 @@ LiteralOrientation = Literal["vertical", "horizontal"]
 
 
 class ClassNames:
-    """Class names for field components."""
-
     ROOT = (
-        "group/field flex gap-2 flex-col "
-        "data-[invalid=true]:text-destructive "
-        "data-[orientation=horizontal]:flex-row "
-        "data-[orientation=horizontal]:items-center"
+        "group/field flex w-full gap-2 data-[invalid=true]:text-destructive "
+        "data-[orientation=vertical]:flex-col "
+        "data-[orientation=horizontal]:flex-row data-[orientation=horizontal]:items-start "
+        "data-[orientation=horizontal]:[&>[data-slot=checkbox]]:mt-[0.125rem]"
     )
 
     LABEL = (
-        "peer/field-label flex w-fit gap-2 leading-snug "
-        "text-sm font-medium "
+        "peer/field-label flex w-fit gap-2 leading-snug text-sm font-medium "
+        "data-[orientation=horizontal]:flex-auto "
         "group-data-[disabled=true]/field:opacity-50"
     )
 
@@ -72,6 +70,10 @@ class FieldRoot(FieldBaseComponent):
         orientation = props.pop("orientation", None)
         if orientation:
             props["data-orientation"] = orientation
+
+        disabled = props.pop("disabled", False)
+        if disabled:
+            props["data-disabled"] = "true"
 
         cls.set_class_name(ClassNames.ROOT, props)
 

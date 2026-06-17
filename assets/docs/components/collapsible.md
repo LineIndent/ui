@@ -33,7 +33,6 @@ collapsible.root(
 
 # Examples
 
-Below are examples demonstrating how the component can be used.
 
 ## High Level Demo
 
@@ -49,4 +48,3 @@ Uses the low-level collapsible.root(), collapsible.panel(), and ClientStateVar f
 
 
 > **Error: 'collapsible_low_level_demo' not found in registry**
-

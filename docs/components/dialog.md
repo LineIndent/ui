@@ -26,7 +26,6 @@ Use the following composition to build a `Dialog`
 
 # Examples
 
-Below are examples demonstrating how the component can be used.
 
 ## High Level
 

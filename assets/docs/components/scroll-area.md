@@ -38,7 +38,6 @@ scroll_area.root(
 
 # Examples
 
-Below are examples demonstrating how the component can be used.
 
 ## General
 A simple vertical scroll area.
@@ -52,4 +51,3 @@ Use `scroll_area.scrollbar()` with `orientation="horizontal"` for horizontal scr
 
 
 > **Error: 'scroll_area_horizontal' not found in registry**
-

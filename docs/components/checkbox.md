@@ -23,13 +23,28 @@ Use the following composition to build a `Checkbox`
 
 --ANATOMY(checkbox)--
 
-
 # Examples
 
-Below are examples demonstrating how the component can be used.
+## Basic
 
-## Label
+Pair the checkbox with `field.root` and `field.label` for proper layout and labeling.
 
-Displays a simple checkbox with a label.
+--DEMO(checkbox_basic)--
 
---DEMO(checkbox_example)--
+## Description
+
+Use `field.description` for helper text.
+
+--DEMO(checkbox_description)--
+
+## Disabled
+
+Use the `disabled` prop to prevent interaction and add the `data-disabled` attribute to the component for disabled styles.
+
+--DEMO(checkbox_disabled)--
+
+## Group
+
+Use multiple fields to create a checkbox list.
+
+--DEMO(checkbox_group)--

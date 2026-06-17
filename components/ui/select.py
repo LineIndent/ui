@@ -330,25 +330,6 @@ class SelectItemIndicator(SelectBaseComponent):
         return super().create(*children, **props)
 
 
-# class SelectItemIndicator(SelectBaseComponent):
-#     """Indicates whether the select item is selected."""
-
-#     tag = "Select.ItemIndicator"
-
-#     # Whether to keep the HTML element in the DOM when the item is not selected. Defaults to False.
-#     keep_mounted: Var[bool]
-
-#     # The render prop
-#     render_: Var[Component]
-
-#     @classmethod
-#     def create(cls, *children, **props) -> BaseUIComponent:
-#         """Create the dialog trigger component."""
-#         props["data-slot"] = "select-item-indicator"
-#         cls.set_class_name(ClassNames.ITEM_INDICATOR, props)
-#         return super().create(*children, **props)
-
-
 class SelectGroup(SelectBaseComponent):
     """Groups related select items with the corresponding label."""
 
@@ -414,22 +395,6 @@ class SelectIcon(SelectBaseComponent):
             children = (hi("ArrowDown01Icon", class_name="size-4"),)
 
         return super().create(*children, **props)
-
-
-# class SelectIcon(SelectBaseComponent):
-#     """An icon that indicates that the trigger button opens a select menu."""
-
-#     tag = "Select.Icon"
-
-#     # The render prop
-#     render_: Var[Component]
-
-#     @classmethod
-#     def create(cls, *children, **props) -> BaseUIComponent:
-#         """Create the dialog trigger component."""
-#         props["data-slot"] = "select-icon"
-#         cls.set_class_name(ClassNames.ICON, props)
-#         return super().create(*children, **props)
 
 
 class SelectArrow(SelectBaseComponent):
@@ -539,7 +504,7 @@ class HighLevelSelect(SelectRoot):
         portal_props = {k: props.pop(k) for k in cls._portal_props & props.keys()}
 
         # Get extracted values with defaults
-        size = trigger_props.get("size", "md")
+        size = trigger_props.get("size", "sm")
         items = items_props.get("items", [])
 
         # Create the items children

@@ -33,7 +33,6 @@ breadcrumb(
 
 
 # Examples
-Below are examples demonstrating how the component can be used.
 
 ## Basic Demo
 A basic breadcrumb showing the default navigation structure.
@@ -61,4 +60,3 @@ A breadcrumb with a customized separator between items.
 
 
 > **Error: 'breadcrumb_custom_separator' not found in registry**
-

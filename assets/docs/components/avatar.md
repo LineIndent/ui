@@ -33,7 +33,6 @@ avatar.root(
 
 # Examples
 
-Below are examples demonstrating how the component can be used.
 
 ## General
 
@@ -57,4 +56,3 @@ Shows how to combine an avatar with status or notification badges for added cont
 
 
 > **Error: 'avatar_with_badge' not found in registry**
-

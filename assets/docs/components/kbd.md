@@ -28,7 +28,6 @@ kbd_group(
 
 
 # Examples
-Below are examples demonstrating how the component can be used.
 
 ## Default
 A basic example showing a single styled keyboard key.
@@ -63,4 +62,3 @@ Displays keyboard shortcuts paired with icons for clarity.
 
 
 > **Error: 'kbd_with_icons' not found in registry**
-

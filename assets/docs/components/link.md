@@ -30,7 +30,6 @@ link()
 
 # Examples
 
-Below are examples demonstrating how the component can be used.
 
 ## General
 
@@ -54,4 +53,3 @@ Below are examples demonstrating how the component can be used.
 
 
 > **Error: 'link_with_icon' not found in registry**
-

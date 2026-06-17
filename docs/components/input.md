@@ -25,7 +25,6 @@ Use the following composition to build a `Input`
 
 
 # Examples
-Below are examples demonstrating how the component can be used.
 
 ## Basic Demo
 A simple text input demonstrating the default appearance and behavior.

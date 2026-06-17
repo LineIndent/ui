@@ -258,4 +258,13 @@ typography_table(
         typography_table_cell(),
     ),
 )""",
+    "field": """field.root(
+    field.label(),
+    field.control(),
+    field.description(),
+    field.item(),
+    field.error(),
+    field.validity(),
+)
+""",
 }

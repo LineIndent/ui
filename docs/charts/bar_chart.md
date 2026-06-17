@@ -15,7 +15,6 @@ The chart tooltip components are available in the `base_ui` library.
 --CODE_FILE(_ChartTooltip)--
 
 # Examples
-Below are examples demonstrating how these components and charts can be used.
 
 ## Multiple Series
 A simple vertical bar chart comparing data categories.

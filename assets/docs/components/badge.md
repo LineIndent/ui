@@ -30,7 +30,6 @@ badge()
 
 # Examples
 
-Below are examples demonstrating how the component can be used.
 
 ## Default
 
@@ -62,4 +61,3 @@ Illustrates how to use badges for showing counts, such as unread notifications o
 
 
 > **Error: 'badge_notification_count' not found in registry**
-

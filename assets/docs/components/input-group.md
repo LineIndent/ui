@@ -13,7 +13,6 @@ Copy the following code into your app directory.
 
 
 # Examples
-Below are examples demonstrating how the component can be used.
 
 ## Price Input
 An input field with a currency prefix for entering prices.
@@ -41,4 +40,3 @@ A multiline input with a footer displaying additional information or controls.
 
 
 > **Error: 'input_group_textarea_with_footer' not found in registry**
-

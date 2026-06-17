@@ -25,8 +25,6 @@ Use the following composition to build an `Accordion`
 
 # Examples
 
-Below are examples demonstrating how the component can be used.
-
 ## Basic
 
 A basic accordion that shows one item at a time. The first item is open by default.

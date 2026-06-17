@@ -12,7 +12,6 @@ The chart tooltip components are available in the `base_ui` library.
 
 
 # Examples
-Below are examples demonstrating how these components and charts can be used.
 
 ## Basic
 A minimal example showing a single series with a smooth gradient fill.
@@ -72,4 +71,3 @@ Combines stepped transitions with a smooth color gradient for visual emphasis.
 A complete example with custom legends, axes, and advanced styling combined.
 
 > **Error: 'areachart_v10' not found in registry**
-

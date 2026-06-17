@@ -21,7 +21,6 @@ Use the following composition to build a `Breadcrumb`
 --ANATOMY(breadcrumb)--
 
 # Examples
-Below are examples demonstrating how the component can be used.
 
 ## Basic Demo
 A basic breadcrumb showing the default navigation structure.

@@ -40,7 +40,6 @@ dialog.root(
 
 # Examples
 
-Below are examples demonstrating how the component can be used.
 
 ## High Level
 
@@ -56,4 +55,3 @@ Uses the low-level dialog.root(), dialog.trigger(), dialog.portal() etc. for ful
 
 
 > **Error: 'dialog_low_level' not found in registry**
-

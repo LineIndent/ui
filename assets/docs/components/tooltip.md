@@ -39,7 +39,6 @@ tooltip.root(
 
 # Examples
 
-Below are examples demonstrating how the component can be used.
 
 ## General
 
@@ -52,4 +51,3 @@ A simple tooltip example. Use the `dealy` prop to change how fast the tootip sho
 Use the `side` prop in `tooltip.positioner()` to change the position of the tooltip.
 
 > **Error: 'tooltip_sides' not found in registry**
-

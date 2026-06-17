@@ -32,7 +32,6 @@ checkbox.root(
 
 # Examples
 
-Below are examples demonstrating how the component can be used.
 
 ## Label
 
@@ -40,4 +39,3 @@ Displays a simple checkbox with a label.
 
 
 > **Error: 'checkbox_example' not found in registry**
-

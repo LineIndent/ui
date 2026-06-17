@@ -30,7 +30,6 @@ button()
 
 # Examples
 
-Below are examples demonstrating how the component can be used.
 
 ## Sizes
 
@@ -94,4 +93,3 @@ Examples showing icon-only buttons with varying sizes for compact UI elements.
 
 
 > **Error: 'button_icon' not found in registry**
-

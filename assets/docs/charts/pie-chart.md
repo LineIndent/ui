@@ -5,7 +5,6 @@
 Pie Charts are ideal for showing changes over time or the magnitude of multiple datasets stacked together. They combine the smoothness of line charts with the visual impact of filled areas.
 
 # Examples
-Below are examples demonstrating how these components and charts can be used.
 
 ## Basic
 A minimal example showing proportional data distribution in a circular format.
@@ -41,4 +40,3 @@ Renders the pie chart with a hollow center for a modern doughnut style.
 Demonstrates interactive segment highlighting and selection states.
 
 > **Error: 'piechart_v6' not found in registry**
-

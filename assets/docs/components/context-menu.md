@@ -60,7 +60,6 @@ context_menu.root(
 
 # Examples
 
-Below are examples demonstrating how the component can be used.
 
 ## Low Level Demo
 
@@ -68,4 +67,3 @@ Uses the low-level context_menu API for full control over state and structure.
 
 
 > **Error: 'context_menu_low_level_demo' not found in registry**
-

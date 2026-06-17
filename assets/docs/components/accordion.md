@@ -42,7 +42,6 @@ accordion.root(
 
 # Examples
 
-Below are examples demonstrating how the component can be used.
 
 ## Basic
 
@@ -50,4 +49,3 @@ A basic accordion that shows one item at a time. The first item is open by defau
 
 
 > **Error: 'accordion_basic' not found in registry**
-

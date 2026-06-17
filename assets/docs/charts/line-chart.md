@@ -12,7 +12,6 @@ The chart tooltip components are available in the `base_ui` library.
 
 
 # Examples
-Below are examples demonstrating how these components and charts can be used.
 
 ## Basic
 A minimal example showing a single series with a smooth line connection.
@@ -60,4 +59,3 @@ Demonstrates how data or series can update interactively in real-time.
 Implements a user-defined legend layout for better presentation control.
 
 > **Error: 'linechart_v8' not found in registry**
-

@@ -29,7 +29,6 @@ input()
 
 
 # Examples
-Below are examples demonstrating how the component can be used.
 
 ## Basic Demo
 A simple text input demonstrating the default appearance and behavior.
@@ -71,4 +70,3 @@ An input field with a custom width and styling.
 
 
 > **Error: 'input_custom_input' not found in registry**
-

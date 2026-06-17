@@ -25,7 +25,6 @@ Use the following composition to build a `Tooltip`
 
 # Examples
 
-Below are examples demonstrating how the component can be used.
 
 ## General
 

@@ -26,7 +26,6 @@ Use the following composition to build a `Button`
 
 # Examples
 
-Below are examples demonstrating how the component can be used.
 
 ## Sizes
 

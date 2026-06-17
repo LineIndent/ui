@@ -13,7 +13,6 @@ The chart tooltip components are available in the `base_ui` library.
 
 
 # Examples
-Below are examples demonstrating how these components and charts can be used.
 
 ## Multiple Series
 A simple vertical bar chart comparing data categories.
@@ -73,4 +72,3 @@ Show how the chart adapts across different screen sizes and layouts.
 Apply gradient fills to your bars for a modern, polished look.
 
 > **Error: 'barchart_v10' not found in registry**
-
