@@ -1,12 +1,12 @@
 ---
 title: "Toggle Group"
-description: "Custom toggle group component."
+description: "A set of two-state buttons that can be toggled on or off."
 order: 26
 ---
 
 # Toggle Group
 
-Custom toggle group component.
+A set of two-state buttons that can be toggled on or off.
 
 # Installation
 

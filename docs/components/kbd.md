@@ -1,12 +1,12 @@
 ---
 title: "Kbd"
-description: "Display keyboard keys and shortcuts with proper styling."
+description: "Used to display textual user input from keyboard."
 order: 0
 ---
 
 # Kbd
 
-Display keyboard keys and shortcuts with proper styling.
+Used to display textual user input from keyboard.
 
 # Installation
 

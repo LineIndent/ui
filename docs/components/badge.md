@@ -1,12 +1,12 @@
 ---
 title: "Badge"
-description: "A badge component that displays a label."
+description: "Displays a badge or a component that looks like a badge."
 order: 2
 ---
 
 # Badge
 
-A badge component that displays a label.
+Displays a badge or a component that looks like a badge.
 
 # Installation
 

@@ -1,12 +1,12 @@
 ---
 title: "Input"
-description: "Custom input component."
+description: "A text input component for forms and user data entry with built-in styling and accessibility features."
 order: 11
 ---
 
 # Input
 
-Custom input component.
+A text input component for forms and user data entry with built-in styling and accessibility features.
 
 # Installation
 

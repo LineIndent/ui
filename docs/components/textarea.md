@@ -1,12 +1,12 @@
 ---
 title: "Textarea"
-description: "Custom Textarea component."
+description: "Displays a form textarea or a component that looks like a textarea."
 order: 23
 ---
 
 # Textarea
 
-Custom Textarea component.
+Displays a form textarea or a component that looks like a textarea.
 
 # Installation
 

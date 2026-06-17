@@ -1,12 +1,12 @@
 ---
 title: "Skeleton"
-description: "Custom skeleton component."
+description: "Use to show a placeholder while content is loading."
 order: 19
 ---
 
 # Skeleton
 
-Custom skeleton component.
+Use to show a placeholder while content is loading.
 
 # Installation
 

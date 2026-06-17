@@ -1,12 +1,12 @@
 ---
 title: "Checkbox"
-description: "Checkbox component from base-ui components."
+description: "A control that allows the user to toggle between checked and not checked."
 order: 5
 ---
 
 # Checkbox
 
-Checkbox component from base-ui components.
+A control that allows the user to toggle between checked and not checked.
 
 # Installation
 

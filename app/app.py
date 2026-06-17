@@ -1,5 +1,7 @@
 import reflex as rx
 
+from app.export import export_site
+
 app = rx.App(
     head_components=[
         rx.el.script(src="/prism/prism.js"),

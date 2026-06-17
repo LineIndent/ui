@@ -1,11 +1,11 @@
 ---
 title: "Select"
-description: "Custom select component."
+description: "Displays a list of options for the user to pick from—triggered by a button."
 order: 18
 ---
 
 # Select
-Custom select component.
+Displays a list of options for the user to pick from—triggered by a button.
 
 # Installation
 Copy the following code into your app directory.

@@ -1,12 +1,12 @@
 ---
 title: "Menu"
-description: "Custom menu component."
+description: "Displays a menu to the user — such as a set of actions or functions — triggered by a button."
 order: 13
 ---
 
 # Menu
 
-Custom menu component.
+Displays a menu to the user — such as a set of actions or functions — triggered by a button.
 
 # Installation
 

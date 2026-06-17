@@ -1,12 +1,12 @@
 ---
 title: "Popover"
-description: "Custom popover component."
+description: "Displays rich content in a portal, triggered by a button."
 order: 15
 ---
 
 # Popover
 
-Custom popover component.
+Displays rich content in a portal, triggered by a button.
 
 # Installation
 

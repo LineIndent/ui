@@ -1,12 +1,12 @@
 ---
 title: "Toggle"
-description: "Custom toggle component."
+description: "A two-state button that can be either on or off."
 order: 25
 ---
 
 # Toggle
 
-Custom toggle component.
+A two-state button that can be either on or off.
 
 # Installation
 

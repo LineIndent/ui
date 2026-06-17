@@ -1,12 +1,12 @@
 ---
 title: "Input Group"
-description: "Combines inputs with prefixes, suffixes, or footers for structured data entry."
+description: "Add addons, buttons, and helper content to inputs."
 order: 0
 ---
 
 # Input Group
 
-Combines inputs with prefixes, suffixes, or footers for structured data entry.
+Add addons, buttons, and helper content to inputs.
 
 # Installation
 

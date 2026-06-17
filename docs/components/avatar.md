@@ -1,6 +1,6 @@
 ---
 title: "Avatar"
-description: "Displays a user's profile picture, initials, or fallback icon."
+description: "An image element with a fallback for representing the user."
 order: 1
 ---
 

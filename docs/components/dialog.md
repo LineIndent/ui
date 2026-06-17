@@ -1,12 +1,12 @@
 ---
 title: "Dialog"
-description: "Custom dialog component."
+description: "A window overlaid on either the primary window or another dialog window, rendering the content underneath inert."
 order: 8
 ---
 
 # Dialog
 
-Custom dialog component.
+A window overlaid on either the primary window or another dialog window, rendering the content underneath inert.
 
 # Installation
 

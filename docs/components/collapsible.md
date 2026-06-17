@@ -1,12 +1,12 @@
 ---
 title: "Collapsible"
-description: "Custom collapsible component."
+description: "An interactive component which expands/collapses a panel."
 order: 6
 ---
 
 # Collapsible
 
-Custom collapsible component.
+An interactive component which expands/collapses a panel.
 
 # Installation
 

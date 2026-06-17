@@ -1,12 +1,12 @@
 ---
 title: "Slider"
-description: "Custom Slider component."
+description: "An input where the user selects a value from within a given range."
 order: 20
 ---
 
 # Slider
 
-Custom Slider component.
+An input where the user selects a value from within a given range.
 
 # Installation
 

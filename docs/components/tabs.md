@@ -1,12 +1,12 @@
 ---
 title: "Tabs"
-description: "Custom tabs component."
+description: "A set of layered sections of content—known as tab panels—that are displayed one at a time."
 order: 22
 ---
 
 # Tabs
 
-Custom tabs component.
+A set of layered sections of content—known as tab panels—that are displayed one at a time.
 
 # Installation
 

@@ -1,12 +1,12 @@
 ---
 title: "Scroll Area"
-description: "Custom scroll area component."
+description: "Augments native scroll functionality for custom, cross-browser styling."
 order: 17
 ---
 
 # Scroll Area
 
-Custom scroll area component.
+Augments native scroll functionality for custom, cross-browser styling.
 
 # Installation
 

@@ -1,12 +1,12 @@
 ---
 title: "Button"
-description: "A custom button component."
+description: "Displays a button or a component that looks like a button."
 order: 3
 ---
 
 # Button
 
-A custom button component.
+Displays a button or a component that looks like a button.
 
 # Installation
 

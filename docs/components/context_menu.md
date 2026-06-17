@@ -1,12 +1,12 @@
 ---
 title: "Context Menu"
-description: "Custom context menu component."
+description: "Displays a menu of actions triggered by a right click."
 order: 7
 ---
 
 # Context Menu
 
-Custom context menu component.
+Displays a menu of actions triggered by a right click.
 
 # Installation
 

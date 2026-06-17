@@ -6,7 +6,7 @@ order: 0
 
 # Typography
 
-Styles for headings, paragraphs, lists, etc.
+Styles for headings, paragraphs, lists, and other text elements.
 
 # Installation
 No installation is used for typographies. This page is an example of how you can use utility classes to style your text.
