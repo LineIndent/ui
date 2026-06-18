@@ -200,45 +200,73 @@ def table_of_content(url: str, toc_data: List[Dict]):
         ),
         class_name="hidden xl:block max-w-[18rem] w-full sticky top-18 h-[calc(100vh-3rem)] shrink-0",
         on_mount=rx.call_script("""
-        console.log("TOC mounted");
+                        console.log("TOC mounted");
 
-        const headings = document.querySelectorAll('header[id]');
-        console.log("headings:", headings);
+                        function setActive(id) {
+                            document.querySelectorAll('[id^="toc-"]').forEach((el) => {
+                                el.classList.remove('text-foreground', 'font-semibold');
+                                el.classList.add('text-muted-foreground');
+                            });
 
-        let currentId = null;
+                            const active = document.getElementById(`toc-${id}`);
+                            if (active) {
+                                active.classList.remove('text-muted-foreground');
+                                active.classList.add('text-foreground', 'font-semibold');
+                            }
+                        }
 
-        const observer = new IntersectionObserver(
-            (entries) => {
-                entries.forEach((entry) => {
-                    if (entry.isIntersecting) {
-                        currentId = entry.target.id;
-                        console.log("active:", currentId);
-                    }
-                });
+                        function initTOC() {
+                            const headings = Array.from(document.querySelectorAll('header[id]'));
+                            console.log("headings:", headings);
 
-                if (!currentId) return;
+                            if (!headings.length) return;
 
-                // reset all TOC links
-                document.querySelectorAll('[id^="toc-"]').forEach((el) => {
-                    el.classList.remove('text-foreground', 'font-semibold');
-                    el.classList.add('text-muted-foreground');
-                });
+                            const visibleHeadings = new Map();
+                            let hasActivated = false;
 
-                // activate current one
-                document
-                    .getElementById(`toc-${currentId}`)
-                    ?.classList.remove('text-muted-foreground');
+                            const observer = new IntersectionObserver(
+                                (entries) => {
+                                    entries.forEach((entry) => {
+                                        if (entry.isIntersecting) {
+                                            visibleHeadings.set(entry.target.id, entry.boundingClientRect.top);
+                                        } else {
+                                            visibleHeadings.delete(entry.target.id);
+                                        }
+                                    });
 
-                document
-                    .getElementById(`toc-${currentId}`)
-                    ?.classList.add('text-foreground', 'font-semibold');
-            },
-            {
-                rootMargin: '-20% 0px -70% 0px',
-                threshold: 0.1,
-            }
-        );
+                                    if (visibleHeadings.size > 0) {
+                                        const sorted = Array.from(visibleHeadings.entries()).sort((a, b) => a[1] - b[1]);
+                                        setActive(sorted[0][0]);
+                                        hasActivated = true;
+                                    }
+                                },
+                                {
+                                    rootMargin: '-5% 0px -75% 0px',
+                                    threshold: 0
+                                }
+                            );
 
-        headings.forEach((h) => observer.observe(h));
-        """),
+                            headings.forEach((h) => observer.observe(h));
+
+                            // --- FIX: Add instant click highlighting ---
+                            document.querySelectorAll('[id^="toc-"]').forEach((link) => {
+                                link.addEventListener('click', () => {
+                                    const targetId = link.id.replace('toc-', '');
+                                    setActive(targetId);
+                                });
+                            });
+
+                            // Fallback for initial load/reload if the observer's rootMargin misses the current header
+                            setTimeout(() => {
+                                if (!hasActivated) {
+                                    const currentHeader = headings.find(h => h.getBoundingClientRect().top >= -50) || headings[0];
+                                    if (currentHeader) {
+                                        setActive(currentHeader.id);
+                                    }
+                                }
+                            }, 100);
+                        }
+
+                        setTimeout(initTOC, 50);
+                        """),
     )

@@ -55,9 +55,10 @@ class DocParser:
                     if (
                         inspect.isfunction(o)
                         or inspect.isclass(o)
+                        or inspect.ismethod(o)
                         or isinstance(o, rx.ComponentNamespace)
-                    ) and o.__module__ == mod.__name__:
-                        self.registry[n.lower()] = o
+                    ) and getattr(o, "__module__", None) == mod.__name__:
+                        self.registry[n.lower()] = (o, n)
 
     def _render(self, cmd: str, arg: str) -> rx.Component:
 
@@ -68,9 +69,14 @@ class DocParser:
                 else arg
             )
             name = val[0] if isinstance(val, list) else val
-            obj = self.registry.get(str(name).lower())
-            if not obj and cmd != "install":
+            
+            registry_entry = self.registry.get(str(name).lower())
+            if not registry_entry and cmd != "install":
                 return render_parse_error(f"'{name}' not found")
+            
+            obj, preferred_name = (
+                registry_entry if registry_entry else (None, str(name))
+            )
 
             # Use the class for inspection if obj is an instance (like ComponentNamespace)
             inspect_obj = obj
@@ -123,7 +129,7 @@ class DocParser:
                 return cli_and_manual_installation_wrapper(cli_cmd, files_data)
 
             if cmd == "usage":
-                import_name = getattr(obj, "__name__", str(name))
+                import_name = preferred_name
                 module_stem = pathlib.Path(file_path).stem if file_path else "component"
                 return usage_wrapper(
                     f"from components.ui.{module_stem} import {import_name}"
