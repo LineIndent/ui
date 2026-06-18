@@ -12,7 +12,7 @@ A control that allows the user to toggle between checked and not checked.
 
 Copy the following code into your app directory.
 
---INSTALL(["checkbox", "buridan add component checkbox"])--
+--INSTALL(checkbox)--
 
 # Usage
 

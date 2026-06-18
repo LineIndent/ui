@@ -12,7 +12,7 @@ Augments native scroll functionality for custom, cross-browser styling.
 
 Copy the following code into your app directory.
 
---INSTALL(["ScrollArea", "buridan add component scroll_area"])--
+--INSTALL(scroll_area)--
 
 # Usage
 

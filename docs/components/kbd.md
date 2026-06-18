@@ -12,7 +12,7 @@ Used to display textual user input from keyboard.
 
 Copy the following code into your app directory.
 
---INSTALL(["kbd", "buridan add component kbd"])--
+--INSTALL(kbd)--
 
 
 # Anatomy 

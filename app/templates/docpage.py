@@ -23,7 +23,7 @@ def docpage(main_content, toc_content):
                     toc_content,
                     class_name="flex items-start w-full flex-1 min-w-0",
                 ),
-                class_name="flex w-full gap-x-0 xl:max-w-[96rem] 2xl:max-w-[96rem] mx-auto px-7",
+                class_name="flex w-full gap-x-0 xl:max-w-[96rem] 2xl:max-w-[96rem] mx-auto px-2 md:px-7",
             ),
             class_name="w-full",
         ),

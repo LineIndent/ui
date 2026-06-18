@@ -12,7 +12,7 @@ A window overlaid on either the primary window or another dialog window, renderi
 
 Copy the following code into your app directory.
 
---INSTALL(["Dialog", "buridan add component dialog"])--
+--INSTALL(dialog)--
 
 # Usage
 

@@ -12,7 +12,7 @@ A set of collapsible panels with headings.
 
 Copy the following code into your app directory.
 
---INSTALL(["Accordion", "uv run buridan add component accordion"])--
+--INSTALL(accordion)--
 
 # Usage
 

@@ -12,7 +12,7 @@ A set of two-state buttons that can be toggled on or off.
 
 Copy the following code into your app directory.
 
---INSTALL(["toggle_group", "buridan add component toggle_group"])--
+--INSTALL(toggle_group)--
 
 # Usage
 

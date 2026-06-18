@@ -8,13 +8,6 @@ from components.icons.hugeicon import hi
 from components.ui.button import button
 
 
-def get_ui_base_files():
-    base_ui = open("components/ui/base_ui.py").read()
-    components = open("components/ui/component.py").read()
-    twmerge = open("components/utils/twmerge.py").read()
-    return base_ui, components, twmerge
-
-
 def styled_tab_trigger(label: str, value: str) -> rx.Component:
     base_tab_style = {
         "width": "flex-1",
@@ -74,6 +67,43 @@ def create_copy_button(content: str) -> rx.Component:
 
 
 def file_codeblock(file_path: str, source: str) -> rx.Component:
+
+    toggle_height_id = generate_component_id()
+    parts = file_path.rsplit("/", 1)
+    dir_part = parts[0] + "/" if len(parts) > 1 else ""
+    file_part = parts[1] if len(parts) > 1 else parts[0]
+
+    return rx.el.div(
+        rx.el.div(
+            create_copy_button(content=source),
+            class_name="absolute right-0 translate-y-2/3 bg-secondary dark:bg-card",
+        ),
+        rx.el.div(
+            rx.el.code(
+                dir_part + file_part,
+                style={
+                    "white-space": "pre",
+                    "color": "var(--foreground)",
+                    "font-size": "13px",
+                    "padding": "1rem 0.75rem",
+                    "display": "block",
+                },
+            ),
+            id=f"code-panel-{toggle_height_id}",
+            # style={
+            #     "max-height": "40vh",
+            #     "overflow": "hidden",
+            #     "transition": "max-height 0.3s ease-in-out",
+            #     "mask-image": "linear-gradient(to bottom, black 65%, transparent 100%)",
+            #     "-webkit-mask-image": "linear-gradient(to bottom, black 65%, transparent 100%)",
+            # },
+            class_name="scrollbar-none flex-1 min-h-0 flex flex-col h-full relative overflow-x-auto",
+        ),
+        class_name="rounded-radius outline outline-input flex-1 min-h-0 flex flex-col bg-secondary dark:bg-card",
+    )
+
+
+def file_codeblock_full(file_path: str, source: str) -> rx.Component:
     toggle_height_id = generate_component_id()
     parts = file_path.rsplit("/", 1)
     dir_part = parts[0] + "/" if len(parts) > 1 else ""
@@ -82,23 +112,17 @@ def file_codeblock(file_path: str, source: str) -> rx.Component:
     return rx.el.div(
         rx.el.div(
             rx.el.div(
-                rx.html(
-                    """
-                    <svg role="img" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><title>Python</title><path d="M14.25.18l.9.2.73.26.59.3.45.32.34.34.25.34.16.33.1.3.04.26.02.2-.01.13V8.5l-.05.63-.13.55-.21.46-.26.38-.3.31-.33.25-.35.19-.35.14-.33.1-.3.07-.26.04-.21.02H8.77l-.69.05-.59.14-.5.22-.41.27-.33.32-.27.35-.2.36-.15.37-.1.35-.07.32-.04.27-.02.21v3.06H3.17l-.21-.03-.28-.07-.32-.12-.35-.18-.36-.26-.36-.36-.35-.46-.32-.59-.28-.73-.21-.88-.14-1.05-.05-1.23.06-1.22.16-1.04.24-.87.32-.71.36-.57.4-.44.42-.33.42-.24.4-.16.36-.1.32-.05.24-.01h.16l.06.01h8.16v-.83H6.18l-.01-2.75-.02-.37.05-.34.11-.31.17-.28.25-.26.31-.23.38-.2.44-.18.51-.15.58-.12.64-.1.71-.06.77-.04.84-.02 1.27.05zm-6.3 1.98l-.23.33-.08.41.08.41.23.34.33.22.41.09.41-.09.33-.22.23-.34.08-.41-.08-.41-.23-.33-.33-.22-.41-.09-.41.09zm13.09 3.95l.28.06.32.12.35.18.36.27.36.35.35.47.32.59.28.73.21.88.14 1.04.05 1.23-.06 1.23-.16 1.04-.24.86-.32.71-.36.57-.4.45-.42.33-.42.24-.4.16-.36.09-.32.05-.24.02-.16-.01h-8.22v.82h5.84l.01 2.76.02.36-.05.34-.11.31-.17.29-.25.25-.31.24-.38.2-.44.17-.51.15-.58.13-.64.09-.71.07-.77.04-.84.01-1.27-.04-1.07-.14-.9-.2-.73-.25-.59-.3-.45-.33-.34-.34-.25-.34-.16-.33-.1-.3-.04-.25-.02-.2.01-.13v-5.34l.05-.64.13-.54.21-.46.26-.38.3-.32.33-.24.35-.2.35-.14.33-.1.3-.06.26-.04.21-.02.13-.01h5.84l.69-.05.59-.14.5-.21.41-.28.33-.32.27-.35.2-.36.15-.36.1-.35.07-.32.04-.28.02-.21V6.07h2.09l.14.01zm-6.47 14.25l-.23.33-.08.41.08.41.23.33.33.23.41.08.41-.08.33-.23.23-.33.08-.41-.08-.41-.23-.33-.33-.23-.41-.08-.41.08z"/></svg>
-                    """,
-                    class_name="text-foreground size-4",
-                ),
                 rx.el.p(
                     dir_part,
                     rx.el.span(rx.el.strong(file_part)),
                     class_name="text-muted-foreground text-sm font-normal",
                 ),
-                class_name="flex flex-row gap-x-2 items-center px-[0.75rem] py-2",
+                class_name="flex px-[0.75rem] py-2",
             ),
             rx.el.div(
-                button(
+                rx.el.button(
                     "Expand",
-                    class_name="!text-sm text-foreground",
+                    class_name="!text-xs text-muted-foreground hover:text-foreground",
                     id=f"trigger-{toggle_height_id}",
                     on_click=rx.call_script(
                         f"""
@@ -120,8 +144,8 @@ def file_codeblock(file_path: str, source: str) -> rx.Component:
                         }}
                         """
                     ),
-                    size="sm",
-                    variant="ghost",
+                    # size="sm",
+                    # variant="ghost",
                 ),
                 create_copy_button(content=source),
                 class_name="flex flex-row gap-x-2 items-center",
@@ -161,22 +185,24 @@ def chart_util_wrapper(source: str):
                 class_name="absolute top-2 right-2 z-10 bg-secondary dark:bg-card",
             ),
             rx.el.div(
-                rx.el.pre(
-                    rx.el.code(
-                        source,
-                        class_name="language-python",
-                        on_mount=rx.call_script("Prism.highlightAll()"),
+                rx.el.div(
+                    rx.el.pre(
+                        rx.el.code(
+                            source,
+                            class_name="language-python",
+                            on_mount=rx.call_script("Prism.highlightAll()"),
+                        ),
+                        style={
+                            "padding": "1rem 0.75rem",
+                        },
+                        class_name="w-full h-full !bg-secondary dark:!bg-card !text-sm",
                     ),
-                    style={
-                        "padding": "1rem 0.75rem",
-                    },
-                    class_name="w-full h-full !bg-secondary dark:!bg-card !text-sm",
+                    class_name="max-h-[500px] overflow-auto scrollbar-none",
                 ),
-                class_name="max-h-[500px] overflow-auto scrollbar-none",
+                class_name="bg-secondary dark:bg-card relative overflow-hidden",
             ),
-            class_name="bg-secondary dark:bg-card relative overflow-hidden",
+            class_name="w-full border border-input rounded-radius mb-8 !overflow-hidden",
         ),
-        class_name="w-full border border-input rounded-radius mb-8 !overflow-hidden",
     )
 
 
@@ -225,23 +251,20 @@ def usage_wrapper(import_path: str) -> rx.Component:
                 "display": "block",
             },
         ),
-        class_name="w-full mt-4 mb-8 rounded-[0.625rem] outline outline-input flex-1 min-h-0 flex flex-col bg-secondary dark:bg-card",
+        class_name="w-full mt-4 mb-8 rounded-[0.625rem] outline outline-input flex-1 min-h-0 flex flex-col bg-secondary dark:bg-card overflow-x-auto scrollbar-none",
     )
 
 
 def cli_and_manual_installation_wrapper(
-    cli_command: str, source: str, file_name: str
+    cli_command: str, files: list[tuple[str, str]]
 ) -> rx.Component:
     """Tabbed wrapper for CLI and Manual installation instructions."""
-    base_ui_source, components_source, twmerge_source = get_ui_base_files()
 
     tab_list_style = {
         "border": "none",
         "boxShadow": "none",
         "background": "transparent",
     }
-
-    manual_title_style = "text-muted-foreground text-md font-semibold"
 
     return rx.tabs.root(
         rx.tabs.list(
@@ -253,31 +276,18 @@ def cli_and_manual_installation_wrapper(
             rx.el.div(
                 rx.el.div(
                     rx.el.div(
-                        rx.el.div(
-                            rx.html(
-                                """
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="size-5" color="currentColor" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M7.5 7.5L8.72654 8.55719C9.24218 9.00163 9.5 9.22386 9.5 9.5C9.5 9.77614 9.24218 9.99836 8.72654 10.4428L7.5 11.5"></path>
-                                    <path d="M11.5 12.5H15.5"></path>
-                                    <path d="M12 21C15.7497 21 17.6246 21 18.9389 20.0451C19.3634 19.7367 19.7367 19.3634 20.0451 18.9389C21 17.6246 21 15.7497 21 12C21 8.25027 21 6.3754 20.0451 5.06107C19.7367 4.6366 19.3634 4.26331 18.9389 3.95491C17.6246 3 15.7497 3 12 3C8.25027 3 6.3754 3 5.06107 3.95491C4.6366 4.26331 4.26331 4.6366 3.95491 5.06107C3 6.3754 3 8.25027 3 12C3 15.7497 3 17.6246 3.95491 18.9389C4.26331 19.3634 4.6366 19.7367 5.06107 20.0451C6.3754 21 8.25027 21 12 21Z"></path>
-                                </svg>
-                                """,
-                                class_name="text-foreground",
-                            ),
-                            rx.el.p(
-                                "uv",
-                                style={
-                                    "font-size": "0.875rem",
-                                    "line-height": "1",
-                                    "display": "block",
-                                    "overflow": "hidden",
-                                },
-                                class_name="text-foreground font-normal font-theme",
-                            ),
-                            class_name="flex flex-row gap-x-2 items-center px-[0.75rem] py-2",
+                        rx.el.p(
+                            "uv",
+                            style={
+                                "font-size": "0.875rem",
+                                "line-height": "1",
+                                "display": "block",
+                                "overflow": "hidden",
+                            },
+                            class_name="text-foreground font-normal font-theme",
                         ),
                         create_copy_button(content=cli_command),
-                        class_name="w-full border-b border-input flex flex-row items-center justify-between",
+                        class_name="w-full border-b border-input flex flex-row items-center justify-between pl-[0.75rem] py-2",
                     ),
                     rx.el.div(
                         rx.el.code(
@@ -301,17 +311,30 @@ def cli_and_manual_installation_wrapper(
         ),
         rx.tabs.content(
             rx.el.div(
-                rx.el.p("1. Base UI package library", class_name=manual_title_style),
-                file_codeblock("components/ui/base_ui.py", base_ui_source),
-                rx.el.p("2. Component library", class_name=manual_title_style),
-                file_codeblock("components/ui/component.py", components_source),
-                rx.el.p(
-                    "3. Tailwind merge utility file", class_name=manual_title_style
+                # *[file_codeblock(i, file[0], file[1]) for i, file in enumerate(files)],
+                rx.el.div(
+                    rx.el.p(
+                        "1. Copy and paste the following dependencies into your project.",
+                        class_name="text-sm font-medium",
+                    ),
+                    rx.el.div(
+                        *[
+                            file_codeblock(file[0], file[1])
+                            for i, file in enumerate(files[:-1])
+                        ],
+                        class_name="w-full flex flex-col gap-y-4",
+                    ),
+                    class_name="w-full flex flex-col gap-y-4",
                 ),
-                file_codeblock("components/utils/twmerge.py", twmerge_source),
-                rx.el.p("4. UI component file", class_name=manual_title_style),
-                file_codeblock(f"components/ui/{file_name.lower()}.py", source),
-                class_name="flex flex-col gap-y-4",
+                rx.el.div(
+                    rx.el.p(
+                        "2. Copy and paste the following component code into your project.",
+                        class_name="text-sm font-medium",
+                    ),
+                    file_codeblock_full(files[-1][0], files[-1][1]),
+                    class_name="w-full flex flex-col gap-y-4",
+                ),
+                class_name="flex flex-col gap-y-6",
             ),
             value="manual",
             class_name="mt-6",

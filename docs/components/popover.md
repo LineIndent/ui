@@ -12,7 +12,7 @@ Displays rich content in a portal, triggered by a button.
 
 Copy the following code into your app directory.
 
---INSTALL(["Popover", "buridan add component popover"])--
+--INSTALL(popover)--
 
 # Usage
 

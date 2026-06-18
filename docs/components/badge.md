@@ -12,7 +12,7 @@ Displays a badge or a component that looks like a badge.
 
 Copy the following code into your app directory.
 
---INSTALL(["Badge", "buridan add component badge"])--
+--INSTALL(badge)--
 
 # Usage
 

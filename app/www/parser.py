@@ -8,6 +8,7 @@ from typing import Callable, Dict, List
 
 import reflex as rx
 
+from app.registry.components import COMPONENT_REGISTRY
 from app.www.style import markdown_component_map, render_parse_error
 from app.www.wrapper import (
     chart_util_wrapper,
@@ -15,6 +16,24 @@ from app.www.wrapper import (
     demo_wrapper,
     usage_wrapper,
 )
+
+
+def get_all_dependencies(name: str, registry: Dict) -> List[str]:
+    """Recursively get all dependencies for a component in correct order."""
+    deps = []
+
+    def resolve(comp_name: str):
+        comp = registry.get(comp_name.lower())
+        if not comp:
+            return
+        for dep in comp.get("dependencies", []):
+            if dep not in deps:
+                resolve(dep)
+        if comp_name not in deps:
+            deps.append(comp_name)
+
+    resolve(name)
+    return deps
 
 
 class DocParser:
@@ -41,6 +60,7 @@ class DocParser:
                         self.registry[n.lower()] = o
 
     def _render(self, cmd: str, arg: str) -> rx.Component:
+
         try:
             val = (
                 ast.literal_eval(arg)
@@ -49,19 +69,19 @@ class DocParser:
             )
             name = val[0] if isinstance(val, list) else val
             obj = self.registry.get(str(name).lower())
-            if not obj:
+            if not obj and cmd != "install":
                 return render_parse_error(f"'{name}' not found")
 
             # Use the class for inspection if obj is an instance (like ComponentNamespace)
             inspect_obj = obj
-            if not (
+            if obj and not (
                 inspect.isclass(obj) or inspect.isfunction(obj) or inspect.ismodule(obj)
             ):
                 inspect_obj = getattr(obj, "__class__", obj)
 
             # Check if it's a chart-related component
             try:
-                file_path = inspect.getfile(inspect_obj)
+                file_path = inspect.getfile(inspect_obj) if inspect_obj else ""
                 is_chart = "charts" in file_path
             except (TypeError, ValueError):
                 is_chart = False
@@ -82,11 +102,25 @@ class DocParser:
                 return chart_util_wrapper(source=src)
 
             if cmd == "install":
-                mod = inspect.getmodule(inspect_obj)
-                if not mod:
-                    return render_parse_error(f"Module not found for {name}")
-                src = inspect.getsource(mod).strip()
-                return cli_and_manual_installation_wrapper(val[1], src, val[0])
+                comp_name = str(name).lower()
+                all_deps = get_all_dependencies(comp_name, COMPONENT_REGISTRY)
+                if not all_deps:
+                    return render_parse_error(
+                        f"Component '{name}' not found in registry"
+                    )
+
+                files_data = []
+                for dep in all_deps:
+                    comp_info = COMPONENT_REGISTRY.get(dep)
+                    for f_path in comp_info.get("files", []):
+                        try:
+                            content = Path(f_path).read_text().strip()
+                            files_data.append((f_path, content))
+                        except Exception as e:
+                            return render_parse_error(f"Error reading {f_path}: {e}")
+
+                cli_cmd = f"uv run buridan add component {comp_name}"
+                return cli_and_manual_installation_wrapper(cli_cmd, files_data)
 
             if cmd == "usage":
                 import_name = getattr(obj, "__name__", str(name))

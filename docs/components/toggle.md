@@ -12,7 +12,7 @@ A two-state button that can be either on or off.
 
 Copy the following code into your app directory.
 
---INSTALL(["Toggle", "buridan add component toggle"])--
+--INSTALL(toggle)--
 
 # Usage
 

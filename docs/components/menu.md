@@ -12,7 +12,7 @@ Displays a menu to the user — such as a set of actions or functions — trigge
 
 Copy the following code into your app directory.
 
---INSTALL(["Menu", "buridan add component menu"])--
+--INSTALL(menu)--
 
 # Usage
 

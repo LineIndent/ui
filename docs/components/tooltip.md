@@ -12,7 +12,7 @@ A popup that displays information related to an element when the element receive
 
 Copy the following code into your app directory.
 
---INSTALL(["Tooltip", "buridan add component tooltip"])--
+--INSTALL(tooltip)--
 
 # Usage
 

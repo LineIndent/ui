@@ -10,7 +10,7 @@ Displays a list of options for the user to pick from—triggered by a button.
 # Installation
 Copy the following code into your app directory.
 
---INSTALL(["Select", "buridan add component select"])--
+--INSTALL(select)--
 
 # Usage
 --USAGE(select)--

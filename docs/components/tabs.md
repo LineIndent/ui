@@ -12,7 +12,7 @@ A set of layered sections of content—known as tab panels—that are displayed 
 
 Copy the following code into your app directory.
 
---INSTALL(["Tabs", "buridan add component tabs"])--
+--INSTALL(tabs)--
 
 # Usage
 

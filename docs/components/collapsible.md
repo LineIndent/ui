@@ -12,7 +12,7 @@ An interactive component which expands/collapses a panel.
 
 Copy the following code into your app directory.
 
---INSTALL(["Collapsible", "buridan add component collapsible"])--
+--INSTALL(collapsible)--
 
 # Usage
 

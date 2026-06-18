@@ -12,7 +12,7 @@ Displays a button or a component that looks like a button.
 
 Copy the following code into your app directory.
 
---INSTALL(["Button", "buridan add component button"])--
+--INSTALL(button)--
 
 # Usage
 

@@ -12,7 +12,7 @@ Use to show a placeholder while content is loading.
 
 Copy the following code into your app directory.
 
---INSTALL(["skeleton_component", "buridan add component skeleton"])--
+--INSTALL(skeleton)--
 
 # Usage
 

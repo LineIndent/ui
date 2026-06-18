@@ -12,7 +12,7 @@ An input where the user selects a value from within a given range.
 
 Copy the following code into your app directory.
 
---INSTALL(["Slider", "buridan add component slider"])--
+--INSTALL(slider)--
 
 # Usage
 

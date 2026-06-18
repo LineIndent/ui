@@ -12,7 +12,7 @@ A text input component for forms and user data entry with built-in styling and a
 
 Copy the following code into your app directory.
 
---INSTALL(["Input", "buridan add component input"])--
+--INSTALL(input)--
 
 # Usage
 

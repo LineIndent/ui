@@ -12,7 +12,7 @@ Add addons, buttons, and helper content to inputs.
 
 Copy the following code into your app directory.
 
---INSTALL(["input_with_addons", "buridan add component input_group"])--
+--INSTALL(input_group)--
 
 # Examples
 

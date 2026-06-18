@@ -4,7 +4,7 @@ description: "Combine labels, controls, and help text to compose accessible form
 order: 0
 ---
 
-# AccorFielddion
+# Field
 
 Combine labels, controls, and help text to compose accessible form fields and grouped inputs.
 
@@ -12,7 +12,7 @@ Combine labels, controls, and help text to compose accessible form fields and gr
 
 Copy the following code into your app directory.
 
---INSTALL(["Field", "uv run buridan add component field"])--
+--INSTALL(field)--
 
 # Usage
 

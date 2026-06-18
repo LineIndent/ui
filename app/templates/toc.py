@@ -66,7 +66,8 @@ def _create_markdown_toc_links(toc_data: List[Dict]) -> rx.Component:
             rx.el.a(
                 entry["text"],
                 href=f"#{entry['id']}",
-                class_name=f"cursor-pointer text-sm font-[450] hover:text-foreground no-underline{' pl-4' if entry['level'] > 1 else ''}",
+                id=f"toc-{entry['id']}",
+                class_name=f"cursor-pointer transition-colors duration-250 text-[0.8rem] text-muted-foreground hover:text-foreground no-underline{' pl-4' if entry['level'] > 1 else ''}",
             )
             for entry in toc_data
         ],
@@ -174,7 +175,10 @@ def table_of_content(url: str, toc_data: List[Dict]):
                         class_name="text-xs text-muted-foreground font-medium pb-2",
                     ),
                     rx.el.a(
-                        rx.el.p("llms.txt", class_name="text-sm font-[450]"),
+                        rx.el.p(
+                            "llms.txt",
+                            class_name="text-[0.8rem] text-muted-foreground hover:text-foreground",
+                        ),
                         href="/llms.txt",
                         target="_blank",
                         rel="noopener noreferrer",
@@ -195,4 +199,46 @@ def table_of_content(url: str, toc_data: List[Dict]):
             class_name="flex flex-col gap-y-4 overflow-scroll scrollbar-none",
         ),
         class_name="hidden xl:block max-w-[18rem] w-full sticky top-18 h-[calc(100vh-3rem)] shrink-0",
+        on_mount=rx.call_script("""
+        console.log("TOC mounted");
+
+        const headings = document.querySelectorAll('header[id]');
+        console.log("headings:", headings);
+
+        let currentId = null;
+
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        currentId = entry.target.id;
+                        console.log("active:", currentId);
+                    }
+                });
+
+                if (!currentId) return;
+
+                // reset all TOC links
+                document.querySelectorAll('[id^="toc-"]').forEach((el) => {
+                    el.classList.remove('text-foreground', 'font-semibold');
+                    el.classList.add('text-muted-foreground');
+                });
+
+                // activate current one
+                document
+                    .getElementById(`toc-${currentId}`)
+                    ?.classList.remove('text-muted-foreground');
+
+                document
+                    .getElementById(`toc-${currentId}`)
+                    ?.classList.add('text-foreground', 'font-semibold');
+            },
+            {
+                rootMargin: '-20% 0px -70% 0px',
+                threshold: 0.1,
+            }
+        );
+
+        headings.forEach((h) => observer.observe(h));
+        """),
     )

@@ -12,7 +12,7 @@ Displays the path to the current resource using a hierarchy of links.
 
 Copy the following code into your app directory.
 
---INSTALL(["breadcrumb", "buridan add component breadcrumb"])--
+--INSTALL(breadcrumb)--
 
 
 # Anatomy 

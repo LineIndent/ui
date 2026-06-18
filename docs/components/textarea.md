@@ -12,7 +12,7 @@ Displays a form textarea or a component that looks like a textarea.
 
 Copy the following code into your app directory.
 
---INSTALL(["Textarea", "buridan add component textarea"])--
+--INSTALL(textarea)--
 
 # Usage
 

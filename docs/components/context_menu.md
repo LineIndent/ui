@@ -12,7 +12,7 @@ Displays a menu of actions triggered by a right click.
 
 Copy the following code into your app directory.
 
---INSTALL(["ContextMenu", "buridan add component context_menu"])--
+--INSTALL(context_menu)--
 
 # Usage
 
