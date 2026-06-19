@@ -10,14 +10,36 @@ If you haven't done so already, make sure you have the latest version of Reflex 
 Most charts in this guide use static data as an example. This approach helps keep the UI simple, clean, and the site fast. However, real-world applications will likely require the use of Reflex's **state** to build full-stack data applications, or any application that involves dynamic data handling.
 
 
-> **Error: 'charting_state_example' not found in registry**
+```python
+class charting_state_example(rx.State):
+    data = [
+        {"month": "Jan", "desktop": 186},
+        {"month": "Feb", "desktop": 305},
+        {"month": "Mar", "desktop": 237},
+        {"month": "Apr", "desktop": 73},
+        {"month": "May", "desktop": 209},
+        {"month": "Jun", "desktop": 214},
+    ]
+```
 
 
 # Creating Your Chart
 The Buridan UI library includes 7 chart types: [Area](/charts/area-charts), [Bar](/charts/bar-charts), [Line](/charts/line-charts), [Pie](/charts/pie-charts), [Doughnut](/charts/doughnut-charts), [Radar](/charts/radar-charts), and [Scatter](/charts/scatter-charts). For this walkthrough, we’ll focus on **Area Charts**. To set up the area chart, import your state class inside the file that will contain your area chart component, then create the following function:
 
 
-> **Error: 'area_chart_example' not found in registry**
+```python
+def area_chart_example():
+    return rx.recharts.area_chart(
+        rx.recharts.area(
+            data_key="desktop",
+            fill=rx.color("accent"),
+            stroke=rx.color("accent", 8),
+        ),
+        data=charting_state_example.data,
+        width="100%",
+        height=250,
+    )
+```
 
 
 - `data_key`: Defines which field will be used for y-axis values.
@@ -29,7 +51,12 @@ The Cartesian Grid component in Reflex allows you to customize the grid of your 
 To add a customized Cartesian grid to your chart, use the following code snippet:
 
 
-> **Error: 'cartesian_grid_example' not found in registry**
+```python
+def cartesian_grid_example():
+    return rx.recharts.cartesian_grid(
+        horizontal=True, vertical=False, class_name="opacity-25"
+    )
+```
 
 
 - `horizontal=True`: Enable horizontal lines.
@@ -42,7 +69,17 @@ The XAxis component in Reflex allows you to customize the appearance and behavio
 To customize the X Axis, you can use the following code snippet:
 
 
-> **Error: 'xaxis_example' not found in registry**
+```python
+def xaxis_example():
+    return rx.recharts.x_axis(
+        data_key="month",
+        axis_line=False,
+        tick_size=10,
+        tick_line=False,
+        custom_attrs={"fontSize": "12px"},
+        interval="preserveStartEnd",
+    )
+```
 
 
 - `axis_line=False`: Hide the axis line.
@@ -55,7 +92,40 @@ The ToolTip component in Reflex is highly customizable and allows you to create 
 To customize the tooltip with a dictionary, use the following code snippet:
 
 
-> **Error: 'tooltip_example' not found in registry**
+```python
+def tooltip_example():
+    tooltip_styles = {
+        "is_animation_active": False,
+        "separator": "",
+        "cursor": False,
+        "item_style": {
+            "color": "currentColor",
+            "display": "flex",
+            "paddingBottom": "0px",
+            "justifyContent": "space-between",
+            "textTransform": "capitalize",
+        },
+        "label_style": {
+            "color": rx.color("slate", 9),
+            "fontWeight": "500",
+        },
+        "content_style": {
+            "background": rx.color("slate", 1),
+            "borderColor": rx.color("slate", 5),
+            "borderRadius": "5px",
+            "fontFamily": "var(--font-instrument-sans)",
+            "fontSize": "0.875rem",
+            "lineHeight": "1.25rem",
+            "fontWeight": "500",
+            "letterSpacing": "-0.01rem",
+            "minWidth": "8rem",
+            "width": "175px",
+            "padding": "0.375rem 0.625rem",
+            "position": "relative",
+        },
+    }
+    return rx.recharts.tooltip(**tooltip_styles)
+```
 
 
 In this example, we are using a dictionary to define various style properties for the tooltip, such as `item_style`, `label_style`, and `content_style`. These properties control the look and feel of the tooltip, from the color of the text to the layout of the content. The `general_style` prop is used to apply additional custom styles to specific parts of the tooltip.
