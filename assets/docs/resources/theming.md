@@ -15,7 +15,7 @@ rx.el.div(class_name="bg-background text-foreground")
 
 To use CSS variables for theming, make the following changes to your `rxconfig.py` file found at the root of your Reflex app. 
 
-Import the tailwind plugin `TailwindConfig`, add it to the `plugins=[...]` list, define (or remove if unecessary) `darkMode` or specific `plugins`, then finally set the `theme` and extend the colors based on the CSS tokens in your `globals.css` file in your assets folder.
+Import the tailwind plugin `TailwindConfig`, add it to the `plugins=[...]` list, define (or remove if unnecessary) `darkMode` or specific `plugins`, then finally set the `theme` and extend the colors based on the CSS tokens in your `globals.css` file in your assets folder.
 
 ```rxconfig.py
 from reflex.plugins.shared_tailwind import TailwindConfig

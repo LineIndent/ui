@@ -59,17 +59,23 @@ rx.el.button(
 
 # Common Event Triggers
 
-- `on_click`: Triggered on mouse click.
-- `on_change`: Triggered when an input value changes.
-- `on_submit`: Triggered when a form is submitted.
-- `on_mount`: Triggered when a component is first rendered on the page.
-- `on_blur`: Triggered when a component loses focus.
+Triggers than can be attached to Reflex components:
+
+| Event | Description |
+| :--- | :--- |
+| `on_click` | Triggered on mouse click. |
+| `on_change` | Triggered when an input value changes. |
+| `on_submit` | Triggered when a form is submitted. |
+| `on_mount` | Triggered when a component is first rendered on the page. |
+| `on_blur` | Triggered when a component loses focus. |
 
 # Special Actions
 
 Reflex provides built-in "Special Actions" that can be triggered from handlers:
 
-- `rx.redirect(url)`: Navigate to a new page.
-- `rx.set_clipboard(text)`: Copy text to the user's clipboard.
-- `rx.toast(message)`: Show a brief notification.
-- `rx.call_script(js)`: Execute custom JavaScript in the browser.
+| Utility | Description |
+| :--- | :--- |
+| `rx.redirect(url)` | Navigate to a new page. |
+| `rx.set_clipboard(text)` | Copy text to the user's clipboard. |
+| `rx.toast(message)` | Show a brief notification. |
+| `rx.call_script(js)` | Execute custom JavaScript in the browser. |
