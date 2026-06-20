@@ -56,22 +56,30 @@ def create_copy_button(url: str) -> rx.Component:
     )
 
 
-def _create_markdown_toc_links(toc_data: List[Dict]) -> rx.Component:
-    """Create markdown TOC links."""
+def _create_markdown_toc_links(url: str, toc_data: List[Dict]) -> rx.Component:
     if not toc_data:
         return rx.el.div()
 
-    return rx.el.div(
+    return rx.el.ul(
         *[
-            rx.el.a(
-                entry["text"],
-                href=f"#{entry['id']}",
-                id=f"toc-{entry['id']}",
-                class_name=f"cursor-pointer transition-colors duration-250 text-[0.8rem] text-muted-foreground hover:text-foreground no-underline{' pl-4' if entry['level'] > 1 else ''}",
+            rx.el.li(
+                rx.el.a(
+                    entry["text"],
+                    href=f"#{entry['id'].lower().replace(' ', '-')}",
+                    # href=f"/{url}#{entry['id'].lower().replace(' ', '-')}",
+                    class_name=(
+                        "toc-link "
+                        "cursor-pointer transition-colors duration-200 "
+                        "text-[0.8rem] text-muted-foreground "
+                        "hover:text-foreground no-underline"
+                        f"{' pl-4' if entry['level'] > 1 else ''}"
+                    ),
+                ),
             )
             for entry in toc_data
         ],
-        class_name="flex flex-col w-full gap-y-2",
+        id="toc-navigation",
+        class_name="flex flex-col w-full gap-y-0 list-none",
     )
 
 
@@ -191,7 +199,7 @@ def table_of_content(url: str, toc_data: List[Dict]):
                         "On This Page",
                         class_name="text-xs text-muted-foreground font-medium pb-2",
                     ),
-                    _create_markdown_toc_links(toc_data),
+                    _create_markdown_toc_links(url, toc_data),
                     class_name="w-full flex flex-col",
                 ),
                 class_name="flex flex-col w-full h-full p-4 gap-y-6",
@@ -199,74 +207,4 @@ def table_of_content(url: str, toc_data: List[Dict]):
             class_name="flex flex-col gap-y-4 overflow-scroll scrollbar-none",
         ),
         class_name="hidden xl:block max-w-[18rem] w-full sticky top-18 h-[calc(100vh-3rem)] shrink-0",
-        on_mount=rx.call_script("""
-                        console.log("TOC mounted");
-
-                        function setActive(id) {
-                            document.querySelectorAll('[id^="toc-"]').forEach((el) => {
-                                el.classList.remove('text-foreground', 'font-semibold');
-                                el.classList.add('text-muted-foreground');
-                            });
-
-                            const active = document.getElementById(`toc-${id}`);
-                            if (active) {
-                                active.classList.remove('text-muted-foreground');
-                                active.classList.add('text-foreground', 'font-semibold');
-                            }
-                        }
-
-                        function initTOC() {
-                            const headings = Array.from(document.querySelectorAll('header[id]'));
-                            console.log("headings:", headings);
-
-                            if (!headings.length) return;
-
-                            const visibleHeadings = new Map();
-                            let hasActivated = false;
-
-                            const observer = new IntersectionObserver(
-                                (entries) => {
-                                    entries.forEach((entry) => {
-                                        if (entry.isIntersecting) {
-                                            visibleHeadings.set(entry.target.id, entry.boundingClientRect.top);
-                                        } else {
-                                            visibleHeadings.delete(entry.target.id);
-                                        }
-                                    });
-
-                                    if (visibleHeadings.size > 0) {
-                                        const sorted = Array.from(visibleHeadings.entries()).sort((a, b) => a[1] - b[1]);
-                                        setActive(sorted[0][0]);
-                                        hasActivated = true;
-                                    }
-                                },
-                                {
-                                    rootMargin: '-5% 0px -75% 0px',
-                                    threshold: 0
-                                }
-                            );
-
-                            headings.forEach((h) => observer.observe(h));
-
-                            // --- FIX: Add instant click highlighting ---
-                            document.querySelectorAll('[id^="toc-"]').forEach((link) => {
-                                link.addEventListener('click', () => {
-                                    const targetId = link.id.replace('toc-', '');
-                                    setActive(targetId);
-                                });
-                            });
-
-                            // Fallback for initial load/reload if the observer's rootMargin misses the current header
-                            setTimeout(() => {
-                                if (!hasActivated) {
-                                    const currentHeader = headings.find(h => h.getBoundingClientRect().top >= -50) || headings[0];
-                                    if (currentHeader) {
-                                        setActive(currentHeader.id);
-                                    }
-                                }
-                            }, 100);
-                        }
-
-                        setTimeout(initTOC, 50);
-                        """),
     )

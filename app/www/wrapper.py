@@ -1,11 +1,13 @@
 import json
 import random
 import string
+from typing import Literal
 
 import reflex as rx
 
 from components.icons.hugeicon import hi
-from components.ui.button import button
+
+Swatch = Literal["square", "line", "border"]
 
 
 def styled_tab_trigger(label: str, value: str) -> rx.Component:
@@ -76,7 +78,7 @@ def file_codeblock(file_path: str, source: str) -> rx.Component:
     return rx.el.div(
         rx.el.div(
             create_copy_button(content=source),
-            class_name="absolute right-0 translate-y-2/3 bg-secondary dark:bg-card",
+            class_name="absolute right-0 translate-y-2/3 bg-secondary dark:bg-card z-20",
         ),
         rx.el.div(
             rx.el.code(
@@ -90,13 +92,6 @@ def file_codeblock(file_path: str, source: str) -> rx.Component:
                 },
             ),
             id=f"code-panel-{toggle_height_id}",
-            # style={
-            #     "max-height": "40vh",
-            #     "overflow": "hidden",
-            #     "transition": "max-height 0.3s ease-in-out",
-            #     "mask-image": "linear-gradient(to bottom, black 65%, transparent 100%)",
-            #     "-webkit-mask-image": "linear-gradient(to bottom, black 65%, transparent 100%)",
-            # },
             class_name="scrollbar-none flex-1 min-h-0 flex flex-col h-full relative overflow-x-auto",
         ),
         class_name="rounded-radius outline outline-input flex-1 min-h-0 flex flex-col bg-secondary dark:bg-card",
@@ -144,8 +139,6 @@ def file_codeblock_full(file_path: str, source: str) -> rx.Component:
                         }}
                         """
                     ),
-                    # size="sm",
-                    # variant="ghost",
                 ),
                 create_copy_button(content=source),
                 class_name="flex flex-row gap-x-2 items-center",
@@ -234,7 +227,7 @@ def demo_wrapper(component: rx.Component, source: str) -> rx.Component:
             ),
             class_name="border-t border-input bg-secondary dark:bg-card relative overflow-hidden",
         ),
-        class_name="w-full border border-input rounded-radius flex flex-col mb-8 !overflow-hidden",
+        class_name="w-full border border-input rounded-[1rem] flex flex-col mb-8 !overflow-hidden",
     )
 
 
@@ -311,7 +304,6 @@ def cli_and_manual_installation_wrapper(
         ),
         rx.tabs.content(
             rx.el.div(
-                # *[file_codeblock(i, file[0], file[1]) for i, file in enumerate(files)],
                 rx.el.div(
                     rx.el.p(
                         "1. Copy and paste the following dependencies into your project.",
@@ -335,10 +327,229 @@ def cli_and_manual_installation_wrapper(
                     class_name="w-full flex flex-col gap-y-4",
                 ),
                 class_name="flex flex-col gap-y-6",
-            ),
+            )
+            if len(files) > 1
+            else file_codeblock_full(files[-1][0], files[-1][1]),
             value="manual",
             class_name="mt-6",
         ),
         default_value="cli",
         class_name="mb-8",
     )
+
+
+def tooltip_indicator(color: str, swatch: Swatch) -> rx.Component:
+    if swatch == "square":
+        return rx.el.span(
+            style={
+                "width": "12px",
+                "height": "12px",
+                "borderRadius": "3px",
+                "background": color,
+                "flexShrink": "0",
+                "display": "block",
+            }
+        )
+    elif swatch == "line":
+        return rx.el.span(
+            rx.el.span(
+                style={
+                    "width": "3px",
+                    "height": "3px",
+                    "borderRadius": "50%",
+                    "background": color,
+                    "display": "block",
+                }
+            ),
+            rx.el.span(
+                style={
+                    "width": "3px",
+                    "height": "3px",
+                    "borderRadius": "50%",
+                    "background": color,
+                    "display": "block",
+                }
+            ),
+            rx.el.span(
+                style={
+                    "width": "3px",
+                    "height": "3px",
+                    "borderRadius": "50%",
+                    "background": color,
+                    "display": "block",
+                }
+            ),
+            style={"display": "flex", "flexDirection": "column", "gap": "2px"},
+        )
+    return rx.fragment()  # "border" swatch uses CSS border on the row itself
+
+
+def tooltip_row(
+    name: str,
+    value: str,
+    color: str,
+    swatch: Swatch,
+) -> rx.Component:
+    row_style = {
+        "display": "flex",
+        "alignItems": "center",
+        "gap": "8px",
+    }
+    if swatch == "border":
+        row_style["borderLeft"] = f"2px solid {color}"
+        row_style["paddingLeft"] = "8px"
+        row_style["margin"] = "0"
+
+    children = []
+    if swatch != "border":
+        children.append(tooltip_indicator(color, swatch))
+
+    children += [
+        rx.el.span(
+            name,
+            style={
+                "fontSize": "13px",
+                "color": "var(--color-text-secondary)",
+                "minWidth": "72px",
+            },
+        ),
+        rx.el.span(
+            value, style={"fontSize": "13px", "color": "var(--color-text-primary)"}
+        ),
+    ]
+
+    return rx.el.div(*children, style=row_style)
+
+
+def tooltip_label(label: str, color: str, swatch: Swatch) -> rx.Component:
+    label_style = {
+        "margin": "0",
+        "padding": "0 0 6px 8px" if swatch == "border" else "0 0 8px 0",
+        "fontSize": "13px",
+        "fontWeight": "500",
+        "color": "var(--color-text-primary)",
+    }
+    if swatch == "border":
+        label_style["borderLeft"] = f"2px solid {color}"
+
+    return rx.el.p(label, style=label_style)
+
+
+def tooltip_wrapper_demo(
+    label: str | None,
+    items: list[dict],
+    swatch: Swatch = "square",
+) -> rx.Component:
+    children = []
+
+    if label:
+        children.append(
+            tooltip_label(label, items[0]["color"] if items else "#3B82F6", swatch)
+        )
+
+    for item in items:
+        children.append(
+            tooltip_row(
+                name=item["name"],
+                value=item["value"],
+                color=item["color"],
+                swatch=swatch,
+            )
+        )
+
+    return rx.el.div(
+        *children,
+        style={
+            "background": "var(--bg-card)",
+            "borderRadius": "0.75rem",
+            "border": "1px solid var(--input)",
+            "padding": "0.7rem",
+            "width": "fit-content",
+        },
+        class_name="shadow-md",
+    )
+
+
+def tooltip_wrapper() -> rx.Component:
+    mobile_container = rx.el.div(
+        tooltip_wrapper_demo(
+            label="Page Views",
+            items=[
+                {"name": "Desktop", "value": "186", "color": "#93C5FD"},
+                {"name": "Mobile", "value": "80", "color": "#3B82F6"},
+            ],
+            swatch="square",
+        ),
+        tooltip_wrapper_demo(
+            label="Page Views",
+            items=[{"name": "Desktop", "value": "12,486", "color": "#3B82F6"}],
+            swatch="border",
+        ),
+        tooltip_wrapper_demo(
+            label=None,
+            items=[{"name": "Chrome", "value": "1,286", "color": "#93C5FD"}],
+            swatch="square",
+        ),
+        style={
+            "display": "flex",
+            "flexDirection": "column",
+            "alignItems": "center",
+            "gap": "16px",
+            "padding": "24px",
+        },
+        class_name="!flex md:!hidden border border-input rounded-[1rem]",
+    )
+
+    desktop_container = rx.el.div(
+        rx.el.div(
+            tooltip_wrapper_demo(
+                label="Page Views",
+                items=[
+                    {"name": "Desktop", "value": "186", "color": "#93C5FD"},
+                    {"name": "Mobile", "value": "80", "color": "#3B82F6"},
+                ],
+                swatch="square",
+            ),
+            style={
+                "position": "absolute",
+                "top": "30px",
+                "left": "50%",
+                "transform": "translateX(-50%)",
+            },
+            class_name="transition-all duration-200 ease-out hover:-translate-y-1",
+        ),
+        rx.el.div(
+            tooltip_wrapper_demo(
+                label="Page Views",
+                items=[{"name": "Desktop", "value": "12,486", "color": "#3B82F6"}],
+                swatch="border",
+            ),
+            style={
+                "position": "absolute",
+                "bottom": "80px",
+                "left": "16%",
+            },
+            class_name="transition-all duration-200 ease-out hover:-translate-y-1",
+        ),
+        rx.el.div(
+            tooltip_wrapper_demo(
+                label=None,
+                items=[{"name": "Chrome", "value": "1,286", "color": "#93C5FD"}],
+                swatch="square",
+            ),
+            style={
+                "position": "absolute",
+                "bottom": "35px",
+                "right": "15%",
+            },
+            class_name="transition-all duration-200 ease-out hover:-translate-y-1",
+        ),
+        style={
+            "position": "relative",
+            "width": "100%",
+            "height": "320px",
+        },
+        class_name="!hidden md:!block rounded-[1rem] border border-input",
+    )
+
+    return rx.el.div(mobile_container, desktop_container)

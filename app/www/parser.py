@@ -14,6 +14,7 @@ from app.www.wrapper import (
     chart_util_wrapper,
     cli_and_manual_installation_wrapper,
     demo_wrapper,
+    tooltip_wrapper,
     usage_wrapper,
 )
 
@@ -69,11 +70,11 @@ class DocParser:
                 else arg
             )
             name = val[0] if isinstance(val, list) else val
-            
+
             registry_entry = self.registry.get(str(name).lower())
             if not registry_entry and cmd != "install":
                 return render_parse_error(f"'{name}' not found")
-            
+
             obj, preferred_name = (
                 registry_entry if registry_entry else (None, str(name))
             )
@@ -92,6 +93,9 @@ class DocParser:
             except (TypeError, ValueError):
                 is_chart = False
                 file_path = ""
+
+            if "tooltip" in cmd:
+                return tooltip_wrapper()
 
             if "demo" in cmd:
                 # src = inspect.getsource(obj).strip()

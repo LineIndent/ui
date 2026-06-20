@@ -5,24 +5,19 @@ from reflex_components_core.el import Input as ElInput
 from reflex_components_core.el import Textarea as ElTextarea
 
 
-# --- 1. The Factory System (Standardizes the style and data_slot) ---
 class ComponentFactory:
     def __init__(self, base_component_class, base_classes: str):
         self.base_class = base_component_class
         self.base_classes = base_classes
 
     def __call__(self, **props):
-        # Merge your base styling with any custom class_name provided
         custom_classes = props.get("class_name", "")
         props["class_name"] = f"{self.base_classes} {custom_classes}".strip()
-
-        # Mandatory for the CSS grid to find these components
         props["data_slot"] = "input"
 
         return self.base_class.create(**props)
 
 
-# --- 2. Defining the Factories with your EXACT original styling ---
 Input = ComponentFactory(
     ElInput,
     "flex-1 bg-transparent border-0 outline-none text-[var(--foreground)] placeholder:text-[var(--muted-foreground)] px-2 py-2 text-sm",
@@ -34,7 +29,6 @@ Textarea = ComponentFactory(
 )
 
 
-# --- 3. The Components using the new system ---
 def input_with_addons(
     *children,
     placeholder: str = "",
@@ -84,7 +78,5 @@ def textarea_with_footer(
             )
         )
 
-    return rx.el.div(
-        *children,
-        class_name=f"flex flex-col w-full bg-transparent border border-[var(--input)] dark:bg-[var(--input)]/30 rounded-[var(--radius)] shadow-xs focus-within:border-[var(--ring)] focus-within:ring-[var(--ring)]/50 focus-within:ring-[3px] transition-[color,box-shadow] {class_name}",
-    )
+
+input_group = input_with_addons

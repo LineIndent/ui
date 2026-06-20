@@ -2,9 +2,9 @@ import reflex as rx
 
 PARAGRAPH_CLASS = "text-sm leading-7 mb-4"
 
-HEADING_1_CLASS = "text-2xl font-semibold mt-8 mb-3 first:mt-0"
+HEADING_1_CLASS = "text-2xl font-semibold mt-8 mb-3 first:mt-0 scroll-mt-14"
 
-HEADING_2_CLASS = "text-xl font-semibold mt-6 mb-2"
+HEADING_2_CLASS = "text-xl font-semibold mt-6 mb-2 scroll-mt-14"
 
 LIST_ITEM_CLASS = "text-sm leading-7 text-slate-11"
 
@@ -23,10 +23,61 @@ def render_parse_error(msg: str):
     return rx.el.p(msg, class_name="text-sm text-red-500")
 
 
-# --- Helper functions ---
+# # --- Helper functions ---
+# def render_heading(level: int, text: str) -> rx.Component:
+#     return rx.el.header(
+#         text, class_name=HEADING_1_CLASS if level == 1 else HEADING_2_CLASS, id=text
+#     )
+
+
 def render_heading(level: int, text: str) -> rx.Component:
+    normalized_id = rx.Var.create(text).to(str).lower().replace(" ", "-")
+
+    if level == 1:
+        return rx.el.h1(
+            rx.el.a(
+                rx.el.span(
+                    text,
+                    class_name="hover:underline hover:underline-offset-6",
+                ),
+                href=f"#{normalized_id}",
+                class_name=(
+                    "after:content-['#'] after:ml-2 after:opacity-0 hover:after:opacity-100 after:text-muted-foreground"
+                ),
+            ),
+            class_name=HEADING_1_CLASS if level == 1 else HEADING_2_CLASS,
+            id=normalized_id,
+        )
+
+    else:
+        return rx.el.h2(
+            rx.el.a(
+                rx.el.span(
+                    text,
+                    class_name="hover:underline hover:underline-offset-6",
+                ),
+                href=f"#{normalized_id}",
+                class_name=(
+                    "after:content-['#'] after:ml-2 after:opacity-0 hover:after:opacity-100 after:text-muted-foreground"
+                ),
+            ),
+            class_name=HEADING_1_CLASS if level == 1 else HEADING_2_CLASS,
+            id=normalized_id,
+        )
+
     return rx.el.header(
-        text, class_name=HEADING_1_CLASS if level == 1 else HEADING_2_CLASS, id=text
+        rx.el.a(
+            rx.el.span(
+                text,
+                class_name="hover:underline hover:underline-offset-6",
+            ),
+            href=f"#{normalized_id}",
+            class_name=(
+                "after:content-['#'] after:ml-2 after:opacity-0 hover:after:opacity-100 after:text-muted-foreground"
+            ),
+        ),
+        class_name=HEADING_1_CLASS if level == 1 else HEADING_2_CLASS,
+        id=normalized_id,
     )
 
 
@@ -102,7 +153,7 @@ markdown_component_map = {
             ),
             class_name="w-full overflow-x-auto scrollbar-none",
         ),
-        class_name="w-full !text-sm rounded-[1rem] border border-input",
+        class_name="w-full !text-sm rounded-[1rem] border border-input mb-4",
     ),
     "thead": lambda *children, **props: rx.el.thead(
         *children, **props, class_name="border-input border-b"
