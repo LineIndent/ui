@@ -15,6 +15,18 @@ ANATOMY = {
         accordion.panel(),
     ),
 )""",
+    "frame": """frame.root(
+    frame.panel(
+        frame.header(
+            frame.title(),
+            frame.description(),
+        ),
+        frame.footer(),
+    ),
+)""",
+    "autocomplete": """autocomplete(
+    items=[...],
+)""",
     "avatar": """avatar.root(
     avatar.image(),
     avatar.fallback(),

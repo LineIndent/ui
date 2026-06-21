@@ -1,4 +1,4 @@
-BURIDAN_URL = "https://buridan.reflex.run/"
+BURIDAN_URL = "https://buridan.reflex.run"
 
 BURIDAN_KEY_WORDS = (
     "buridan, ui, web apps, framework, open source, frontend, backend, full stack"
@@ -15,6 +15,10 @@ BURIDAN_KEY_WORDS = (
 
 def generate_site_meta_tags(title: str, url: str, description: str, social_card: str):
     return [
+        {
+            "name": "google-site-verification",
+            "content": "ET-mQBtJu68mobKWQbFUUuC-vMqCtwzdO_QL8v2i4CU",
+        },
         {"name": "application-name", "content": title},
         {"name": "keywords", "content": BURIDAN_KEY_WORDS},
         {"name": "description", "content": description},

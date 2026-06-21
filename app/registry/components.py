@@ -14,7 +14,6 @@ COMPONENT_REGISTRY = {
         "files": ["components/ui/base_ui.py"],
         "dependencies": ["component"],
     },
-    
     # --- Icons ---
     "hugeicon": {
         "files": ["components/icons/hugeicon.py"],
@@ -24,7 +23,6 @@ COMPONENT_REGISTRY = {
         "files": ["components/icons/others.py"],
         "dependencies": ["twmerge"],
     },
-    
     # --- Charts ---
     "charts": {
         "files": ["components/charts/chart_tooltip.py"],
@@ -34,11 +32,14 @@ COMPONENT_REGISTRY = {
         "files": ["components/charts/chart_tooltip.py"],
         "dependencies": [],
     },
-    
     # --- UI Components ---
     "accordion": {
         "files": ["components/ui/accordion.py"],
         "dependencies": ["button", "hugeicon", "base_ui"],
+    },
+    "autocomplete": {
+        "files": ["components/ui/autocomplete.py"],
+        "dependencies": ["twmerge"],
     },
     "avatar": {
         "files": ["components/ui/avatar.py"],
@@ -79,6 +80,10 @@ COMPONENT_REGISTRY = {
     "field": {
         "files": ["components/ui/field.py"],
         "dependencies": ["base_ui"],
+    },
+    "frame": {
+        "files": ["components/ui/frame.py"],
+        "dependencies": ["twmerge"],
     },
     "input": {
         "files": ["components/ui/input.py"],
