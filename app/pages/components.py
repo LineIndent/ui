@@ -12,22 +12,27 @@ BASE_PATH = Path("components/ui")
 def get_component_links():
     links = []
 
-    for file in sorted(BASE_PATH.glob("*.py")):
-        if file.name in ("__init__.py", "base_ui.py", "components.py"):
+    for file in BASE_PATH.glob("*.py"):
+        if file.name in ("__init__.py", "base_ui.py", "component.py"):
             continue
 
         name = file.stem.replace("_", " ").title()
         slug = file.stem.replace("_", "-")
 
-        links.append(
-            rx.el.a(
-                name,
-                href=f"/docs/components/{slug}",
-                class_name="py-1 hover:underline text-center",
-            )
-        )
+        links.append((name, slug))
 
-    return links
+    links.append(("Chart", "chart"))
+
+    links.sort(key=lambda x: x[0].lower())
+
+    return [
+        rx.el.a(
+            name,
+            href=f"/docs/components/{slug}",
+            class_name="py-1 hover:underline text-center",
+        )
+        for name, slug in links
+    ]
 
 
 @layout_decorator(

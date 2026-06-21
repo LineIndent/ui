@@ -1,3 +1,4 @@
+import sys
 from pathlib import Path
 
 import yaml
@@ -247,3 +248,4 @@ def generate_social_cards():
 
 if __name__ == "__main__":
     generate_social_cards()
+    sys.exit()

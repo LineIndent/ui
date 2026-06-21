@@ -57,12 +57,35 @@ def generate_doc_routes(section_folder, base_path) -> list[dict]:
     return routes
 
 
-# --- Static: Each generation corresponds to a file in the docs/ folder ---
-GET_STARTED_URLS = generate_doc_routes("getting_started", "docs/getting-started/")
-RESOURCES_URLS = generate_doc_routes("resources", "docs/resources/")
-BASE_UI_COMPONENTS = sorted(
-    generate_doc_routes("components", "docs/components/"), key=lambda x: x["title"]
-)
-CHARTS_URLS = sorted(
-    generate_doc_routes("charts", "docs/charts/"), key=lambda x: x["title"]
-)
+DOC_SECTIONS = [
+    (
+        "getting_started",
+        "docs/getting-started/",
+        "",
+        [{"title": "llms.txt", "url": "llms.txt", "order": "5"}],
+    ),
+    ("resources", "docs/resources/", "title", []),
+    ("components", "docs/components/", "title", []),
+    ("charts", "docs/charts/", "title", []),
+]
+
+
+def build_all_routes():
+    result = {}
+
+    for section, base_path, sort_key, extras in DOC_SECTIONS:
+        routes = generate_doc_routes(section, base_path)
+        routes.extend(extras)
+        routes.sort(key=lambda x: x.get(sort_key, ""))
+
+        result[section] = routes
+
+    return result
+
+
+ALL_ROUTES = build_all_routes()
+
+GET_STARTED_URLS = ALL_ROUTES["getting_started"]
+RESOURCES_URLS = ALL_ROUTES["resources"]
+BASE_UI_COMPONENTS = ALL_ROUTES["components"]
+CHARTS_URLS = ALL_ROUTES["charts"]

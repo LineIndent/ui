@@ -26,7 +26,7 @@ def generate_site_meta_tags(title: str, url: str, description: str, social_card:
         {"property": "og:image:width", "content": "1200"},
         {"property": "og:image:height", "content": "630"},
         {"name": "twitter:card", "content": "summary_large_image"},
-        {"property": "twitter:domain", "content": f"{BURIDAN_URL}{url}"},
+        {"name": "twitter:domain", "content": "buridan.reflex.run"},
         {"property": "twitter:url", "content": f"{BURIDAN_URL}{url}"},
         {"name": "twitter:title", "content": title},
         {"name": "twitter:description", "content": description},
