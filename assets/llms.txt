@@ -3,64 +3,54 @@
 > Composable, themeable components designed for Reflex. Extend, override, and ship without fighting the framework. Open source. It is built for Reflex using Python. Open Code. AI-ready. It also comes with a command-line tool to install and manage components.
 
 ## Overview
-- [Introduction](/docs/getting_started/introduction): Introduction to the project.
-- [Installation](/docs/getting_started/installation): How to install and set up the project.
-- [CLI](/docs/getting_started/cli): How to use the command-line tool.
-- [Theming](/docs/resources/theming): How to customize the theme.
-- [Who Is Buridan](/docs/getting_started/who_is_buridan): The story behind the name.
-- [Changelog](/docs/getting_started/changelog): Information about the project's changelog.
+- [Introduction](https://buridan.reflex.run/docs/getting-started/introduction): Introduction page.
+- [Installation](https://buridan.reflex.run/docs/getting-started/installation): Installation page.
+- [Skills](https://buridan.reflex.run/docs/getting-started/skills): Skills page.
+- [CLI](https://buridan.reflex.run/docs/getting-started/cli): CLI page.
+- [dev.py](https://buridan.reflex.run/docs/getting-started/dev): dev.py page.
+- [JavaScript](https://buridan.reflex.run/docs/getting-started/javascript): JavaScript page.
 
 ## Resources
-- [Client State Var](/docs/resources/client-state-var): Explanation of client state variables.
-- [State Structure](/docs/resources/state): Mastering Reflex's backend-driven state management.
-- [Tailwind Integration](/docs/resources/tailwind): How Buridan and Reflex leverage Tailwind CSS for styling.
-- [Events & Actions](/docs/resources/events): Handling user interactions and logic flow in Reflex.
-- [Tailwind CN](/docs/resources/tailwind-cn): Using Tailwind CSS with the project.
-
-## Supplementary Material
-- [Charting](/docs/getting_started/charting): Guide to using charts.
-- [Dashboard](/docs/getting_started/dashboard): Overview of the dashboard.
+- [Client State Var](https://buridan.reflex.run/docs/resources/client-state-var): Client State Var page.
+- [Events & Actions](https://buridan.reflex.run/docs/resources/events): Events & Actions page.
+- [State Structure](https://buridan.reflex.run/docs/resources/state): State Structure page.
+- [Theming](https://buridan.reflex.run/docs/resources/theming): Theming page.
 
 ## Components
-- [Accordion](/docs/components/accordion): The Accordion component.
-- [Area Chart](/docs/charts/area_chart): The Area Chart component.
-- [Avatar](/docs/components/avatar): The Avatar component.
-- [Badge](/docs/components/badge): The Badge component.
-- [Bar Chart](/docs/charts/bar_chart): The Bar Chart component.
-- [Breadcrumb](/docs/components/breadcrumb): The Breadcrumb component.
-- [Button](/docs/components/button): The Button component.
-- [Checkbox](/docs/components/checkbox): The Checkbox component.
-- [Collapsible](/docs/components/collapsible): The Collapsible component.
-- [Context Menu](/docs/components/context_menu): The Context Menu component.
-- [Dialog](/docs/components/dialog): The Dialog component.
-- [Doughnut Chart](/docs/charts/doughnut_chart): The Doughnut Chart component.
-- [Input](/docs/components/input): The Input component.
-- [Input Group](/docs/components/input_group): The Input Group component.
-- [Kbd](/docs/components/kbd): The Kbd component.
-- [Line Chart](/docs/charts/line_chart): The Line Chart component.
-- [Link](/docs/components/link): The Link component.
-- [Menu](/docs/components/menu): The Menu component.
-- [Pie Chart](/docs/charts/pie_chart): The Pie Chart component.
-- [Popover](/docs/components/popover): The Popover component.
-- [Radar Chart](/docs/charts/radar_chart): The Radar Chart component.
-- [Scatter Chart](/docs/charts/scatter_chart): The Scatter Chart component.
-- [Scroll Area](/docs/components/scroll_area): The Scroll Area component.
-- [Select](/docs/components/select): The Select component.
-- [Skeleton](/docs/components/skeleton): The Skeleton component.
-- [Slider](/docs/components/slider): The Slider component.
-- [Tabs](/docs/components/tabs): The Tabs component.
-- [Textarea](/docs/components/textarea): The Textarea component.
-- [Theme Switcher](/docs/components/theme_switcher): The Theme Switcher component.
-- [Toggle](/docs/components/toggle): The Toggle component.
-- [Toggle Group](/docs/components/toggle_group): The Toggle Group component.
-- [Tooltip](/docs/components/tooltip): The Tooltip component.
-- [Typography](/docs/components/typography): The Typography component.
+- [Accordion](https://buridan.reflex.run/docs/components/accordion): The Accordion component.
+- [Autocomplete](https://buridan.reflex.run/docs/components/autocomplete): The Autocomplete component.
+- [Avatar](https://buridan.reflex.run/docs/components/avatar): The Avatar component.
+- [Badge](https://buridan.reflex.run/docs/components/badge): The Badge component.
+- [Breadcrumb](https://buridan.reflex.run/docs/components/breadcrumb): The Breadcrumb component.
+- [Button](https://buridan.reflex.run/docs/components/button): The Button component.
+- [Chart](https://buridan.reflex.run/docs/components/chart): The Chart component.
+- [Checkbox](https://buridan.reflex.run/docs/components/checkbox): The Checkbox component.
+- [Collapsible](https://buridan.reflex.run/docs/components/collapsible): The Collapsible component.
+- [Context Menu](https://buridan.reflex.run/docs/components/context-menu): The Context Menu component.
+- [Dialog](https://buridan.reflex.run/docs/components/dialog): The Dialog component.
+- [Field](https://buridan.reflex.run/docs/components/field): The Field component.
+- [Frame](https://buridan.reflex.run/docs/components/frame): The Frame component.
+- [Input](https://buridan.reflex.run/docs/components/input): The Input component.
+- [Input Group](https://buridan.reflex.run/docs/components/input-group): The Input Group component.
+- [Kbd](https://buridan.reflex.run/docs/components/kbd): The Kbd component.
+- [Menu](https://buridan.reflex.run/docs/components/menu): The Menu component.
+- [Popover](https://buridan.reflex.run/docs/components/popover): The Popover component.
+- [Scroll Area](https://buridan.reflex.run/docs/components/scroll-area): The Scroll Area component.
+- [Select](https://buridan.reflex.run/docs/components/select): The Select component.
+- [Skeleton](https://buridan.reflex.run/docs/components/skeleton): The Skeleton component.
+- [Slider](https://buridan.reflex.run/docs/components/slider): The Slider component.
+- [Tabs](https://buridan.reflex.run/docs/components/tabs): The Tabs component.
+- [Textarea](https://buridan.reflex.run/docs/components/textarea): The Textarea component.
+- [Toggle](https://buridan.reflex.run/docs/components/toggle): The Toggle component.
+- [Toggle Group](https://buridan.reflex.run/docs/components/toggle-group): The Toggle Group component.
+- [Tooltip](https://buridan.reflex.run/docs/components/tooltip): The Tooltip component.
+- [Typography](https://buridan.reflex.run/docs/components/typography): The Typography component.
 
-## Integrations
-- [Fuse Js](/docs/javascript_integrations/fuse_js): Integration with Fuse.js.
-- [Minisearch Js](/docs/javascript_integrations/minisearch_js): Integration with Minisearch.js.
-- [Quill Js](/docs/javascript_integrations/quill_js): Integration with Quill.js.
-- [React Countup](/docs/wrapped_components/react_countup): Integration with React Countup.
-- [React Spinner](/docs/wrapped_components/react_spinner): Integration with React Spinner.
-- [React Typed](/docs/wrapped_components/react_typed): Integration with React Typed.
-- [Simple Icon](/docs/wrapped_components/simple_icon): Integration with Simple Icon.
+## Charts
+- [Area Chart](https://buridan.reflex.run/docs/charts/area-chart): The Area Chart component.
+- [Bar Chart](https://buridan.reflex.run/docs/charts/bar-chart): The Bar Chart component.
+- [Doughnut Chart](https://buridan.reflex.run/docs/charts/doughnut-chart): The Doughnut Chart component.
+- [Line Chart](https://buridan.reflex.run/docs/charts/line-chart): The Line Chart component.
+- [Pie Chart](https://buridan.reflex.run/docs/charts/pie-chart): The Pie Chart component.
+- [Radar Chart](https://buridan.reflex.run/docs/charts/radar-chart): The Radar Chart component.
+- [Scatter Chart](https://buridan.reflex.run/docs/charts/scatter-chart): The Scatter Chart component.
