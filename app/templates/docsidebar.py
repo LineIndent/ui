@@ -33,6 +33,13 @@ def create_menu_item(data: dict):
             rx.el.p(data["title"], class_name="cursor-pointer"),
             to=f"/{data['url']}",
             text_decoration="none",
+        )
+        if data["url"] != "llms.txt"
+        else rx.el.a(
+            rx.el.p(data["title"], class_name="cursor-pointer"),
+            href=f"/{data['url']}",
+            text_decoration="none",
+            reload_document=True,
         ),
         variant="ghost",
         size="sm",
@@ -125,6 +132,8 @@ def sidebar():
 
 
 def mobile_menu():
+    from app.templates.navbar import NAV_LIST
+
     return select.root(
         select.trigger(
             button(
@@ -146,6 +155,21 @@ def mobile_menu():
             select.positioner(
                 select.popup(
                     select.list(
+                        select.group(
+                            select.group_label("Pages"),
+                            *[
+                                select.item(
+                                    rx.el.a(
+                                        select.item_text(route["name"]),
+                                        to=f"{route['path']}",
+                                        text_decoration="none",
+                                        class_name="w-full flex flex-row items-center justify-between",
+                                    ),
+                                    value=route["name"],
+                                )
+                                for route in NAV_LIST
+                            ],
+                        ),
                         *[
                             select.group(
                                 select.group_label(section.title),
@@ -155,8 +179,8 @@ def mobile_menu():
                                             select.item_text(route["title"]),
                                             to=f"/{route['url']}",
                                             text_decoration="none",
+                                            class_name="w-full flex flex-row items-center justify-between",
                                         ),
-                                        select.item_indicator(),
                                         value=route["title"],
                                     )
                                     for route in section.routes
