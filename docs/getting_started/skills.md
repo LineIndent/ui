@@ -1,7 +1,7 @@
 ---
 title: "Skills"
 description: "How to use Buridan UI with AI Skills."
-order: 10
+order: 2
 ---
 
 # Skills

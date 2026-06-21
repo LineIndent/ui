@@ -10,7 +10,7 @@ buridan/ui is a set of composable, themeable components designed for [Reflex](ht
 
 The library is heavily influenced by the popular [shadcn/ui](https://ui.shadcn.com/) library for the React ecosystem. 
 
-Much like `shadcn/ui`, buridan/ui aims to provide a way to build your own compoenent library with full control over your themes, styles, and other UI aspects. 
+Much like `shadcn/ui`, buridan/ui aims to provide a way to build your own component library with full control over your themes, styles, and other UI aspects. 
 
 # Open Source
 
@@ -23,9 +23,9 @@ Everything attributed to buridan/ui is open source. The entire codebase, includi
 
 # Composition
 
-Currently, buridan/ui wraps the new and popular [Base UI](https://base-ui.com/react/overview/quick-start) component library. That means shared APIs and similier anatomies betwen the two. The onyl diffrence is buridan/ui is a UI library for the `Reflex` web framework. 
+Currently, buridan/ui wraps the new and popular [Base UI](https://base-ui.com/react/overview/quick-start) component library. That means shared APIs and similar anatomies between the two. The only difference is buridan/ui is a UI library for the `Reflex` web framework. 
 
-This appraoch in combination with the open source nature of the library makes it easy for users to adjust, tweak, and refine any part of the component composition. If an API is missing from any of the components, it can easily be integrated into the API by matching it with the API found in `Base UI` documentation. 
+This approach in combination with the open source nature of the library makes it easy for users to adjust, tweak, and refine any part of the component composition. If an API is missing from any of the components, it can easily be integrated into the API by matching it with the API found in `Base UI` documentation. 
 
 # Architecture 
 

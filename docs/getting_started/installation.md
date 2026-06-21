@@ -1,7 +1,7 @@
 ---
 title: "Installation"
 description: "Steps to install and start using Buridan in your project."
-order: 2
+order: 1
 ---
 
 # Installation
@@ -12,9 +12,9 @@ How to install dependencies and structure your app.
 
 # Use buridan/create
 
-Build your preset visually, preview your choices, and generate a framework-specific setup command. You can use your final theme system locally or pipelined to Reflex Build. Start with the default preset [Neutral](/create?preset=b0)
+Build your preset visually, preview your choices, and generate a framework-specific setup command. You can use your final theme system locally or pipe-lined to Reflex Build. Start with the default preset [Neutral](/create?preset=b0)
 
-## Prerequisites
+# Prerequisites
 
 Python 3.10+ (required by Reflex)
 
@@ -30,7 +30,7 @@ After setting up your Reflex environment, you can install the `buridan` package 
 dependencies = ["buridan-create=={current version}"]
 ```
 
-After adding the package with the latest vesion, you can run the following command to install it. 
+After adding the package with the latest version, you can run the following command to install it. 
 
 
 ```uv
