@@ -10,7 +10,7 @@ How to install dependencies and structure your app.
 
 Build your preset visually, preview your choices, and generate a framework-specific setup command. You can use your final theme system locally or pipe-lined to Reflex Build. Start with the default preset [Neutral](/create?preset=b0)
 
-## Prerequisites
+# Prerequisites
 
 Python 3.10+ (required by Reflex)
 

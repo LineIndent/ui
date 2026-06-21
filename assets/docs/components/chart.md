@@ -32,8 +32,127 @@ We do not wrap Recharts. This means you're not locked into an abstraction. When 
 
 buridan/ui provides a custom `chart_tooltip` that can be used to match the overall theme tokens generated. 
 
+### CLI
 
-> **Error: 'chart_tooltip' not found in registry**
+```bash
+buridan add component chart_tooltip
+```
+
+### Manual Installation
+
+```python
+from typing import Literal
+
+import reflex as rx
+
+Display = Literal["show", "hide"]
+Swatch = Literal["square", "line", "border"]
+
+
+def _deep_merge(base: dict, override: dict) -> dict:
+    result = base.copy()
+    for key, value in override.items():
+        if key in result and isinstance(result[key], dict) and isinstance(value, dict):
+            result[key] = _deep_merge(result[key], value)
+        else:
+            result[key] = value
+    return result
+
+
+class _ChartTooltip:
+    def __call__(
+        self,
+        label: Display = "show",
+        is_animation_active: bool = False,
+        separator: str = "",
+        cursor: bool = False,
+        item_style: dict = {},
+        label_style: dict = {},
+        content_style: dict = {},
+    ) -> rx.Component:
+        defaults = {
+            "is_animation_active": is_animation_active,
+            "separator": separator,
+            "cursor": cursor,
+            "item_style": _deep_merge(
+                {
+                    "color": "currentColor",
+                    "display": "flex",
+                    "paddingBottom": "0px",
+                    "justifyContent": "space-between",
+                    "textTransform": "capitalize",
+                },
+                item_style,
+            ),
+            "label_style": _deep_merge(
+                {
+                    "display": "none" if label == "hide" else "flex",
+                    "fontWeight": "500",
+                },
+                label_style,
+            ),
+            "content_style": _deep_merge(
+                {
+                    "background": "var(--background)",
+                    "borderColor": "var(--input)",
+                    "borderRadius": "0.85rem",
+                    "padding": "0.25rem 0.65rem",
+                    "position": "relative",
+                },
+                content_style,
+            ),
+        }
+
+        return rx.recharts.graphing_tooltip(**defaults)
+
+
+class _ChartTooltipContent:
+    def __call__(self, num_series: int, swatch: Swatch = "square") -> str:
+        base = """
+            [&_.recharts-tooltip-item-name]:!text-muted-foreground
+            [&_.recharts-tooltip-item-separator]:!w-full
+            [&_.recharts-tooltip-item]:!w-[8rem]
+            [&_.recharts-tooltip-item]:!flex
+            [&_.recharts-tooltip-item]:!items-center
+            [&_.recharts-tooltip-item]:!gap-2
+        """ + (
+            """
+            [&_.recharts-tooltip-label]:!border-l-3
+            [&_.recharts-tooltip-label]:!border-[var(--chart-1)]
+            [&_.recharts-tooltip-label]:!pl-2
+            [&_.recharts-tooltip-label]:!py-0
+            """
+            if swatch == "border"
+            else ""
+        )
+
+        lines = []
+        for i in range(1, num_series + 1):
+            if swatch == "border":
+                lines.append(f"""
+                    [&_.recharts-default-tooltip]:!py-2 !flex !flex-col !gap-y-0
+                    [&_.recharts-tooltip-item:nth-child({i})]:!border-l-3
+                    [&_.recharts-tooltip-item:nth-child({i})]:!border-[var(--chart-{i})]
+                    [&_.recharts-tooltip-item:nth-child({i})]:!pl-2
+                    [&_.recharts-tooltip-item:nth-child({i})]:!py-0
+                """)
+            else:
+                lines.append(f"""
+                    [&_.recharts-tooltip-item:nth-child({i})]:before:!content-['']
+                    [&_.recharts-tooltip-item:nth-child({i})]:before:{"!w-3" if swatch == "square" else "!w-8"}
+                    {"[&_.recharts-tooltip-item:nth-child(" + str(i) + ")]:before:!flex-shrink-0" if swatch == "square" else ""}
+                    [&_.recharts-tooltip-item:nth-child({i})]:before:!h-3
+                    [&_.recharts-tooltip-item:nth-child({i})]:before:!rounded-sm
+                    [&_.recharts-tooltip-item:nth-child({i})]:before:!bg-[var(--chart-{i})]
+                    [&_.recharts-tooltip-item:nth-child({i})]:before:!block
+                """)
+
+        return base + "\n".join(lines)
+
+
+chart_tooltip = _ChartTooltip()
+chart_tooltip_content = _ChartTooltipContent()
+```
 
 
 # Your First Chart
@@ -62,7 +181,27 @@ data = [
 You can now build your chart using Recharts components.
 
 
-> **Error: 'chart_example' not found in registry**
+```python
+def chart_example():
+
+    return rx.recharts.bar_chart(
+        rx.recharts.bar(
+            data_key="desktop",
+            fill="var(--chart-1)",
+            radius=4,
+            is_animation_active=False,
+        ),
+        rx.recharts.bar(
+            data_key="mobile",
+            fill="var(--chart-2)",
+            radius=4,
+            is_animation_active=False,
+        ),
+        data=data,
+        width="100%",
+        height=250,
+    )
+```
 
 
 ## Add a Grid
@@ -76,7 +215,30 @@ rx.recharts.cartesian_grid(
 ```
 
 
-> **Error: 'chart_example_with_grid' not found in registry**
+```python
+def chart_example_with_grid():
+
+    return rx.recharts.bar_chart(
+        rx.recharts.cartesian_grid(
+            horizontal=True, vertical=False, class_name="opacity-30"
+        ),
+        rx.recharts.bar(
+            data_key="desktop",
+            fill="var(--chart-1)",
+            radius=4,
+            is_animation_active=False,
+        ),
+        rx.recharts.bar(
+            data_key="mobile",
+            fill="var(--chart-2)",
+            radius=4,
+            is_animation_active=False,
+        ),
+        data=data,
+        width="100%",
+        height=250,
+    )
+```
 
 
 ## Add an Axis#
@@ -95,7 +257,38 @@ rx.recharts.x_axis(
 ```
 
 
-> **Error: 'chart_example_with_x_axis' not found in registry**
+```python
+def chart_example_with_x_axis():
+
+    return rx.recharts.bar_chart(
+        rx.recharts.cartesian_grid(
+            horizontal=True, vertical=False, class_name="opacity-30"
+        ),
+        rx.recharts.bar(
+            data_key="desktop",
+            fill="var(--chart-1)",
+            radius=4,
+            is_animation_active=False,
+        ),
+        rx.recharts.bar(
+            data_key="mobile",
+            fill="var(--chart-2)",
+            radius=4,
+            is_animation_active=False,
+        ),
+        rx.recharts.x_axis(
+            data_key="month",
+            axis_line=False,
+            tick_size=10,
+            tick_line=False,
+            custom_attrs={"fontSize": "12px"},
+            interval="preserveStartEnd",
+        ),
+        data=data,
+        width="100%",
+        height=250,
+    )
+```
 
 
 ## Add Tooltip
@@ -126,7 +319,40 @@ rx.recharts.bar_chart(
 ```
 
 
-> **Error: 'chart_example_with_custom_tooltip' not found in registry**
+```python
+def chart_example_with_custom_tooltip():
+
+    return rx.recharts.bar_chart(
+        rx.recharts.cartesian_grid(
+            horizontal=True, vertical=False, class_name="opacity-30"
+        ),
+        rx.recharts.bar(
+            data_key="desktop",
+            fill="var(--chart-1)",
+            radius=4,
+            is_animation_active=False,
+        ),
+        rx.recharts.bar(
+            data_key="mobile",
+            fill="var(--chart-2)",
+            radius=4,
+            is_animation_active=False,
+        ),
+        rx.recharts.x_axis(
+            data_key="month",
+            axis_line=False,
+            tick_size=10,
+            tick_line=False,
+            custom_attrs={"fontSize": "12px"},
+            interval="preserveStartEnd",
+        ),
+        chart_tooltip(),
+        data=data,
+        width="100%",
+        height=250,
+        class_name=chart_tooltip_content(2, "square"),
+    )
+```
 
 
 Hover to see the tooltips. Easy, right? Two components, and we've got a beautiful tooltip.
@@ -155,7 +381,54 @@ rx.el.div(
 ```
 
 
-> **Error: 'chart_example_with_custom_legends' not found in registry**
+```python
+def chart_example_with_custom_legends():
+
+    return rx.el.div(
+        rx.recharts.bar_chart(
+            rx.recharts.cartesian_grid(
+                horizontal=True, vertical=False, class_name="opacity-30"
+            ),
+            rx.recharts.bar(
+                data_key="desktop",
+                fill="var(--chart-1)",
+                radius=4,
+                is_animation_active=False,
+            ),
+            rx.recharts.bar(
+                data_key="mobile",
+                fill="var(--chart-2)",
+                radius=4,
+                is_animation_active=False,
+            ),
+            rx.recharts.x_axis(
+                data_key="month",
+                axis_line=False,
+                tick_size=10,
+                tick_line=False,
+                custom_attrs={"fontSize": "12px"},
+                interval="preserveStartEnd",
+            ),
+            chart_tooltip(),
+            data=data,
+            width="100%",
+            height=250,
+            class_name=chart_tooltip_content(2, "square"),
+        ),
+        rx.el.div(
+            rx.foreach(
+                ["Desktop", "Mobile"],
+                lambda device, index: rx.el.div(
+                    rx.el.div(class_name=f"h-3 w-3 rounded-sm bg-chart-{index + 1}"),
+                    rx.el.p(device, class_name="text-xs text-foreground"),
+                    class_name="flex flex-row items-center gap-x-2",
+                ),
+            ),
+            class_name="flex items-center gap-4 justify-center",
+        ),
+        class_name="w-full",
+    )
+```
 
 
 Done. You've built your first chart!

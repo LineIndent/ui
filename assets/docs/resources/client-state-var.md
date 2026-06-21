@@ -46,7 +46,7 @@ def form_component():
     )
 ```
 
-# Conditional Rendering (Tab System)
+# Conditional Rendering
 
 Control UI state flow without triggering backend re-renders, perfect for tabbed navigation or step-based interfaces.
 
@@ -68,7 +68,7 @@ def tab_system():
     )
 ```
 
-# Session Management (Backend Integration)
+# Session Management
 
 This advanced pattern shows how to handle editable UI states on the frontend while syncing changes to the backend.
 
