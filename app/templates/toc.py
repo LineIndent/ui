@@ -165,6 +165,7 @@ def table_of_content(url: str, toc_data: List[Dict]):
         toc_data: List of dicts with 'text', 'id', 'level' keys
     """
     return rx.el.div(
+        # rx.script(),
         rx.el.div(
             rx.el.div(
                 #
@@ -207,4 +208,61 @@ def table_of_content(url: str, toc_data: List[Dict]):
             class_name="flex flex-col gap-y-4 overflow-scroll scrollbar-none",
         ),
         class_name="hidden xl:block max-w-[18rem] w-full sticky top-18 h-[calc(100vh-3rem)] shrink-0",
+        on_mount=rx.call_script(
+            """
+                (function() {
+                    function initScrollspy() {
+                        const links = document.querySelectorAll('.toc-link');
+                        if (!links.length) return false;
+                        const sections = Array.from(links)
+                            .map(l => l.getAttribute('href').split('#')[1])
+                            .map(id => document.getElementById(id))
+                            .filter(Boolean);
+                        if (!sections.length) return false;
+                        function setActive(id) {
+                            links.forEach(l => l.removeAttribute('data-active'));
+                            const active = document.querySelector(`.toc-link[href*="#${id}"]`);
+                            if (active) active.setAttribute('data-active', 'true');
+                        }
+                        links.forEach(link => {
+                            link.addEventListener('click', (e) => {
+                                e.preventDefault();
+                                const id = link.getAttribute('href').split('#')[1];
+                                const target = document.getElementById(id);
+                                if (target) target.scrollIntoView({ behavior: 'instant' });
+                                setActive(id);
+                                history.pushState(null, '', `#${id}`);
+                            });
+                        });
+                        document.querySelectorAll('h1 a, h2 a').forEach(anchor => {
+                            anchor.addEventListener('click', (e) => {
+                                e.preventDefault();
+                                const id = anchor.getAttribute('href').split('#')[1];
+                                const target = document.getElementById(id);
+                                if (target) target.scrollIntoView({ behavior: 'instant' });
+                                setActive(id);
+                                history.pushState(null, '', `#${id}`);
+                            });
+                        });
+                        const observer = new IntersectionObserver((entries) => {
+                            entries.forEach(entry => {
+                                if (entry.isIntersecting) setActive(entry.target.id);
+                            });
+                        }, { rootMargin: '-10% 0px -80% 0px', threshold: 0 });
+                        sections.forEach(s => observer.observe(s));
+                        const hash = window.location.hash.replace('#', '');
+                        if (hash) {
+                            const target = document.getElementById(hash);
+                            if (target) target.scrollIntoView({ behavior: 'instant' });
+                        }
+                        return true;
+                    }
+                    const domWatcher = new MutationObserver(() => {
+                        if (initScrollspy()) domWatcher.disconnect();
+                    });
+                    domWatcher.observe(document.body, { childList: true, subtree: true });
+                    initScrollspy();
+                })();
+            """
+        ),
     )
