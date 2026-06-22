@@ -250,26 +250,6 @@ kbd_group(
         ),
     ),
 )""",
-    "typography": """typography_h1()
-typography_h2()
-typography_h3()
-typography_h4()
-typography_p()
-typography_blockquote()
-typography_list()
-typography_inline_code()
-typography_lead()
-typography_large()
-typography_small()
-typography_muted()
-typography_table(
-    typography_table_header(
-        typography_table_head(),
-    ),
-    typography_table_row(
-        typography_table_cell(),
-    ),
-)""",
     "field": """field.root(
     field.label(),
     field.control(),
@@ -277,6 +257,18 @@ typography_table(
     field.item(),
     field.error(),
     field.validity(),
+)
+""",
+    "timeline": """timeline.root(
+    timeline.item(
+        timeline.indicator(),
+        timeline.separator(),
+        timeline.header(
+            timeline.date(),
+            timeline.title(),
+        ),
+        timeline.content(),
+    ),
 )
 """,
 }
