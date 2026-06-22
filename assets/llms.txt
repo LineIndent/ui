@@ -41,6 +41,7 @@
 - [Slider](https://buridan.reflex.run/docs/components/slider): The Slider component.
 - [Tabs](https://buridan.reflex.run/docs/components/tabs): The Tabs component.
 - [Textarea](https://buridan.reflex.run/docs/components/textarea): The Textarea component.
+- [Timeline](https://buridan.reflex.run/docs/components/timeline): The Timeline component.
 - [Toggle](https://buridan.reflex.run/docs/components/toggle): The Toggle component.
 - [Toggle Group](https://buridan.reflex.run/docs/components/toggle-group): The Toggle Group component.
 - [Tooltip](https://buridan.reflex.run/docs/components/tooltip): The Tooltip component.
