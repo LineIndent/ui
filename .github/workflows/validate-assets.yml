@@ -27,11 +27,5 @@ jobs:
           pip install uv
           uv pip install --system -e .
 
-      - name: Generate markdown files
-        run: python scripts/generate_markdown.py
-
-      - name: Generate social cards
-        run: python scripts/generate_preview_cards.py
-
       - name: Run asset verification tests
         run: pytest tests/test_generated_assets.py
