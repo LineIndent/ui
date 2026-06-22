@@ -27,5 +27,12 @@ jobs:
           pip install uv
           uv pip install --system -e .
 
+      - name: Generate markdown files
+        run: python scripts/generate_markdown.py
+
+      - name: Check for uncommitted changes
+        run: |
+          git diff --exit-code assets/docs
+
       - name: Run asset verification tests
         run: pytest tests/test_generated_assets.py
