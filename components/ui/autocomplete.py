@@ -42,12 +42,31 @@ function BuridanAutocompleteRoot({
     const [flipUp, setFlipUp] = React.useState(false);
     const rootRef = React.useRef(null);
 
+    function fuzzyMatch(str, query) {
+        str = str.toLowerCase();
+        query = query.toLowerCase();
+        let si = 0, qi = 0, score = 0, lastMatch = -1;
+        while (si < str.length && qi < query.length) {
+            if (str[si] === query[qi]) {
+                score += lastMatch === si - 1 ? 2 : 1; // bonus for consecutive matches
+                lastMatch = si;
+                qi++;
+            }
+            si++;
+        }
+        return qi === query.length ? score : -1; // -1 means no match
+    }
+
     const filtered = query
-        ? items.filter(i =>
-            typeof i === "string"
-                ? i.toLowerCase().includes(query.toLowerCase())
-                : JSON.stringify(i).toLowerCase().includes(query.toLowerCase())
-          )
+        ? items
+            .map(i => {
+                const label = typeof i === "string" ? i : i.label ?? JSON.stringify(i);
+                const score = fuzzyMatch(label, query);
+                return { item: i, score };
+            })
+            .filter(({ score }) => score > 0)
+            .sort((a, b) => b.score - a.score)
+            .map(({ item }) => item)
         : items;
 
     function checkFlip() {
