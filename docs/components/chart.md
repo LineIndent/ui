@@ -77,7 +77,7 @@ rx.recharts.cartesian_grid(
 
 --DEMO(chart_example_with_grid)--
 
-## Add an Axis#
+## Add an Axis
 
 To add an x-axis to the chart, we'll use the `rx.recharts.x_axis()` component.
 
