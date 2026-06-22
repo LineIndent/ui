@@ -145,6 +145,10 @@ COMPONENT_REGISTRY = {
         "files": ["components/ui/textarea.py"],
         "dependencies": ["component"],
     },
+    "timeline": {
+        "files": ["components/ui/timeline.py"],
+        "dependencies": ["twmerge"],
+    },
     "toggle": {
         "files": ["components/ui/toggle.py"],
         "dependencies": ["twmerge", "base_ui"],

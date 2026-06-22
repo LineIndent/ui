@@ -16,9 +16,10 @@ def footer() -> rx.Component:
                 href="https://reflex.dev",
                 class_name="font-semibold underline",
             ),
+            ".",
         ),
         rx.el.span(
-            ". The source code is available on ",
+            " The source code is available on ",
             rx.el.a(
                 "GitHub",
                 href="https://github.com/LineIndent/ui",
