@@ -17,88 +17,41 @@ buridan add component textarea
 ### Manual Installation
 
 ```python
-from typing import Optional, Union
+"""Custom Textarea component."""
 
-import reflex as rx
-from reflex_components_core.el import Input as ElInput
-from reflex_components_core.el import Textarea as ElTextarea
+from reflex.components.component import Component
+from reflex_components_core.el import Textarea as TextareaComponent
 
-
-class ComponentFactory:
-    def __init__(self, base_component_class, base_classes: str):
-        self.base_class = base_component_class
-        self.base_classes = base_classes
-
-    def __call__(self, **props):
-        custom_classes = props.get("class_name", "")
-        props["class_name"] = f"{self.base_classes} {custom_classes}".strip()
-        props["data_slot"] = "input"
-
-        return self.base_class.create(**props)
+from .component import CoreComponent
 
 
-Input = ComponentFactory(
-    ElInput,
-    "flex-1 bg-transparent border-0 outline-none text-[var(--foreground)] placeholder:text-[var(--muted-foreground)] px-2 py-2 text-sm",
-)
+class ClassNames:
+    """Class names for textarea components."""
 
-Textarea = ComponentFactory(
-    ElTextarea,
-    "flex-1 bg-transparent border-0 outline-none resize-none text-[var(--foreground)] placeholder:text-[var(--muted-foreground)] placeholder:text-sm px-3 py-3 text-sm",
-)
+    ROOT = "flex field-sizing-content min-h-16 min-w-xs rounded-radius border border-input bg-transparent px-2.5 py-2 text-base transition-colors outline-none placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 disabled:cursor-not-allowed disabled:bg-input/50 disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 md:text-sm dark:bg-input/30 dark:disabled:bg-input/80 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40"
 
 
-def input_with_addons(
-    *children,
-    placeholder: str = "",
-    prefix: Optional[Union[str, rx.Component]] = None,
-    suffix: Optional[Union[str, rx.Component]] = None,
-    input_type: str = "text",
-    class_name: str = "",
-    **props,
-):
-    children = list(children)
-    if prefix:
-        if isinstance(prefix, str):
-            prefix = rx.el.p(
-                prefix,
-                class_name="text-[var(--muted-foreground)] text-sm font-medium pl-2 select-none pointer-events-none",
-            )
-        children.insert(0, prefix)
+class Textarea(TextareaComponent, CoreComponent):
+    """Root component for Textarea."""
 
-    children.append(Input(type=input_type, placeholder=placeholder, **props))
-
-    if suffix:
-        if isinstance(suffix, str):
-            suffix = rx.el.p(
-                suffix,
-                class_name="text-[var(--muted-foreground)] text-sm font-medium pr-2 select-none pointer-events-none",
-            )
-        children.append(suffix)
-
-    return rx.el.div(
-        *children,
-        class_name=f"flex items-center w-full h-9 bg-transparent border border-[var(--input)] dark:bg-[var(--input)]/30 rounded-[var(--radius)] shadow-xs focus-within:border-[var(--ring)] focus-within:ring-[var(--ring)]/50 focus-within:ring-[3px] transition-[color,box-shadow] {class_name}",
-    )
-
-
-def textarea_with_footer(
-    placeholder: str = "",
-    footer_text: Optional[str] = None,
-    class_name: str = "",
-    **props,
-):
-    children = [Textarea(placeholder=placeholder, **props)]
-    if footer_text:
-        children.append(
-            rx.el.p(
-                footer_text,
-                class_name="text-[var(--muted-foreground)] text-xs px-3 pb-3 pt-0 select-none pointer-events-none",
-            )
+    @classmethod
+    def create(cls, *children, **props) -> Component:
+        """Create the textarea component."""
+        props.setdefault(
+            "custom_attrs",
+            {
+                "autoComplete": "off",
+                "autoCapitalize": "none",
+                "autoCorrect": "off",
+                "spellCheck": "false",
+            },
         )
+        props["data-slot"] = "textarea"
+        cls.set_class_name(ClassNames.ROOT, props)
+        return super().create(*children, **props)
 
 
-input_group = input_with_addons
+textarea = Textarea.create
 ```
 
 
@@ -106,7 +59,7 @@ input_group = input_with_addons
 
 
 ```python
-from components.ui.input_group import Textarea
+from components.ui.textarea import textarea
 ```
 
 

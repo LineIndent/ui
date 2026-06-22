@@ -42,7 +42,7 @@ Input = ComponentFactory(
     "flex-1 bg-transparent border-0 outline-none text-[var(--foreground)] placeholder:text-[var(--muted-foreground)] px-2 py-2 text-sm",
 )
 
-Textarea = ComponentFactory(
+TextareaComp = ComponentFactory(
     ElTextarea,
     "flex-1 bg-transparent border-0 outline-none resize-none text-[var(--foreground)] placeholder:text-[var(--muted-foreground)] placeholder:text-sm px-3 py-3 text-sm",
 )
@@ -88,7 +88,7 @@ def textarea_with_footer(
     class_name: str = "",
     **props,
 ):
-    children = [Textarea(placeholder=placeholder, **props)]
+    children = [TextareaComp(placeholder=placeholder, **props)]
     if footer_text:
         children.append(
             rx.el.p(
