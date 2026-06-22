@@ -11,6 +11,7 @@ from app.hooks import (
     theme_preset_option,
 )
 from app.templates.config import rxconfig
+from app.www.wrapper import styled_tab_trigger
 from components.icons.hugeicon import hi
 from components.ui.button import button
 from components.ui.dialog import dialog
@@ -316,13 +317,13 @@ def theme_export_compiler() -> rx.Component:
                             tabs.tab(
                                 rx.el.p("New Project"),
                                 value="project",
-                                class_name="border-none flex items-center py-4",
+                                class_name="border-none flex items-center w-full",
                                 on_click=rx.call_script(open_script),
                             ),
                             tabs.tab(
                                 "Theme",
                                 value="theme",
-                                class_name="border-none flex items-center py-4",
+                                class_name="border-none flex items-center w-full",
                                 on_click=rx.call_script(ADD_SWATCHES_JS),
                             ),
                             class_name="relative z-0 flex gap-1 rounded-none bg-transparent w-full mb-4",
