@@ -82,3 +82,8 @@
 body {
     background-color: var(--background);
 }
+
+.toc-link[data-active="true"] {
+    color: var(--foreground);
+    font-weight: 500;
+}
