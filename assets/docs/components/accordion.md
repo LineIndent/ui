@@ -353,7 +353,7 @@ from components.ui.accordion import accordion
 
 
 # Anatomy 
-Use the following composition to build an `Accordion`
+Use the following composition to build an `Accordion` component.
 
 
 ```python

@@ -170,7 +170,7 @@ from components.ui.collapsible import collapsible
 
 
 # Anatomy 
-Use the following composition to build a `Collapsible`
+Use the following composition to build a `Collapsible` component.
 
 
 ```python

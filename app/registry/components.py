@@ -85,6 +85,10 @@ COMPONENT_REGISTRY = {
         "files": ["components/ui/frame.py"],
         "dependencies": ["twmerge"],
     },
+    "heatmap": {
+        "files": ["components/ui/heatmap.py"],
+        "dependencies": ["twmerge"],
+    },
     "input": {
         "files": ["components/ui/input.py"],
         "dependencies": [],

@@ -19,7 +19,7 @@ Copy the following code into your app directory.
 --USAGE(menu)--
 
 # Anatomy 
-Use the following composition to build a `Menu`
+Use the following composition to build a `Menu` component.
 
 --ANATOMY(menu)--
 

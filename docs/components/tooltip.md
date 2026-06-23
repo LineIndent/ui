@@ -19,7 +19,7 @@ Copy the following code into your app directory.
 --USAGE(tooltip)--
 
 # Anatomy 
-Use the following composition to build a `Tooltip`
+Use the following composition to build a `Tooltip` component.
 --ANATOMY(tooltip)--
 
 

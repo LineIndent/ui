@@ -8,7 +8,7 @@ order: 0
 
 An input that suggests options as you type.
 
-> **Note:** The Autocomplete component is a fully custom implementation with no external dependencies. All filtering, keyboard navigation, and popup positioning happen client-side in the browser with no server round trips.
+> **Note:** The Autocomplete component is a fully custom implementation with no external dependencies. It's a JavaScript component with a Python API used in Reflex.
 
 # Installation
 
@@ -21,7 +21,7 @@ Copy the following code into your app directory.
 --USAGE(autocomplete)--
 
 # Anatomy 
-Use the following composition to build an `Autocomplete`
+Use the following composition to build an `Autocomplete` component. 
 
 --ANATOMY(autocomplete)--
 

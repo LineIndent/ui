@@ -19,7 +19,7 @@ Copy the following code into your app directory.
 --USAGE(button)--
 
 # Anatomy 
-Use the following composition to build a `Button`
+Use the following composition to build a `Button` component.
 
 --ANATOMY(button)--
 

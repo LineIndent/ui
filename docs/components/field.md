@@ -19,7 +19,7 @@ Copy the following code into your app directory.
 --USAGE(field)--
 
 # Anatomy 
-Use the following composition to build an `Field`
+Use the following composition to build a `Field` component.
 
 --ANATOMY(field)--
 

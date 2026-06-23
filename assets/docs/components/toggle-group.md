@@ -98,7 +98,7 @@ from components.ui.toggle_group import toggle_group
 
 
 # Anatomy 
-Use the following composition to build a `Toggle Group`
+Use the following composition to build a `Toggle Group` component.
 
 
 ```python

@@ -19,7 +19,7 @@ Copy the following code into your app directory.
 --USAGE(input)--
 
 # Anatomy 
-Use the following composition to build a `Input`
+Use the following composition to build an `Input` component.
 
 --ANATOMY(input)--
 

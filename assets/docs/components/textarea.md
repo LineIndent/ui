@@ -64,7 +64,7 @@ from components.ui.textarea import textarea
 
 
 # Anatomy 
-Use the following composition to build a `Textarea`
+Use the following composition to build a `Textarea` component.
 
 
 ```python

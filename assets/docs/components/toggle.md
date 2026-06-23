@@ -107,7 +107,7 @@ from components.ui.toggle import toggle
 
 
 # Anatomy 
-Use the following composition to build a `Toggle`
+Use the following composition to build a `Toggle` component.
 
 
 ```python

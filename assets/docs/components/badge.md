@@ -117,7 +117,7 @@ from components.ui.badge import badge
 
 
 # Anatomy 
-Use the following composition to build a `Badge`
+Use the following composition to build a `Badge` component.
 
 
 ```python

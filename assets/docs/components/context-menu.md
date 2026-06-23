@@ -707,7 +707,7 @@ from components.ui.context_menu import context_menu
 
 
 # Anatomy 
-Use the following composition to build a `Context Menu`
+Use the following composition to build a `Context Menu` component.
 
 
 ```python

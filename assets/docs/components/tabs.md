@@ -202,7 +202,7 @@ from components.ui.tabs import tabs
 
 
 # Anatomy 
-Use the following composition to build a `Tabs`
+Use the following composition to build a `Tabs` component.
 
 
 ```python

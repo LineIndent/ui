@@ -19,7 +19,7 @@ Copy the following code into your app directory.
 --USAGE(avatar)--
 
 # Anatomy 
-Use the following composition to build a `Avatar`
+Use the following composition to build an `Avatar` component.
 
 --ANATOMY(avatar)--
 

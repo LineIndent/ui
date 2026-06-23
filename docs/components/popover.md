@@ -19,7 +19,7 @@ Copy the following code into your app directory.
 --USAGE(popover)--
 
 # Anatomy 
-Use the following composition to build a `Popover`
+Use the following composition to build a `Popover` component.
 
 --ANATOMY(popover)--
 

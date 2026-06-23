@@ -19,7 +19,7 @@ Copy the following code into your app directory.
 --USAGE(toggle_group)--
 
 # Anatomy 
-Use the following composition to build a `Toggle Group`
+Use the following composition to build a `Toggle Group` component.
 
 --ANATOMY(toggle_group)--
 

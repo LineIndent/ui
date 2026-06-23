@@ -19,7 +19,7 @@ Copy the following code into your app directory.
 --USAGE(textarea)--
 
 # Anatomy 
-Use the following composition to build a `Textarea`
+Use the following composition to build a `Textarea` component.
 
 --ANATOMY(textarea)--
 

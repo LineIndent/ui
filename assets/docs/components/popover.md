@@ -410,7 +410,7 @@ from components.ui.popover import popover
 
 
 # Anatomy 
-Use the following composition to build a `Popover`
+Use the following composition to build a `Popover` component.
 
 
 ```python

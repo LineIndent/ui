@@ -19,7 +19,7 @@ Copy the following code into your app directory.
 --USAGE(collapsible)--
 
 # Anatomy 
-Use the following composition to build a `Collapsible`
+Use the following composition to build a `Collapsible` component.
 
 --ANATOMY(collapsible)--
 

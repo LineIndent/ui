@@ -19,7 +19,7 @@ Copy the following code into your app directory.
 --USAGE(checkbox)--
 
 # Anatomy 
-Use the following composition to build a `Checkbox`
+Use the following composition to build a `Checkbox` component.
 
 --ANATOMY(checkbox)--
 
