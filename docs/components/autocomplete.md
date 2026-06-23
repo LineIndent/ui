@@ -39,6 +39,12 @@ Wire up `on_select_item` to capture the selected value.
 
 --DEMO(autocomplete_select_value)--
 
+## Grouped List
+
+Pass a `group` key to your data structure to group items together. 
+
+--DEMO(autocomplete_grouping)--
+
 ## Large List
 
 Autocomplete works efficiently with large lists — filtering happens entirely in the browser.
@@ -59,6 +65,8 @@ When no items match the query, the empty state is shown automatically.
 
 # API Reference
 
+**autocomplete**
+
 | Prop | Type | Default | Description |
 | :--- | :--- | :--- | :--- |
 | `items` | `list[str]` | `[]` | The list of items to display in the dropdown. |
@@ -72,3 +80,4 @@ When no items match the query, the empty state is shown automatically.
 | `item_class` | `str` | `None` | Additional Tailwind classes merged onto each list item. |
 | `item_highlighted_class` | `str` | `None` | Additional Tailwind classes merged onto the currently highlighted item. |
 | `empty_class` | `str` | `None` | Additional Tailwind classes merged onto the empty state element. |
+| `set_query_on_select` | `bool` | `True`  | Controls whether selecting an item updates the input value. If `False`, selection clears the input (useful for command palette / navigation mode). |
