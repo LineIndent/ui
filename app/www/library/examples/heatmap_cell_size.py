@@ -1,3 +1,5 @@
+import reflex as rx
+
 from components.ui.heatmap import heatmap
 
 
@@ -28,16 +30,22 @@ def heatmap_large_cells():
         {"date": "2025-10-31", "value": 12},
     ]
 
-    return heatmap(
-        data=data,
-        start_date="2025-10-01",
-        end_date="2025-10-31",
-        color_mode="interpolate",
-        min_color="#f0fdf4",
-        max_color="#14532d",
-        interpolation="log",
-        value_label="requests",
-        cell_size=20,
-        gap=4,
-        root_class="scrollbar-none",
+    return rx.el.div(
+        *[
+            heatmap(
+                data=data,
+                start_date="2025-10-01",
+                end_date="2025-10-31",
+                color_mode="interpolate",
+                min_color="#f0fdf4",
+                max_color="#14532d",
+                interpolation="log",
+                value_label="requests",
+                cell_size=size,
+                gap=4,
+                root_class="scrollbar-none",
+            )
+            for size in [10, 15, 20]
+        ],
+        class_name="w-full flex flex-col sm:flex-row justify-center items-center gap-4",
     )

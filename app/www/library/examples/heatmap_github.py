@@ -1,11 +1,11 @@
 import random
+from datetime import date, timedelta
 
 from components.ui.heatmap import heatmap
 
 
 def heatmap_github():
     data = []
-    from datetime import date, timedelta
 
     d = date(2025, 1, 1)
     while d <= date(2025, 12, 31):
@@ -16,7 +16,7 @@ def heatmap_github():
     return heatmap(
         data=data,
         start_date="2025-01-01",
-        end_date="2025-11-31",
+        end_date="2025-11-30",
         color_mode="discrete",
         value_label="contributions",
         cell_size=14,

@@ -10,7 +10,7 @@ from ..utils.twmerge import cn
 
 
 class ClassNames:
-    ROOT = "w-full overflow-x-auto"
+    ROOT = "w-full overflow-x-auto pr-1"
     WRAPPER = "inline-block"
 
 
@@ -33,7 +33,9 @@ if (typeof window !== "undefined") { (function () {
     const days = [];
     const curr = parseDate(start);
     const endD = parseDate(end);
-    while (curr <= endD) {
+    if (isNaN(curr.getTime()) || isNaN(endD.getTime())) return days;
+    let safety = 0;
+    while (curr <= endD && safety++ < 1500) {
       days.push(formatDate(curr));
       curr.setDate(curr.getDate() + 1);
     }
@@ -41,9 +43,10 @@ if (typeof window !== "undefined") { (function () {
   }
 
   function padToWeekStart(days) {
-    const firstDow = parseDate(days[0]).getDay(); // 0=Sun
-    const padding  = new Array(firstDow).fill(null);
-    return [...padding, ...days];
+    const firstDow = days.length > 0 ? parseDate(days[0]).getDay() : 0;
+    const safeDow  = Number.isFinite(firstDow) ? firstDow : 0;
+    const padding  = safeDow > 0 ? new Array(safeDow).fill(null) : [];
+    return padding.concat(days);
   }
 
   function chunkByWeek(days) {
@@ -53,7 +56,7 @@ if (typeof window !== "undefined") { (function () {
   }
 
   function getMonthLabel(week) {
-    const last = [...week].reverse().find(Boolean);
+    const last = week.slice().reverse().find(Boolean);
     return last
       ? parseDate(last).toLocaleString("default", { month: "short" })
       : null;
@@ -166,7 +169,7 @@ if (typeof window !== "undefined") { (function () {
     // ── build grid ───────────────────────────────────────────────────────────
     const { weeks, monthLabels, maxValue, valueByDate } = React.useMemo(() => {
       const valueByDate = new Map(data.map(({ date, value }) => [date, value]));
-      const maxValue    = Math.max(...data.map(d => d.value), 0);
+      const maxValue    = data.reduce((max, d) => d.value > max ? d.value : max, 0);
       const days        = getAllDays(startDate, endDate);
       const padded      = padToWeekStart(days);
       const weeks       = chunkByWeek(padded);
@@ -241,7 +244,7 @@ if (typeof window !== "undefined") { (function () {
                   x={dowColWidth + wi * (size + gapPx) + size / 2}
                   y={fontSize}
                   fontSize={fontSize}
-                  fill="hsl(var(--muted-foreground))"
+                  fill="var(--foreground)"
                   textAnchor="middle"
                 >
                   {monthLabels[wi]}
@@ -257,7 +260,7 @@ if (typeof window !== "undefined") { (function () {
                   x={dowColWidth - gapPx * 2}
                   y={headerHeight + di * (size + gapPx) + size * 0.75}
                   fontSize={fontSize}
-                  fill="hsl(var(--muted-foreground))"
+                  fill="var(--foreground)"
                   textAnchor="end"
                 >
                   {label}
