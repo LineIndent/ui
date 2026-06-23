@@ -31,7 +31,26 @@ from app.examples.components import (
     card_twenty_two,
     card_two,
 )
+from app.examples.utils import masonry_card
 from app.hooks import theme
+from app.www.library.charts.bar.v1 import barchart_v1
+from app.www.library.charts.doughnut.v1 import doughnutchart_v1
+from app.www.library.charts.line.v8 import linechart_v8
+
+
+@masonry_card(label="Charts")
+def line_chart():
+    return linechart_v8()
+
+
+@masonry_card(label="Charts")
+def doughnut_chart():
+    return doughnutchart_v1()
+
+
+@masonry_card(label="Charts")
+def bar_chart():
+    return barchart_v1()
 
 
 def preview() -> rx.Component:
@@ -42,14 +61,17 @@ def preview() -> rx.Component:
                     rx.el.div(
                         card_ten(),
                         card_fourteen(),
+                        bar_chart(),
                         card_six(),
                         card_thirteen(),
                         card_sixteen(),
                         card_eleven(),
+                        doughnut_chart(),
                         card_four(),
                         card_twelve(),
                         card_eight(),
                         card_seven(),
+                        line_chart(),
                         card_nineteen(),
                         card_eighteen(),
                         card_twenty(),

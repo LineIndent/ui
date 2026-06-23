@@ -162,6 +162,17 @@ def component_panel(desktop: bool = True) -> rx.Component:
                             ),
                             on_click=selected_component_category.set_value("Finance"),
                         ),
+                        select.item(
+                            select.item_text("Charts"),
+                            select.item_indicator(
+                                hi("Tick02Icon", class_name="size-4")
+                            ),
+                            value="Charts",
+                            class_name=(
+                                "w-full flex flex-row items-center justify-between rounded-lg"
+                            ),
+                            on_click=selected_component_category.set_value("Charts"),
+                        ),
                         class_name="p-1",
                     ),
                     class_name="rounded-xl border-0 dark bg-card/90 backdrop-blur-xl w-[250px]"
