@@ -801,7 +801,7 @@ from components.ui.menu import menu
 
 
 # Anatomy 
-Use the following composition to build a `Menu`
+Use the following composition to build a `Menu` component.
 
 
 ```python

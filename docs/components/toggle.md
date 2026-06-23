@@ -19,7 +19,7 @@ Copy the following code into your app directory.
 --USAGE(toggle)--
 
 # Anatomy 
-Use the following composition to build a `Toggle`
+Use the following composition to build a `Toggle` component.
 
 --ANATOMY(toggle)--
 

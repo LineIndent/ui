@@ -19,7 +19,7 @@ Copy the following code into your app directory.
 --USAGE(badge)--
 
 # Anatomy 
-Use the following composition to build a `Badge`
+Use the following composition to build a `Badge` component.
 
 --ANATOMY(badge)--
 

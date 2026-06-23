@@ -19,7 +19,7 @@ Copy the following code into your app directory.
 --USAGE(accordion)--
 
 # Anatomy 
-Use the following composition to build an `Accordion`
+Use the following composition to build an `Accordion` component.
 
 --ANATOMY(accordion)--
 

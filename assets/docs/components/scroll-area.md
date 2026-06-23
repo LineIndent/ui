@@ -235,7 +235,7 @@ from components.ui.scroll_area import scroll_area
 
 
 # Anatomy 
-Use the following composition to build a `Scroll Area`
+Use the following composition to build a `Scroll Area` component.
 
 
 ```python

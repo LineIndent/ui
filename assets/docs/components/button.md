@@ -153,7 +153,7 @@ from components.ui.button import button
 
 
 # Anatomy 
-Use the following composition to build a `Button`
+Use the following composition to build a `Button` component.
 
 
 ```python

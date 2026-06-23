@@ -19,7 +19,7 @@ Copy the following code into your app directory.
 --USAGE(skeleton)--
 
 # Anatomy 
-Use the following composition to build a `Skeleton`
+Use the following composition to build a `Skeleton` component.
 
 --ANATOMY(skeleton)--
 

@@ -19,7 +19,7 @@ Copy the following code into your app directory.
 --USAGE(context_menu)--
 
 # Anatomy 
-Use the following composition to build a `Context Menu`
+Use the following composition to build a `Context Menu` component.
 
 --ANATOMY(context_menu)--
 

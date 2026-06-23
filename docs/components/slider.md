@@ -19,7 +19,7 @@ Copy the following code into your app directory.
 --USAGE(slider)--
 
 # Anatomy 
-Use the following composition to build a `Slider`
+Use the following composition to build a `Slider` component.
 
 --ANATOMY(slider)--
 

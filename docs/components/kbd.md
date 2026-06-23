@@ -16,7 +16,7 @@ Copy the following code into your app directory.
 
 
 # Anatomy 
-Use the following composition to build a `Kbd`
+Use the following composition to build a `Kbd` component.
 
 --ANATOMY(kbd)--
 

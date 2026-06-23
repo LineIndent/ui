@@ -155,7 +155,7 @@ from components.ui.avatar import avatar
 
 
 # Anatomy 
-Use the following composition to build a `Avatar`
+Use the following composition to build an `Avatar` component.
 
 
 ```python

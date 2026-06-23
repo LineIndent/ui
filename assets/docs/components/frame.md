@@ -167,7 +167,7 @@ from components.ui.frame import frame
 
 
 # Anatomy 
-Use the following composition to build an `Frame`
+Use the following composition to build a `Frame` component.
 
 
 ```python

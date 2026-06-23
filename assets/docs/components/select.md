@@ -639,7 +639,7 @@ from components.ui.select import select
 
 
 # Anatomy 
-Use the following composition to build a `Select`
+Use the following composition to build a `Select` component.
 
 ```python
 select.root(

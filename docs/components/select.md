@@ -16,7 +16,7 @@ Copy the following code into your app directory.
 --USAGE(select)--
 
 # Anatomy 
-Use the following composition to build a `Select`
+Use the following composition to build a `Select` component.
 --ANATOMY(select)--
 
 # Examples

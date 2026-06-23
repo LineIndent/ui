@@ -76,7 +76,7 @@ from components.ui.input import input
 
 
 # Anatomy 
-Use the following composition to build a `Input`
+Use the following composition to build an `Input` component.
 
 
 ```python

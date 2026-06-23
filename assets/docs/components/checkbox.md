@@ -179,7 +179,7 @@ from components.ui.checkbox import checkbox
 
 
 # Anatomy 
-Use the following composition to build a `Checkbox`
+Use the following composition to build a `Checkbox` component.
 
 
 ```python

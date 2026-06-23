@@ -349,7 +349,7 @@ from components.ui.tooltip import tooltip
 
 
 # Anatomy 
-Use the following composition to build a `Tooltip`
+Use the following composition to build a `Tooltip` component.
 
 ```python
 tooltip.root(

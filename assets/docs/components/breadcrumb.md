@@ -117,7 +117,7 @@ def breadcrumb_ellipsis(class_name: str = "", **props):
 
 
 # Anatomy 
-Use the following composition to build a `Breadcrumb`
+Use the following composition to build a `Breadcrumb` component.
 
 
 ```python

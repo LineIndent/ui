@@ -24,6 +24,7 @@ ANATOMY = {
         frame.footer(),
     ),
 )""",
+    "heatmap": """heatmap()""",
     "autocomplete": """autocomplete(
     items=[...],
 )""",

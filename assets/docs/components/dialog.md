@@ -306,7 +306,7 @@ from components.ui.dialog import dialog
 
 
 # Anatomy 
-Use the following composition to build a `Dialog`
+Use the following composition to build a `Dialog` component.
 
 
 ```python

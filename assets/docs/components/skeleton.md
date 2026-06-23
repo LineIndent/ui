@@ -52,7 +52,7 @@ from components.ui.skeleton import skeleton
 
 
 # Anatomy 
-Use the following composition to build a `Skeleton`
+Use the following composition to build a `Skeleton` component.
 
 
 ```python

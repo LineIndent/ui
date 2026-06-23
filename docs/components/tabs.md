@@ -19,7 +19,7 @@ Copy the following code into your app directory.
 --USAGE(tabs)--
 
 # Anatomy 
-Use the following composition to build a `Tabs`
+Use the following composition to build a `Tabs` component.
 
 --ANATOMY(tabs)--
 

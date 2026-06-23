@@ -19,7 +19,7 @@ Copy the following code into your app directory.
 --USAGE(dialog)--
 
 # Anatomy 
-Use the following composition to build a `Dialog`
+Use the following composition to build a `Dialog` component.
 
 --ANATOMY(dialog)--
 

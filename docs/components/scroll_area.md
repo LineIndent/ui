@@ -19,7 +19,7 @@ Copy the following code into your app directory.
 --USAGE(scroll_area)--
 
 # Anatomy 
-Use the following composition to build a `Scroll Area`
+Use the following composition to build a `Scroll Area` component.
 
 --ANATOMY(scroll_area)--
 

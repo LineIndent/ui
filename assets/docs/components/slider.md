@@ -286,7 +286,7 @@ from components.ui.slider import slider
 
 
 # Anatomy 
-Use the following composition to build a `Slider`
+Use the following composition to build a `Slider` component.
 
 
 ```python

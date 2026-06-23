@@ -70,7 +70,7 @@ def kbd_group(*children, class_name: str = "", **props):
 
 
 # Anatomy 
-Use the following composition to build a `Kbd`
+Use the following composition to build a `Kbd` component.
 
 
 ```python

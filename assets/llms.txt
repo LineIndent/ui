@@ -30,6 +30,7 @@
 - [Dialog](https://buridan.reflex.run/docs/components/dialog): The Dialog component.
 - [Field](https://buridan.reflex.run/docs/components/field): The Field component.
 - [Frame](https://buridan.reflex.run/docs/components/frame): The Frame component.
+- [Heatmap](https://buridan.reflex.run/docs/components/heatmap): The Heatmap component.
 - [Input](https://buridan.reflex.run/docs/components/input): The Input component.
 - [Input Group](https://buridan.reflex.run/docs/components/input-group): The Input Group component.
 - [Kbd](https://buridan.reflex.run/docs/components/kbd): The Kbd component.

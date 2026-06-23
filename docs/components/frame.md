@@ -21,7 +21,7 @@ Copy the following code into your app directory.
 --USAGE(frame)--
 
 # Anatomy 
-Use the following composition to build an `Frame`
+Use the following composition to build a `Frame` component.
 
 --ANATOMY(frame)--
 
