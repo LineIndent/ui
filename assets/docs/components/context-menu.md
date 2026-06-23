@@ -650,7 +650,6 @@ class HighLevelContextMenu(ContextMenuRoot):
                         class_name=cn(
                             ClassNames.POPUP,
                             "",
-                            # f"rounded-[calc(var(--radius-ui-{size})+0.25rem)]",
                         ),
                     ),
                     **positioner_props,

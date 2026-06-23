@@ -10,12 +10,12 @@ from ..utils.twmerge import cn
 
 
 class ClassNames:
-    ROOT = "w-full overflow-x-auto pr-2"
+    ROOT = "w-full overflow-x-auto"
     WRAPPER = "inline-block"
 
 
 BURIDAN_HEATMAP_JS = """
-(function () {
+if (typeof window !== "undefined") { (function () {
 
   // ── date helpers ───────────────────────────────────────────────────────────
   function formatDate(date) {
@@ -241,7 +241,7 @@ BURIDAN_HEATMAP_JS = """
                   x={dowColWidth + wi * (size + gapPx) + size / 2}
                   y={fontSize}
                   fontSize={fontSize}
-                  fill="var(--foreground)"
+                  fill="hsl(var(--muted-foreground))"
                   textAnchor="middle"
                 >
                   {monthLabels[wi]}
@@ -257,7 +257,7 @@ BURIDAN_HEATMAP_JS = """
                   x={dowColWidth - gapPx * 2}
                   y={headerHeight + di * (size + gapPx) + size * 0.75}
                   fontSize={fontSize}
-                  fill="var(--foreground)"
+                  fill="hsl(var(--muted-foreground))"
                   textAnchor="end"
                 >
                   {label}
@@ -316,7 +316,15 @@ BURIDAN_HEATMAP_JS = """
   }
 
   window.BuridanHeatmapRoot = BuridanHeatmapRoot;
-})();
+})(); }
+
+// SSR-safe wrapper — always defined, renders nothing on server
+function BuridanHeatmapSSR(props) {
+  const [mounted, setMounted] = React.useState(false);
+  React.useEffect(() => { setMounted(true); }, []);
+  if (!mounted || typeof BuridanHeatmapRoot === "undefined") return null;
+  return React.createElement(BuridanHeatmapRoot, props);
+}
 """
 
 
@@ -347,7 +355,7 @@ class BuridanHeatmap(Component):
         value_label — string appended to tooltip count (default "contributions")
     """
 
-    tag = "BuridanHeatmapRoot"
+    tag = "BuridanHeatmapSSR"
     is_default = False
 
     data: Var[Any]

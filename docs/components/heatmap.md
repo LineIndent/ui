@@ -8,7 +8,7 @@ order: 0
 
 A heatmap component to visualize data density over time.
 
-> **Note:** The Heatmap component is a fully custom implementation with no external dependencies. It's a JavaScript component with a Python API used in Reflex.
+> **Note:** The Heatmap is a fully custom component with no external dependencies — built as a self-contained JavaScript component exposed through a Python API for use in Reflex.
 
 # Installation
 

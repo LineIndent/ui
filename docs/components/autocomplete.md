@@ -8,7 +8,7 @@ order: 0
 
 An input that suggests options as you type.
 
-> **Note:** The Autocomplete component is a fully custom implementation with no external dependencies. It's a JavaScript component with a Python API used in Reflex.
+> **Note:** The Autocomplete is a fully custom component with no external dependencies — built as a self-contained JavaScript component exposed through a Python API for use in Reflex.
 
 # Installation
 

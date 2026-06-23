@@ -9,7 +9,7 @@ Swatch = Literal["square", "line", "border"]
 def _deep_merge(base: dict, override: dict) -> dict:
     result = base.copy()
     for key, value in override.items():
-        if key in result and isinstance(result[key], dict) and isinstance(value, dict):
+        if isinstance(result.get(key), dict) and isinstance(value, dict):
             result[key] = _deep_merge(result[key], value)
         else:
             result[key] = value
@@ -72,36 +72,45 @@ class _ChartTooltipContent:
             [&_.recharts-tooltip-item]:!flex
             [&_.recharts-tooltip-item]:!items-center
             [&_.recharts-tooltip-item]:!gap-2
-        """ + (
+        """
+
+        if swatch == "border":
+            base += """
+                [&_.recharts-tooltip-label]:!border-l-3
+                [&_.recharts-tooltip-label]:!border-[var(--chart-1)]
+                [&_.recharts-tooltip-label]:!pl-2
+                [&_.recharts-tooltip-label]:!py-0
             """
-            [&_.recharts-tooltip-label]:!border-l-3
-            [&_.recharts-tooltip-label]:!border-[var(--chart-1)]
-            [&_.recharts-tooltip-label]:!pl-2
-            [&_.recharts-tooltip-label]:!py-0
-            """
-            if swatch == "border"
-            else ""
-        )
 
         lines = []
+
         for i in range(1, num_series + 1):
+            idx = str(i)
+
             if swatch == "border":
                 lines.append(f"""
                     [&_.recharts-default-tooltip]:!py-2 !flex !flex-col !gap-y-0
-                    [&_.recharts-tooltip-item:nth-child({i})]:!border-l-3
-                    [&_.recharts-tooltip-item:nth-child({i})]:!border-[var(--chart-{i})]
-                    [&_.recharts-tooltip-item:nth-child({i})]:!pl-2
-                    [&_.recharts-tooltip-item:nth-child({i})]:!py-0
+                    [&_.recharts-tooltip-item:nth-child({idx})]:!border-l-3
+                    [&_.recharts-tooltip-item:nth-child({idx})]:!border-[var(--chart-{idx})]
+                    [&_.recharts-tooltip-item:nth-child({idx})]:!pl-2
+                    [&_.recharts-tooltip-item:nth-child({idx})]:!py-0
                 """)
             else:
+                width = "!w-3" if swatch == "square" else "!w-8"
+                shrink = (
+                    f"[&_.recharts-tooltip-item:nth-child({idx})]:before:!flex-shrink-0"
+                    if swatch == "square"
+                    else ""
+                )
+
                 lines.append(f"""
-                    [&_.recharts-tooltip-item:nth-child({i})]:before:!content-['']
-                    [&_.recharts-tooltip-item:nth-child({i})]:before:{"!w-3" if swatch == "square" else "!w-8"}
-                    {"[&_.recharts-tooltip-item:nth-child(" + str(i) + ")]:before:!flex-shrink-0" if swatch == "square" else ""}
-                    [&_.recharts-tooltip-item:nth-child({i})]:before:!h-3
-                    [&_.recharts-tooltip-item:nth-child({i})]:before:!rounded-sm
-                    [&_.recharts-tooltip-item:nth-child({i})]:before:!bg-[var(--chart-{i})]
-                    [&_.recharts-tooltip-item:nth-child({i})]:before:!block
+                    [&_.recharts-tooltip-item:nth-child({idx})]:before:!content-['']
+                    [&_.recharts-tooltip-item:nth-child({idx})]:before:{width}
+                    {shrink}
+                    [&_.recharts-tooltip-item:nth-child({idx})]:before:!h-3
+                    [&_.recharts-tooltip-item:nth-child({idx})]:before:!rounded-sm
+                    [&_.recharts-tooltip-item:nth-child({idx})]:before:!bg-[var(--chart-{idx})]
+                    [&_.recharts-tooltip-item:nth-child({idx})]:before:!block
                 """)
 
         return base + "\n".join(lines)
