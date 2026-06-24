@@ -3,6 +3,8 @@ import reflex as rx
 from app.engine.actions import TOGGLE_DARK_JS
 from app.hooks import seed, theme_preset_option
 from app.templates.docsidebar import mobile_menu
+from app.templates.searchbar import searchbar
+from app.templates.utils import attach_tooltip
 from components.icons.hugeicon import hi
 from components.ui.button import button
 
@@ -61,34 +63,40 @@ def light_and_dark_toggle() -> rx.Component:
       <path d="M12 14.3l7.37 -7.37"/>
       <path d="M12 19.6l8.85 -8.85"/>
     </svg>"""
-    return button(
-        icon_wrapper(svg, "size-4"),
-        on_click=[rx.toggle_color_mode, rx.call_script(TOGGLE_DARK_JS)],
-        variant="ghost",
-        size="sm",
+    return attach_tooltip(
+        func=button(
+            icon_wrapper(svg, "size-4"),
+            on_click=[rx.toggle_color_mode, rx.call_script(TOGGLE_DARK_JS)],
+            variant="ghost",
+            size="sm",
+        ),
+        label="Toggle Theme",
     )
 
 
 def site_github() -> rx.Component:
     svg = """<svg viewBox="0 0 24 24" fill="currentColor" class="size-5"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.87 8.17 6.84 9.5.5.08.66-.23.66-.5v-1.69c-2.77.6 -3.36-1.34 -3.36-1.34 -.46-1.16-1.11-1.47-1.11-1.47 -.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03 .89 1.52 2.34 1.08 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.92 0-1.11.38-2 1.03-2.71-.1-.25-.45-1.29.1-2.64 0 0 .84-.27 2.75 1.02.79-.22 1.65-.33 2.5-.33.85 0 1.71.11 2.5.33 1.91-1.29 2.75-1.02 2.75-1.02.55 1.35.2 2.39.1 2.64.65.71 1.03 1.6 1.03 2.71 0 3.82-2.34 4.66-4.57 4.91.36.31.69.92.69 1.85V21c0 .27.16.59.67.5C19.14 20.16 22 16.42 22 12c0-5.523-4.477-10-10-10z"/></svg>"""
     return rx.el.a(
-        button(
-            icon_wrapper(svg),
-            rx.el.p("241", class_name="text-sm text-muted-foreground"),
-            variant="ghost",
-            size="sm",
-            class_name="text-foreground",
+        attach_tooltip(
+            func=button(
+                icon_wrapper(svg),
+                variant="ghost",
+                size="sm",
+                class_name="text-foreground",
+            ),
+            label="GitHub",
         ),
-        href="https://github.com/buridan-ui",
+        href="https://github.com/LineIndent/ui",
         class_name="no-underline",
     )
 
 
 def navbar(with_create_page_cta: bool = False) -> rx.Component:
     actions = [
-        site_github(),
-        separator(),
+        searchbar(),
         light_and_dark_toggle(),
+        separator(),
+        site_github(),
         separator(),
         rx.el.a(
             button(hi("PlusSignIcon", class_name="size-4"), "New", size="sm"),

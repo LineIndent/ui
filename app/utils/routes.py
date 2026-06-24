@@ -46,6 +46,7 @@ def generate_doc_routes(section_folder, base_path) -> list[dict]:
 
         route_info = {
             "title": metadata["title"],
+            "description": metadata["description"],
             "url": f"{base_path}{path_slug}",  # Will include docs/ prefix
             "order": metadata.get("order", 0),
         }
@@ -89,3 +90,7 @@ GET_STARTED_URLS = ALL_ROUTES["getting_started"]
 RESOURCES_URLS = ALL_ROUTES["resources"]
 BASE_UI_COMPONENTS = ALL_ROUTES["components"]
 CHARTS_URLS = ALL_ROUTES["charts"]
+
+
+if __name__ == "__main__":
+    print(ALL_ROUTES)
