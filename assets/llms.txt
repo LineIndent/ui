@@ -9,6 +9,7 @@
 - [CLI](https://buridan.reflex.run/docs/getting-started/cli): CLI page.
 - [dev.py](https://buridan.reflex.run/docs/getting-started/dev): dev.py page.
 - [JavaScript](https://buridan.reflex.run/docs/getting-started/javascript): JavaScript page.
+- [Changelog](https://buridan.reflex.run/docs/getting-started/changelog): Changelog page.
 
 ## Resources
 - [Client State Var](https://buridan.reflex.run/docs/resources/client-state-var): Client State Var page.

@@ -31,6 +31,11 @@
   },
   {
     "section": "Getting Started",
+    "title": "Changelog",
+    "url": "docs/getting-started/changelog"
+  },
+  {
+    "section": "Getting Started",
     "title": "llms.txt",
     "url": "llms.txt"
   },

@@ -17,8 +17,8 @@ def create_copy_button(url: str) -> rx.Component:
     return tooltip.provider(
         tooltip.root(
             tooltip.trigger(
-                render_=hi(
-                    "Copy01Icon", id=icon_id, class_name="size-4 cursor-pointer"
+                render_=rx.el.div(
+                    hi("Copy01Icon", id=icon_id, class_name="size-4 cursor-pointer")
                 ),
                 id=btn_id,
                 on_click=rx.call_script(
@@ -66,7 +66,6 @@ def _create_markdown_toc_links(url: str, toc_data: List[Dict]) -> rx.Component:
                 rx.el.a(
                     entry["text"],
                     href=f"#{entry['id'].lower().replace(' ', '-')}",
-                    # href=f"/{url}#{entry['id'].lower().replace(' ', '-')}",
                     class_name=(
                         "toc-link "
                         "cursor-pointer transition-colors duration-200 "
