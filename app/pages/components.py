@@ -13,7 +13,13 @@ def get_component_links():
     links = []
 
     for file in BASE_PATH.glob("*.py"):
-        if file.name in ("__init__.py", "base_ui.py", "component.py"):
+        if file.name in (
+            "__init__.py",
+            "base_ui.py",
+            "component.py",
+            "metric.py",
+            "table.py",
+        ):
             continue
 
         name = file.stem.replace("_", " ").title()

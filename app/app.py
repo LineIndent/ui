@@ -4,6 +4,18 @@ from app.export import export_site
 
 app = rx.App(
     head_components=[
+        rx.el.script(src="/fuse/fuse-init.js", type="module"),
+        rx.el.script(src="/fuse/searchFunction.js"),
+        rx.el.script("""
+            var interval = setInterval(function() {
+                if (typeof window.Fuse === 'function' && typeof window.initializeFuse === 'function') {
+                    clearInterval(interval);
+                    fetch('/fuse/searchList.json')
+                        .then(function(r) { return r.json(); })
+                        .then(function(data) { window.initializeFuse(data); });
+                }
+            }, 50);
+        """),
         rx.el.script(src="/prism/prism.js"),
     ],
     stylesheets=[
