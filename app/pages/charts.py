@@ -32,12 +32,12 @@ GRID_LAYOUT = " ".join(
     description="A collection of ready-to-use chart components built with Recharts. From basic charts to rich data displays, copy and paste into your apps.",
     ctas=[
         rx.el.a(
-            button("Chart Themes", size="sm"),
-            href="/create",
+            button("Browse Charts", size="sm"),
+            href="/docs/charts/area-chart",
         ),
         rx.el.a(
             button("Documentation", variant="secondary", size="sm"),
-            href="/docs/charts/area-chart",
+            href="/docs/components/chart",
         ),
     ],
 )
