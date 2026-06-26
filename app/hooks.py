@@ -46,6 +46,8 @@ selected_component_category = ClientStateVar.create(
     "selected_component_category", "All"
 )
 
+selected_blocks_category = ClientStateVar.create("selected_blocks_category", "all")
+
 search_items_cs = ClientStateVar.create(
     "search_items_cs",
     routes.GET_STARTED_URLS + routes.BASE_UI_COMPONENTS + routes.CHARTS_URLS,

@@ -64,53 +64,48 @@ class _ChartTooltip:
 
 
 class _ChartTooltipContent:
-    def __call__(self, num_series: int, swatch: Swatch = "square") -> str:
+    def __call__(self, chart_colors: list[int], swatch: Swatch = "square") -> str:
         base = """
             [&_.recharts-tooltip-item-name]:!text-muted-foreground
             [&_.recharts-tooltip-item-separator]:!w-full
-            [&_.recharts-tooltip-item]:!w-[8rem]
+            [&_.recharts-tooltip-item]:!min-w-[8rem]
             [&_.recharts-tooltip-item]:!flex
             [&_.recharts-tooltip-item]:!items-center
             [&_.recharts-tooltip-item]:!gap-2
         """
 
         if swatch == "border":
-            base += """
-                [&_.recharts-tooltip-label]:!border-l-3
-                [&_.recharts-tooltip-label]:!border-[var(--chart-1)]
+            # Single vertical left border on the tooltip label using first color
+            first_color = chart_colors[0]
+            base += f"""
+                [&_.recharts-tooltip-label]:!border-l-2
+                [&_.recharts-tooltip-label]:!border-[var(--chart-{first_color})]
                 [&_.recharts-tooltip-label]:!pl-2
                 [&_.recharts-tooltip-label]:!py-0
             """
+            return base
 
         lines = []
-
-        for i in range(1, num_series + 1):
-            idx = str(i)
-
-            if swatch == "border":
+        for i, color_idx in enumerate(chart_colors, 1):
+            if swatch == "line":
                 lines.append(f"""
-                    [&_.recharts-default-tooltip]:!py-2 !flex !flex-col !gap-y-0
-                    [&_.recharts-tooltip-item:nth-child({idx})]:!border-l-3
-                    [&_.recharts-tooltip-item:nth-child({idx})]:!border-[var(--chart-{idx})]
-                    [&_.recharts-tooltip-item:nth-child({idx})]:!pl-2
-                    [&_.recharts-tooltip-item:nth-child({idx})]:!py-0
+                    [&_.recharts-tooltip-item:nth-child({i})]:before:!content-['']
+                    [&_.recharts-tooltip-item:nth-child({i})]:before:!w-3
+                    [&_.recharts-tooltip-item:nth-child({i})]:before:!h-0.5
+                    [&_.recharts-tooltip-item:nth-child({i})]:before:!rounded-full
+                    [&_.recharts-tooltip-item:nth-child({i})]:before:!flex-shrink-0
+                    [&_.recharts-tooltip-item:nth-child({i})]:before:!bg-[var(--chart-{color_idx})]
+                    [&_.recharts-tooltip-item:nth-child({i})]:before:!block
                 """)
-            else:
-                width = "!w-3" if swatch == "square" else "!w-8"
-                shrink = (
-                    f"[&_.recharts-tooltip-item:nth-child({idx})]:before:!flex-shrink-0"
-                    if swatch == "square"
-                    else ""
-                )
-
+            else:  # square
                 lines.append(f"""
-                    [&_.recharts-tooltip-item:nth-child({idx})]:before:!content-['']
-                    [&_.recharts-tooltip-item:nth-child({idx})]:before:{width}
-                    {shrink}
-                    [&_.recharts-tooltip-item:nth-child({idx})]:before:!h-3
-                    [&_.recharts-tooltip-item:nth-child({idx})]:before:!rounded-sm
-                    [&_.recharts-tooltip-item:nth-child({idx})]:before:!bg-[var(--chart-{idx})]
-                    [&_.recharts-tooltip-item:nth-child({idx})]:before:!block
+                    [&_.recharts-tooltip-item:nth-child({i})]:before:!content-['']
+                    [&_.recharts-tooltip-item:nth-child({i})]:before:!w-3
+                    [&_.recharts-tooltip-item:nth-child({i})]:before:!h-3
+                    [&_.recharts-tooltip-item:nth-child({i})]:before:!rounded-sm
+                    [&_.recharts-tooltip-item:nth-child({i})]:before:!flex-shrink-0
+                    [&_.recharts-tooltip-item:nth-child({i})]:before:!bg-[var(--chart-{color_idx})]
+                    [&_.recharts-tooltip-item:nth-child({i})]:before:!block
                 """)
 
         return base + "\n".join(lines)

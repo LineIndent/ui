@@ -113,5 +113,5 @@ def areachart_v5():
                 class_name="py-4 px-4 flex w-full flex justify-center gap-8",
             ),
         ),
-        class_name=chart_tooltip_content(2, "square") + " w-full p-0",
+        class_name=chart_tooltip_content([1, 2], "square") + " w-full p-0",
     )

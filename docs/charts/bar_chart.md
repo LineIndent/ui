@@ -44,14 +44,6 @@ Add a built-in legend for clarity when displaying multiple series.
 Create a fully custom legend layout using Reflex components.
 --DEMO(barchart_v7)--
 
-## Custom Tabs
-Customize and format your x and y axes for improved presentation.
---DEMO(barchart_v8)--
-
 ## Custom Legends
 Show how the chart adapts across different screen sizes and layouts.
 --DEMO(barchart_v9)--
-
-## Alternating Colors
-Apply gradient fills to your bars for a modern, polished look.
---DEMO(barchart_v10)--

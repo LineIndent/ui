@@ -3,60 +3,70 @@
 from reflex.components.component import Component
 from reflex.utils.imports import ImportVar
 from reflex.vars.base import Var, VarData
+from reflex_components_internal.components.component import CoreComponent
 
-from ..ui.component import CoreComponent
+REACT_LIBRARY = "@hugeicons/react@1.1.6"
+CORE_ICONS_LIBRARY = "@hugeicons/core-free-icons@4.2.1"
 
 
 class HugeIcon(CoreComponent):
-    """A HugeIcon component."""
+    """A HugeIcon component using HugeiconsIcon from @hugeicons/react."""
 
-    library = "@hugeicons/react@1.1.1"
-
+    library = REACT_LIBRARY
     tag = "HugeiconsIcon"
 
-    # The main icon to display
+    # Main icon
     icon: Var[str]
 
-    # Alternative icon for states/interactions
+    # Alternative icon
     alt_icon: Var[str | None]
 
-    # Whether to show the alternative icon
+    # Toggle alt icon
     show_alt: Var[bool]
 
-    # The size of the icon in pixels
-    size: Var[int] = Var.create(16)
+    # Size (px or css value)
+    size: Var[int | str] = Var.create(16)
 
-    # The stroke width of the icon
-    stroke_width: Var[float] = Var.create(2)
+    # Colors
+    color: Var[str]
+    primary_color: Var[str]
+    secondary_color: Var[str]
+
+    # Stroke options
+    stroke_width: Var[float] = Var.create(1.5)
+    absolute_stroke_width: Var[bool]
+
+    # Multicolor option
+    disable_secondary_opacity: Var[bool]
 
     @classmethod
     def create(cls, *children, **props) -> Component:
-        """Initialize the Icon component.
+        """Create icon component."""
 
-        Args:
-            *children: The positional arguments
-            **props: The keyword arguments
-
-        Returns:
-            The created component.
-
-        """
+        # Support:
+        # hi("HomeIcon")
         if children and isinstance(children[0], str) and "icon" not in props:
             props["icon"] = children[0]
             children = children[1:]
-        for prop in ["icon", "alt_icon"]:
-            if prop in props and isinstance(props[prop], str):
-                icon_name = props[prop]
+
+        # Convert icon strings into import-backed Vars
+        for prop in ("icon", "alt_icon"):
+            value = props.get(prop)
+
+            if isinstance(value, str):
                 props[prop] = Var(
-                    icon_name,
+                    value,
                     _var_data=VarData(
-                        imports={
-                            "@hugeicons/core-free-icons@1.1.0": ImportVar(tag=icon_name)
-                        }
+                        imports={CORE_ICONS_LIBRARY: [ImportVar(tag=value)]}
                     ),
                 )
-        stroke_width = props.pop("stroke_width", 2)
-        cls.set_class_name(f"[&_path]:stroke-[{stroke_width}]", props)
+
+        stroke_width = props.get("stroke_width", 1.5)
+
+        cls.set_class_name(
+            f"[&_path]:stroke-[{stroke_width}]",
+            props,
+        )
 
         return super().create(*children, **props)
 

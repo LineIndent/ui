@@ -1,5 +1,6 @@
 import reflex as rx
 
+from app.pages.blocks import blocks_page
 from app.pages.charts import chart_page
 from app.pages.components import components_page
 from app.pages.landing import landing_page
@@ -32,6 +33,18 @@ def export_site(app: rx.App):
             url="/charts",
             description="A collection of ready-to-use chart components built with Recharts. From basic charts to rich data displays, copy and paste into your apps.",
             social_card="charts.webp",
+        ),
+    )
+
+    app.add_page(
+        component=blocks_page(),
+        route="/blocks",
+        title="Building Blocks for Dashboards - buridan/ui",
+        meta=generate_site_meta_tags(
+            title="Blocks",
+            url="/blocks",
+            description="Clean, modern building blocks for Reflex dashboards. Copy and paste into your apps. Open Source. Extensible.",
+            social_card="blocks.webp",
         ),
     )
 

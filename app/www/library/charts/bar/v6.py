@@ -73,5 +73,5 @@ def barchart_v6():
                 class_name="flex w-full items-start gap-2 text-sm",
             )
         ),
-        class_name=chart_tooltip_content(1, "square") + " w-full p-0",
+        class_name=chart_tooltip_content([1], "square") + " w-full p-0",
     )

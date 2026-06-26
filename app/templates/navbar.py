@@ -12,6 +12,7 @@ NAV_LIST = [
     {"name": "Home", "path": "/"},
     {"name": "Docs", "path": "/docs/getting-started/introduction"},
     {"name": "Components", "path": "/components"},
+    {"name": "Blocks", "path": "/blocks"},
     {"name": "Charts", "path": "/charts"},
     {"name": "Create", "path": "/create"},
 ]
@@ -87,6 +88,8 @@ def site_github() -> rx.Component:
             label="GitHub",
         ),
         href="https://github.com/LineIndent/ui",
+        target="_blank",
+        rel="noopener noreferrer",
         class_name="no-underline",
     )
 
@@ -98,10 +101,7 @@ def navbar(with_create_page_cta: bool = False) -> rx.Component:
         separator(),
         site_github(),
         separator(),
-        rx.el.a(
-            button(hi("PlusSignIcon", class_name="size-4"), "New", size="sm"),
-            href="/create",
-        ),
+        rx.el.a(button("New Project", size="sm"), href="/create"),
     ]
 
     if with_create_page_cta:

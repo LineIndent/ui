@@ -169,4 +169,53 @@ COMPONENT_REGISTRY = {
         "files": ["components/ui/typography.py"],
         "dependencies": [],
     },
+    # --- UI Blocks ---
+    "bar_chart_01": {
+        "files": ["app/www/library/blocks/bar_chart_01.py"],
+        "dependencies": ["field", "checkbox", "card", "charts"],
+    },
+    "bar_chart_02": {
+        "files": ["app/www/library/blocks/bar_chart_02.py"],
+        "dependencies": ["card", "charts"],
+    },
+    "bar_chart_03": {
+        "files": ["app/www/library/blocks/bar_chart_03.py"],
+        "dependencies": ["card", "charts"],
+    },
+    "bar_chart_04": {
+        "files": ["app/www/library/blocks/bar_chart_04.py"],
+        "dependencies": ["card", "charts"],
+    },
+    "line_chart_01": {
+        "files": ["app/www/library/blocks/line_chart_01.py"],
+        "dependencies": ["card", "charts"],
+    },
+    "line_chart_02": {
+        "files": ["app/www/library/blocks/line_chart_02.py"],
+        "dependencies": ["card", "charts"],
+    },
+    "line_chart_03": {
+        "files": ["app/www/library/blocks/line_chart_03.py"],
+        "dependencies": ["card", "charts"],
+    },
+    "line_chart_04": {
+        "files": ["app/www/library/blocks/line_chart_04.py"],
+        "dependencies": ["card", "charts"],
+    },
+    "area_chart_01": {
+        "files": ["app/www/library/blocks/area_chart_01.py"],
+        "dependencies": ["card", "charts"],
+    },
+    "area_chart_02": {
+        "files": ["app/www/library/blocks/area_chart_02.py"],
+        "dependencies": ["frame", "charts"],
+    },
+    "kpi_card_01": {
+        "files": ["app/www/library/blocks/kpi_card_01.py"],
+        "dependencies": ["frame"],
+    },
+    "kpi_card_02": {
+        "files": ["app/www/library/blocks/kpi_card_02.py"],
+        "dependencies": ["frame"],
+    },
 }
