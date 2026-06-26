@@ -1,24 +1,34 @@
+from pathlib import Path
+
 import reflex as rx
 
 from app.examples.utils import block_card
+from app.hooks import selected_blocks_category
 from app.templates.layout import layout_decorator
+from app.www.library.blocks.area_chart_01 import area_chart_01
+from app.www.library.blocks.area_chart_02 import area_chart_02
 from app.www.library.blocks.bar_chart_01 import bar_chart_01
 from app.www.library.blocks.bar_chart_02 import bar_chart_02
 from app.www.library.blocks.bar_chart_03 import bar_chart_03
+from app.www.library.blocks.bar_chart_04 import bar_chart_04
+from app.www.library.blocks.kpi_card_01 import kpi_card_01
+from app.www.library.blocks.kpi_card_02 import kpi_card_02
 from app.www.library.blocks.line_chart_01 import line_chart_01
 from app.www.library.blocks.line_chart_02 import line_chart_02
 from app.www.library.blocks.line_chart_03 import line_chart_03
-from components.ui.button import button
+from app.www.library.blocks.line_chart_04 import line_chart_04
+from components.ui.button import BUTTON_VARIANTS, button
 
-GRID_LAYOUT = " ".join(
-    [
-        "grid grid-cols-1 lg:grid-cols-2",
-        "divide-y lg:divide-y-0",
-        "lg:divide-x",
-        "[&>div]:p-4 items-stretch",
-        "divide-input/60",
-        "border-x border-input/40",
-    ]
+BLOCKS = [
+    {"name": "All", "value": "all"},
+    {"name": "Bar Charts", "value": "bar"},
+    {"name": "Line Charts", "value": "line"},
+    {"name": "Area Charts", "value": "area"},
+    {"name": "KPI Cards", "value": "kpi"},
+]
+
+NUM_BLOCK_FILES = len(
+    [f for f in Path("app/www/library/blocks").iterdir() if f.is_file()]
 )
 
 
@@ -39,33 +49,40 @@ GRID_LAYOUT = " ".join(
 def blocks_page():
     return rx.el.div(
         rx.el.div(
-            block_card(bar_chart_01)(),
-            block_card(bar_chart_02)(),
-            class_name=GRID_LAYOUT,
+            *[
+                button(
+                    item["name"],
+                    size="sm",
+                    on_click=selected_blocks_category.set_value(item["value"]),
+                    class_name="transition-none "
+                    + rx.cond(
+                        selected_blocks_category.value == item["value"],
+                        BUTTON_VARIANTS["variant"]["default"],
+                        BUTTON_VARIANTS["variant"]["outline"],
+                    ).to(str),
+                )
+                for item in BLOCKS
+            ],
+            class_name="w-full max-w-7xl mx-auto flex flex-row flex-wrap gap-4 items-center justify-center sm:justify-start p-7",
         ),
-        rx.el.hr(class_name="border border-input/40"),
-        block_card(bar_chart_03)(),
-        rx.el.hr(class_name="border border-input/40"),
-        rx.el.div(
-            block_card(line_chart_01)(),
-            block_card(line_chart_02)(),
-            class_name=GRID_LAYOUT,
-        ),
-        block_card(line_chart_03)(),
-        # rx.el.div(barchart_v5(), class_name="w-full p-7"),
-        # rx.el.hr(class_name="border border-input/40"),
-        # rx.el.div(
-        #     areachart_v9(), radar_v6(), scatterchart_v1(), class_name=GRID_LAYOUT
-        # ),
-        # rx.el.hr(class_name="border border-input/40"),
-        # rx.el.div(linechart_v7(), class_name="w-full p-7"),
-        # rx.el.hr(class_name="border border-input/40"),
-        # rx.el.div(linechart_v5(), barchart_v9(), piechart_v1(), class_name=GRID_LAYOUT),
-        # rx.el.hr(class_name="border border-input/40"),
+        block_card(func=bar_chart_01, label="bar")(),
+        block_card(func=bar_chart_02, label="bar")(),
+        block_card(func=bar_chart_03, label="bar")(),
+        block_card(func=bar_chart_04, label="bar")(),
+        block_card(func=line_chart_01, label="line")(),
+        block_card(func=line_chart_02, label="line")(),
+        block_card(func=line_chart_03, label="line")(),
+        block_card(func=line_chart_04, label="line")(),
+        block_card(func=area_chart_01, label="area")(),
+        block_card(func=area_chart_02, label="area")(),
+        block_card(func=kpi_card_01, label="kpi")(),
+        block_card(func=kpi_card_02, label="kpi")(),
         class_name=" ".join(
             [
-                "max-w-[96rem] mx-auto px-0 md:px-8",
+                "w-full max-w-7xl mx-auto px-0",
+                "divide-y divide-input/90",
                 "py-6 space-y-10",
+                "[&>*:first-child]:border-b-0",
             ]
         ),
     )

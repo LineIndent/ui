@@ -4,6 +4,11 @@ from reflex.utils.imports import ImportVar
 from reflex.vars import FunctionVar, Var
 from reflex.vars.base import VarData
 
+CN = Var(
+    "cn",
+    _var_data=VarData(imports={"clsx-for-tailwind@1.0.0": ImportVar(tag="cn")}),
+).to(FunctionVar)
+
 
 def cn(
     *classes: Var | str | tuple | list | None,
@@ -17,12 +22,4 @@ def cn(
         Var: A Var representing the merged classes string.
 
     """
-    return (
-        Var(
-            "cn",
-            _var_data=VarData(imports={"clsx-for-tailwind": ImportVar(tag="cn")}),
-        )
-        .to(FunctionVar)
-        .call(*classes)
-        .to(str)
-    )
+    return CN.call(*classes).to(str)

@@ -40,6 +40,11 @@ PAGES_CONFIG = [
         "title": "Buridan UI",
         "description": "Composable, themeable components designed for Reflex. Extend, override, and ship without fighting the framework. Open source.",
     },
+    {
+        "route": "blocks",
+        "title": "Blocks",
+        "description": "Clean, modern building blocks for Reflex dashboards. Copy and paste into your apps. Open Source. Extensible.",
+    },
 ]
 
 

@@ -43,7 +43,7 @@ def chart_example_with_custom_legends():
             data=data,
             width="100%",
             height=250,
-            class_name=chart_tooltip_content(2, "square"),
+            class_name=chart_tooltip_content([1, 2], "square"),
         ),
         rx.el.div(
             rx.foreach(

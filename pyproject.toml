@@ -4,7 +4,7 @@ version = "0.1.8"
 description = "CLI to initialize Buridan UI design system in Reflex apps"
 requires-python = ">=3.11"
 dependencies = [
-    "reflex==0.9.2",
+    "reflex==0.9.6",
     "reflex-hosting-cli>=0.1.67",
     "reflex-components-internal",
     "pillow>=12.2.0",

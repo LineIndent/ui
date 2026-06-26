@@ -76,53 +76,48 @@ class _ChartTooltip:
 
 
 class _ChartTooltipContent:
-    def __call__(self, num_series: int, swatch: Swatch = "square") -> str:
+    def __call__(self, chart_colors: list[int], swatch: Swatch = "square") -> str:
         base = """
             [&_.recharts-tooltip-item-name]:!text-muted-foreground
             [&_.recharts-tooltip-item-separator]:!w-full
-            [&_.recharts-tooltip-item]:!w-[8rem]
+            [&_.recharts-tooltip-item]:!min-w-[8rem]
             [&_.recharts-tooltip-item]:!flex
             [&_.recharts-tooltip-item]:!items-center
             [&_.recharts-tooltip-item]:!gap-2
         """
 
         if swatch == "border":
-            base += """
-                [&_.recharts-tooltip-label]:!border-l-3
-                [&_.recharts-tooltip-label]:!border-[var(--chart-1)]
+            # Single vertical left border on the tooltip label using first color
+            first_color = chart_colors[0]
+            base += f"""
+                [&_.recharts-tooltip-label]:!border-l-2
+                [&_.recharts-tooltip-label]:!border-[var(--chart-{first_color})]
                 [&_.recharts-tooltip-label]:!pl-2
                 [&_.recharts-tooltip-label]:!py-0
             """
+            return base
 
         lines = []
-
-        for i in range(1, num_series + 1):
-            idx = str(i)
-
-            if swatch == "border":
+        for i, color_idx in enumerate(chart_colors, 1):
+            if swatch == "line":
                 lines.append(f"""
-                    [&_.recharts-default-tooltip]:!py-2 !flex !flex-col !gap-y-0
-                    [&_.recharts-tooltip-item:nth-child({idx})]:!border-l-3
-                    [&_.recharts-tooltip-item:nth-child({idx})]:!border-[var(--chart-{idx})]
-                    [&_.recharts-tooltip-item:nth-child({idx})]:!pl-2
-                    [&_.recharts-tooltip-item:nth-child({idx})]:!py-0
+                    [&_.recharts-tooltip-item:nth-child({i})]:before:!content-['']
+                    [&_.recharts-tooltip-item:nth-child({i})]:before:!w-3
+                    [&_.recharts-tooltip-item:nth-child({i})]:before:!h-0.5
+                    [&_.recharts-tooltip-item:nth-child({i})]:before:!rounded-full
+                    [&_.recharts-tooltip-item:nth-child({i})]:before:!flex-shrink-0
+                    [&_.recharts-tooltip-item:nth-child({i})]:before:!bg-[var(--chart-{color_idx})]
+                    [&_.recharts-tooltip-item:nth-child({i})]:before:!block
                 """)
-            else:
-                width = "!w-3" if swatch == "square" else "!w-8"
-                shrink = (
-                    f"[&_.recharts-tooltip-item:nth-child({idx})]:before:!flex-shrink-0"
-                    if swatch == "square"
-                    else ""
-                )
-
+            else:  # square
                 lines.append(f"""
-                    [&_.recharts-tooltip-item:nth-child({idx})]:before:!content-['']
-                    [&_.recharts-tooltip-item:nth-child({idx})]:before:{width}
-                    {shrink}
-                    [&_.recharts-tooltip-item:nth-child({idx})]:before:!h-3
-                    [&_.recharts-tooltip-item:nth-child({idx})]:before:!rounded-sm
-                    [&_.recharts-tooltip-item:nth-child({idx})]:before:!bg-[var(--chart-{idx})]
-                    [&_.recharts-tooltip-item:nth-child({idx})]:before:!block
+                    [&_.recharts-tooltip-item:nth-child({i})]:before:!content-['']
+                    [&_.recharts-tooltip-item:nth-child({i})]:before:!w-3
+                    [&_.recharts-tooltip-item:nth-child({i})]:before:!h-3
+                    [&_.recharts-tooltip-item:nth-child({i})]:before:!rounded-sm
+                    [&_.recharts-tooltip-item:nth-child({i})]:before:!flex-shrink-0
+                    [&_.recharts-tooltip-item:nth-child({i})]:before:!bg-[var(--chart-{color_idx})]
+                    [&_.recharts-tooltip-item:nth-child({i})]:before:!block
                 """)
 
         return base + "\n".join(lines)
@@ -194,7 +189,7 @@ def barchart_v1():
                 class_name="flex w-full items-start gap-2 text-sm",
             )
         ),
-        class_name=chart_tooltip_content(2, "square") + " w-full p-0",
+        class_name=chart_tooltip_content([1, 2], "square") + " w-full p-0",
     )
 ```
 
@@ -250,7 +245,7 @@ def barchart_v2():
                 class_name="flex w-full items-start gap-2 text-sm",
             )
         ),
-        class_name=chart_tooltip_content(1, "square") + " w-full p-0",
+        class_name=chart_tooltip_content([1], "square") + " w-full p-0",
     )
 ```
 
@@ -317,7 +312,7 @@ def barchart_v3():
                 class_name="flex w-full items-start gap-2 text-sm",
             )
         ),
-        class_name=chart_tooltip_content(2, "square") + " w-full p-0",
+        class_name=chart_tooltip_content([1, 2], "square") + " w-full p-0",
     )
 ```
 
@@ -381,7 +376,7 @@ def barchart_v4():
                 class_name="flex w-full items-start gap-2 text-sm",
             )
         ),
-        class_name=chart_tooltip_content(1, "square") + " w-full p-0",
+        class_name=chart_tooltip_content([1], "square") + " w-full p-0",
     )
 ```
 
@@ -498,7 +493,7 @@ def barchart_v5():
                 class_name="flex w-full items-start gap-2 text-sm",
             )
         ),
-        class_name=chart_tooltip_content(1, "square") + " w-full p-0",
+        class_name=chart_tooltip_content([1], "square") + " w-full p-0",
     )
 ```
 
@@ -559,7 +554,7 @@ def barchart_v6():
                 class_name="flex w-full items-start gap-2 text-sm",
             )
         ),
-        class_name=chart_tooltip_content(1, "square") + " w-full p-0",
+        class_name=chart_tooltip_content([1], "square") + " w-full p-0",
     )
 ```
 
@@ -615,68 +610,7 @@ def barchart_v7():
                 class_name="flex w-full items-start gap-2 text-sm",
             )
         ),
-        class_name=chart_tooltip_content(1, "square") + " w-full p-0",
-    )
-```
-
-
-## Custom Tabs
-Customize and format your x and y axes for improved presentation.
-
-```python
-def barchart_v8():
-
-    return card.root(
-        card.header(
-            rx.hstack(
-                rx.el.div(
-                    card.title("Online Transactions"),
-                    card.description("Global revenue distributions"),
-                    class_name="flex flex-col gap-y-1.5",
-                ),
-                rx.tabs.root(
-                    rx.tabs.list(
-                        rx.tabs.trigger(
-                            rx.text("Europe", class_name="text-xs font-semibold"),
-                            value="1",
-                        ),
-                        rx.tabs.trigger(
-                            rx.text("Asia", class_name="text-xs font-semibold"),
-                            value="2",
-                        ),
-                    ),
-                    default_value="1",
-                    id="transactions-tabs",
-                ),
-                align="center",
-                justify="between",
-                width="100%",
-            ),
-        ),
-        card.content(
-            rx.tabs.root(
-                rx.tabs.content(create_chart(EUROPE), value="1"),
-                rx.tabs.content(create_chart(ASIA), value="2"),
-                default_value="1",
-            ),
-        ),
-        card.footer(
-            rx.el.div(
-                rx.el.div(
-                    rx.el.div(
-                        "Trending up by 5.2% this month ",
-                        class_name="flex items-center gap-2 leading-none font-medium",
-                    ),
-                    rx.el.div(
-                        "January - June 2024",
-                        class_name="flex items-center gap-2 leading-none text-muted-foreground",
-                    ),
-                    class_name="grid gap-2",
-                ),
-                class_name="flex w-full items-start gap-2 text-sm",
-            )
-        ),
-        class_name=chart_tooltip_content(2, "square") + " w-full p-0",
+        class_name=chart_tooltip_content([1], "square") + " w-full p-0",
     )
 ```
 
@@ -762,72 +696,7 @@ def barchart_v9():
                 class_name="flex w-full items-start gap-2 text-sm",
             )
         ),
-        class_name=chart_tooltip_content(3, "square") + " w-full p-0",
-    )
-```
-
-
-## Alternating Colors
-Apply gradient fills to your bars for a modern, polished look.
-
-```python
-def barchart_v10():
-
-    return card.root(
-        card.header(
-            rx.hstack(
-                rx.el.div(
-                    card.title("Sport Activities"),
-                    card.description("Running vs Cycling load"),
-                    class_name="flex flex-col gap-y-1.5",
-                ),
-                rx.tabs.root(
-                    rx.tabs.list(
-                        *[
-                            rx.tabs.trigger(
-                                rx.text(activity, class_name="text-xs font-semibold"),
-                                value=str(i + 1),
-                            )
-                            for i, activity in enumerate(activities)
-                        ]
-                    ),
-                    default_value="1",
-                ),
-                align="center",
-                justify="between",
-                width="100%",
-            ),
-        ),
-        card.content(
-            rx.tabs.root(
-                *[
-                    rx.tabs.content(
-                        create_alternating_chart(active),
-                        value=str(i + 1),
-                    )
-                    for i, active in enumerate(activities)
-                ],
-                default_value="1",
-                width="100%",
-            ),
-        ),
-        card.footer(
-            rx.el.div(
-                rx.el.div(
-                    rx.el.div(
-                        "Trending up by 5.2% this month ",
-                        class_name="flex items-center gap-2 leading-none font-medium",
-                    ),
-                    rx.el.div(
-                        "January - June 2024",
-                        class_name="flex items-center gap-2 leading-none text-muted-foreground",
-                    ),
-                    class_name="grid gap-2",
-                ),
-                class_name="flex w-full items-start gap-2 text-sm",
-            )
-        ),
-        class_name=chart_tooltip_content(2, "square") + " w-full p-0",
+        class_name=chart_tooltip_content([1, 2, 3], "square") + " w-full p-0",
     )
 ```
 

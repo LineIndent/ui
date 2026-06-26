@@ -117,7 +117,7 @@ rx.recharts.bar_chart(
     data=data,
     width="100%",
     height=250,
-    class_name=chart_tooltip_content(2, "square"),
+    class_name=chart_tooltip_content([1, 2], "square"),
 )
 ```
 
@@ -224,7 +224,7 @@ Use the following props to customize the tooltip.
 
 | Prop | Type | Default | Description |
 | :--- | :--- | :--- | :--- |
-| `num_series` | `int` | — | Number of data series in the chart. Must match the number of `rx.recharts.bar` / `line` / `area` components. |
+| `chart_colors` | `list[int]` | — | Number of data series in the chart. Must match the number of `rx.recharts.bar` / `line` / `area` components. |
 | `swatch` | `"square" \| "line" \| "border"` | `"square"` | Indicator style per item. `square` = small filled box, `line` = wide pill, `border` = left accent line per series using `--chart-{i}`. |
 
 >**chart_tooltip_content()** returns a string of Tailwind classes and must be passed to the **chart component's** class_name, not to **chart_tooltip()**.

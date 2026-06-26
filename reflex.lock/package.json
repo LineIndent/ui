@@ -6,12 +6,12 @@
     "export": "react-router build"
   },
   "dependencies": {
-    "@base-ui/react": "1.5.0",
-    "@hugeicons/core-free-icons": "1.1.0",
-    "@hugeicons/react": "1.1.1",
+    "@base-ui/react": "1.6.0",
+    "@hugeicons/core-free-icons": "4.2.1",
+    "@hugeicons/react": "1.1.6",
     "@radix-ui/themes": "3.3.0",
     "@react-router/node": "7.15.0",
-    "clsx-for-tailwind": "^1.0.0",
+    "clsx-for-tailwind": "1.0.0",
     "isbot": "5.1.40",
     "lucide-react": "1.14.0",
     "react": "19.2.6",
@@ -43,7 +43,7 @@
     "tailwind-scrollbar": "^4.0.2",
     "tailwindcss": "4.3.0",
     "tailwindcss-animate": "^1.0.7",
-    "vite": "8.0.12"
+    "vite": "8.0.16"
   },
   "overrides": {
     "cookie": "1.1.1"
