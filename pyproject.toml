@@ -1,6 +1,6 @@
 [project]
 name = "buridan-create"
-version = "0.1.8"
+version = "0.1.9"
 description = "CLI to initialize Buridan UI design system in Reflex apps"
 requires-python = ">=3.11"
 dependencies = [
