@@ -40,6 +40,16 @@
     "url": "llms.txt"
   },
   {
+    "section": "Utilities",
+    "title": "Scroll Fade",
+    "url": "docs/utilities/scroll-fade"
+  },
+  {
+    "section": "Utilities",
+    "title": "Shimmer",
+    "url": "docs/utilities/shimmer"
+  },
+  {
     "section": "Resources",
     "title": "Client State Var",
     "url": "docs/resources/client-state-var"
