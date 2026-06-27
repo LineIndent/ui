@@ -47,9 +47,11 @@ wheels = [
 
 [[package]]
 name = "buridan-create"
-version = "0.1.12"
+version = "0.1.17"
 source = { editable = "." }
-dependencies = [
+
+[package.dev-dependencies]
+dev = [
     { name = "pillow" },
     { name = "pytest" },
     { name = "pyyaml" },
@@ -60,7 +62,9 @@ dependencies = [
 ]
 
 [package.metadata]
-requires-dist = [
+
+[package.metadata.requires-dev]
+dev = [
     { name = "pillow", specifier = ">=12.2.0" },
     { name = "pytest", specifier = ">=9.1.1" },
     { name = "pyyaml", specifier = ">=6.0.3" },
