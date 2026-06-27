@@ -65,6 +65,7 @@ DOC_SECTIONS = [
         "",
         [{"title": "llms.txt", "url": "llms.txt", "order": "5"}],
     ),
+    ("utilities", "docs/utilities/", "title", []),
     ("resources", "docs/resources/", "title", []),
     ("components", "docs/components/", "title", []),
     ("charts", "docs/charts/", "title", []),
@@ -90,7 +91,7 @@ GET_STARTED_URLS = ALL_ROUTES["getting_started"]
 RESOURCES_URLS = ALL_ROUTES["resources"]
 BASE_UI_COMPONENTS = ALL_ROUTES["components"]
 CHARTS_URLS = ALL_ROUTES["charts"]
-
+UTILITIES = ALL_ROUTES["utilities"]
 
 if __name__ == "__main__":
     print(ALL_ROUTES)
