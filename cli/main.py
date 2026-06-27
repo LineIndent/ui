@@ -521,6 +521,9 @@ def main():
     )
     sub = parser.add_subparsers(dest="command")
 
+    # init
+    sub.add_parser("init", help="Initialize Buridan UI utilities in a Reflex project")
+
     # create
     sub.add_parser("create", help="Open the Buridan UI theme builder in your browser")
 

@@ -1,9 +1,43 @@
 [project]
 name = "buridan-create"
-version = "0.1.12"
+version = "0.1.17"
 description = "CLI to initialize Buridan UI design system in Reflex apps"
 requires-python = ">=3.11"
-dependencies = [
+dependencies = []
+
+readme = "README.md"
+license = "MIT"
+
+authors = [
+    { name = "LineIndent", email = "line.indent@gmail.com" }
+]
+
+keywords = [
+    "cli",
+    "ui",
+    "design-system",
+    "reflex",
+    "components",
+    "tailwind",
+    "generator"
+]
+
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Topic :: Software Development :: Libraries",
+    "Topic :: Software Development :: Code Generators"
+]
+
+[project.urls]
+Homepage = "https://github.com/LineIndent/ui"
+Repository = "https://github.com/LineIndent/ui"
+Issues = "https://github.com/LineIndent/ui/issues"
+
+[dependency-groups]
+dev = [
     "reflex==0.9.6",
     "reflex-hosting-cli>=0.1.67",
     "reflex-components-internal",
