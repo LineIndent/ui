@@ -8,6 +8,26 @@ from components.icons.hugeicon import hi
 from components.ui.button import button
 from components.ui.select import select
 
+HIGHLIGHT_SCRIPT = """
+    const currentPath = window.location.pathname.substring(1);
+    const activeElement = document.getElementById(currentPath);
+    if (activeElement) {
+        const sidebar = document.getElementById('sidebar');
+            if (sidebar) {
+                sidebar.querySelectorAll('.bg-secondary').forEach(el => {
+                    el.classList.remove('bg-secondary');
+                });
+            }
+        // 2. Add highlight to the current one
+        activeElement.classList.add('bg-secondary');
+        // 3. Scroll into view
+        activeElement.scrollIntoView({
+            behavior: 'instant',
+            block: 'center'
+        });
+    }
+"""
+
 
 @dataclass
 class SidebarSection:
@@ -107,28 +127,7 @@ def sidebar():
             "sm:mask-size-[100%_100%] "
             "sm:mask-repeat-no-repeat "
         ),
-        on_mount=rx.call_script("""
-            const currentPath = window.location.pathname.substring(1);
-            const activeElement = document.getElementById(currentPath);
-
-            if (activeElement) {
-                const sidebar = document.getElementById('sidebar');
-                    if (sidebar) {
-                        sidebar.querySelectorAll('.bg-secondary').forEach(el => {
-                            el.classList.remove('bg-secondary');
-                        });
-                    }
-
-                // 2. Add highlight to the current one
-                activeElement.classList.add('bg-secondary');
-
-                // 3. Scroll into view
-                activeElement.scrollIntoView({
-                    behavior: 'instant',
-                    block: 'center'
-                });
-            }
-        """),
+        on_mount=rx.call_script(HIGHLIGHT_SCRIPT),
     )
 
 

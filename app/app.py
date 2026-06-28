@@ -3,6 +3,7 @@ import reflex as rx
 from app.export import export_site
 
 app = rx.App(
+    enable_state=False,
     head_components=[
         rx.el.script(src="/fuse/fuse-init.js", type="module"),
         rx.el.script(src="/fuse/searchFunction.js"),
