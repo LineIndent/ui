@@ -120,6 +120,12 @@ kbd_group(
     kbd(),
 )""",
     "link": """link()""",
+    "marker": """marker.root(
+    marker.icon(),
+    marker.content(),
+)
+""",
+    "spinner": """spinner()""",
     "menu": """menu.root(
     menu.trigger(),
     menu.portal(
