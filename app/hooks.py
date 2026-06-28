@@ -20,7 +20,6 @@ selected_font_cs = ClientStateVar.create("selected_font_cs", "Inter")
 
 selected_radius_cs = ClientStateVar.create("selected_radius_cs", "Medium")
 
-theme = ClientStateVar.create("theme", {})
 
 seed = ClientStateVar.create("seed", "")
 

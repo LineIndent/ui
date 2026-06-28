@@ -32,7 +32,6 @@ from app.examples.components import (
     card_two,
 )
 from app.examples.utils import masonry_card
-from app.hooks import theme
 from app.www.library.charts.bar.v1 import barchart_v1
 from app.www.library.charts.doughnut.v1 import doughnutchart_v1
 from app.www.library.charts.line.v8 import linechart_v8
@@ -109,6 +108,6 @@ def preview() -> rx.Component:
             ),
             class_name="w-full h-full",
         ),
+        id="theme-preview-container",
         class_name="w-full flex-[2] min-h-0 order-first lg:order-none lg:flex-1 lg:min-w-0 lg:h-full",
-        style=theme.value.to(dict),
     )
