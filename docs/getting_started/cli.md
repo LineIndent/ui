@@ -8,7 +8,7 @@ order: 3
 
 Use the buridan CLI to add components, apply themes, and manage your Buridan UI project.
 
-## Installation
+# Installation
 
 ```bash
 pip install buridan-create
@@ -16,7 +16,7 @@ pip install buridan-create
 
 All commands must be run from your Reflex project root, where `rxconfig.py` is located.
 
-## create
+# create
 
 Open the Buridan UI theme builder in your browser. Use it to customize your design system and generate a unique preset ID.
 
@@ -24,7 +24,7 @@ Open the Buridan UI theme builder in your browser. Use it to customize your desi
 buridan create
 ```
 
-## init
+# init
 
 Initialize Buridan UI in your project. This command sets up CSS utilities (shimmer, scrollbar) in `assets/globals.css` and updates `rxconfig.py` with the required Tailwind configuration.
 
@@ -32,7 +32,7 @@ Initialize Buridan UI in your project. This command sets up CSS utilities (shimm
 buridan init
 ```
 
-## apply
+# apply
 
 Apply a theme preset to your project. Generates `:root` and `.dark` CSS variable blocks in `assets/globals.css` based on the preset ID from the theme builder.
 
@@ -50,7 +50,7 @@ buridan apply --preset b0
 buridan apply --preset b2D0wqNxT
 ```
 
-## add
+# add
 
 Add components and their dependencies to your project.
 
@@ -74,7 +74,7 @@ Components are placed in `components/`, blocks in `blocks/`. Dependencies are re
 
 > **Note:** Components require a theme to render correctly. Run `buridan apply` before using components.
 
-## list
+# list
 
 Display all available components and blocks.
 
@@ -82,7 +82,7 @@ Display all available components and blocks.
 buridan list
 ```
 
-## Recommended workflow
+# Recommended workflow
 
 ```bash
 buridan create                    # build your theme, copy the preset ID

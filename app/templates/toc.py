@@ -199,7 +199,14 @@ def table_of_content(url: str, toc_data: List[Dict]):
                         "On This Page",
                         class_name="text-xs text-muted-foreground font-medium pb-2",
                     ),
-                    _create_markdown_toc_links(url, toc_data),
+                    rx.el.div(
+                        _create_markdown_toc_links(url, toc_data),
+                        rx.el.div(class_name="py-2"),
+                        class_name=(
+                            "w-full flex flex-col "
+                            "h-[calc(100svh-22rem)] overflow-y-auto scrollbar-none scroll-fade scroll-fade-4"
+                        ),
+                    ),
                     class_name="w-full flex flex-col",
                 ),
                 class_name="flex flex-col w-full h-full p-4 gap-y-6",

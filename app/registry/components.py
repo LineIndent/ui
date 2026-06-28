@@ -105,6 +105,10 @@ COMPONENT_REGISTRY = {
         "files": ["components/ui/link.py"],
         "dependencies": ["hugeicon", "twmerge"],
     },
+    "marker": {
+        "files": ["components/ui/marker.py"],
+        "dependencies": ["twmerge"],
+    },
     "menu": {
         "files": ["components/ui/menu.py"],
         "dependencies": ["hugeicon", "others_icons", "twmerge", "base_ui", "button"],
@@ -132,6 +136,10 @@ COMPONENT_REGISTRY = {
     "slider": {
         "files": ["components/ui/slider.py"],
         "dependencies": ["base_ui"],
+    },
+    "spinner": {
+        "files": ["components/ui/spinner.py"],
+        "dependencies": ["twmerge"],
     },
     "switch": {
         "files": ["components/ui/switch.py"],

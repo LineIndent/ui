@@ -35,12 +35,14 @@
 - [Input](https://buridan.reflex.run/docs/components/input): The Input component.
 - [Input Group](https://buridan.reflex.run/docs/components/input-group): The Input Group component.
 - [Kbd](https://buridan.reflex.run/docs/components/kbd): The Kbd component.
+- [Marker](https://buridan.reflex.run/docs/components/marker): The Marker component.
 - [Menu](https://buridan.reflex.run/docs/components/menu): The Menu component.
 - [Popover](https://buridan.reflex.run/docs/components/popover): The Popover component.
 - [Scroll Area](https://buridan.reflex.run/docs/components/scroll-area): The Scroll Area component.
 - [Select](https://buridan.reflex.run/docs/components/select): The Select component.
 - [Skeleton](https://buridan.reflex.run/docs/components/skeleton): The Skeleton component.
 - [Slider](https://buridan.reflex.run/docs/components/slider): The Slider component.
+- [Spinner](https://buridan.reflex.run/docs/components/spinner): The Spinner component.
 - [Tabs](https://buridan.reflex.run/docs/components/tabs): The Tabs component.
 - [Textarea](https://buridan.reflex.run/docs/components/textarea): The Textarea component.
 - [Timeline](https://buridan.reflex.run/docs/components/timeline): The Timeline component.

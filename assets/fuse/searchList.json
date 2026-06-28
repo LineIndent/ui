@@ -156,6 +156,11 @@
   },
   {
     "section": "Components",
+    "title": "Marker",
+    "url": "docs/components/marker"
+  },
+  {
+    "section": "Components",
     "title": "Menu",
     "url": "docs/components/menu"
   },
@@ -183,6 +188,11 @@
     "section": "Components",
     "title": "Slider",
     "url": "docs/components/slider"
+  },
+  {
+    "section": "Components",
+    "title": "Spinner",
+    "url": "docs/components/spinner"
   },
   {
     "section": "Components",
