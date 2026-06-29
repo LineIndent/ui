@@ -76,6 +76,11 @@
   },
   {
     "section": "Components",
+    "title": "Attachment",
+    "url": "docs/components/attachment"
+  },
+  {
+    "section": "Components",
     "title": "Autocomplete",
     "url": "docs/components/autocomplete"
   },
@@ -93,6 +98,11 @@
     "section": "Components",
     "title": "Breadcrumb",
     "url": "docs/components/breadcrumb"
+  },
+  {
+    "section": "Components",
+    "title": "Bubble",
+    "url": "docs/components/bubble"
   },
   {
     "section": "Components",
@@ -163,6 +173,11 @@
     "section": "Components",
     "title": "Menu",
     "url": "docs/components/menu"
+  },
+  {
+    "section": "Components",
+    "title": "Message",
+    "url": "docs/components/message"
   },
   {
     "section": "Components",

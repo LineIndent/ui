@@ -19,10 +19,12 @@
 
 ## Components
 - [Accordion](https://buridan.reflex.run/docs/components/accordion): The Accordion component.
+- [Attachment](https://buridan.reflex.run/docs/components/attachment): The Attachment component.
 - [Autocomplete](https://buridan.reflex.run/docs/components/autocomplete): The Autocomplete component.
 - [Avatar](https://buridan.reflex.run/docs/components/avatar): The Avatar component.
 - [Badge](https://buridan.reflex.run/docs/components/badge): The Badge component.
 - [Breadcrumb](https://buridan.reflex.run/docs/components/breadcrumb): The Breadcrumb component.
+- [Bubble](https://buridan.reflex.run/docs/components/bubble): The Bubble component.
 - [Button](https://buridan.reflex.run/docs/components/button): The Button component.
 - [Chart](https://buridan.reflex.run/docs/components/chart): The Chart component.
 - [Checkbox](https://buridan.reflex.run/docs/components/checkbox): The Checkbox component.
@@ -37,6 +39,7 @@
 - [Kbd](https://buridan.reflex.run/docs/components/kbd): The Kbd component.
 - [Marker](https://buridan.reflex.run/docs/components/marker): The Marker component.
 - [Menu](https://buridan.reflex.run/docs/components/menu): The Menu component.
+- [Message](https://buridan.reflex.run/docs/components/message): The Message component.
 - [Popover](https://buridan.reflex.run/docs/components/popover): The Popover component.
 - [Scroll Area](https://buridan.reflex.run/docs/components/scroll-area): The Scroll Area component.
 - [Select](https://buridan.reflex.run/docs/components/select): The Select component.

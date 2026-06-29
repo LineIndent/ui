@@ -18,6 +18,10 @@ Use the following composition to build a `Marker` component.
 
 --ANATOMY(marker)--
 
+# Usage
+
+--USAGE(marker)--
+
 # Examples
 
 ## Variants
