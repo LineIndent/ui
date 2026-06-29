@@ -8,6 +8,7 @@ from app.utils.routes import (
     CHARTS_URLS,
     GET_STARTED_URLS,
     RESOURCES_URLS,
+    UTILITIES,
 )
 
 BASE_URL = "https://buridan.reflex.run"
@@ -16,7 +17,9 @@ TOP_LEVEL = ["/", "/components", "/charts", "/create"]
 
 
 def generate_sitemap() -> str:
-    all_routes = GET_STARTED_URLS + RESOURCES_URLS + BASE_UI_COMPONENTS + CHARTS_URLS
+    all_routes = (
+        GET_STARTED_URLS + RESOURCES_URLS + BASE_UI_COMPONENTS + CHARTS_URLS + UTILITIES
+    )
 
     top = "\n".join(f"  <url><loc>{BASE_URL}{path}</loc></url>" for path in TOP_LEVEL)
 

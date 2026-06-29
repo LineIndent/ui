@@ -37,6 +37,10 @@ COMPONENT_REGISTRY = {
         "files": ["components/ui/accordion.py"],
         "dependencies": ["button", "hugeicon", "base_ui"],
     },
+    "attachment": {
+        "files": ["components/ui/attachment.py"],
+        "dependencies": ["button", "twmerge"],
+    },
     "autocomplete": {
         "files": ["components/ui/autocomplete.py"],
         "dependencies": ["twmerge"],
@@ -52,6 +56,10 @@ COMPONENT_REGISTRY = {
     "breadcrumb": {
         "files": ["components/ui/breadcrumb.py"],
         "dependencies": [],
+    },
+    "bubble": {
+        "files": ["components/ui/bubble.py"],
+        "dependencies": ["twmerge"],
     },
     "button": {
         "files": ["components/ui/button.py"],
@@ -116,6 +124,10 @@ COMPONENT_REGISTRY = {
     "metric": {
         "files": ["components/ui/metric.py"],
         "dependencies": ["twmerge", "component"],
+    },
+    "message": {
+        "files": ["components/ui/message.py"],
+        "dependencies": ["twmerge"],
     },
     "popover": {
         "files": ["components/ui/popover.py"],

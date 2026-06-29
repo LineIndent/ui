@@ -32,7 +32,7 @@ class ClassNames:
 
     ROOT = "flex flex-col justify-center text-secondary-12"
     TRIGGER = "group flex items-center gap-2"
-    PANEL = "flex h-[var(--collapsible-panel-height)] flex-col justify-end overflow-hidden text-sm transition-all ease-out data-[ending-style]:h-0 data-[starting-style]:h-0"
+    PANEL = "flex h-[var(--collapsible-panel-height)] flex-col justify-end overflow-hidden text-sm data-[ending-style]:h-0 data-[starting-style]:h-0"
 
 
 class CollapsibleBaseComponent(BaseUIComponent):

@@ -1,6 +1,21 @@
 # app/www/anatomy.py
 
 ANATOMY = {
+    "bubble": """bubble.root(
+    bubble.content(),
+    bubble.reactions(),
+)""",
+    "attachment": """attachment.root(
+    attachment.media(),
+    attachment.content(
+        attachment.title(),
+        attachment.description(),
+    ),
+    attachment.actions(
+        attachment.action()
+    ),
+)
+""",
     "accordion": """accordion.root(
     accordion.item(
         accordion.header(
@@ -44,6 +59,16 @@ ANATOMY = {
         ),
     ),
 )""",
+    "message": """message.group(
+    message.root(
+        message.avatar(),
+        message.content(
+            message.header(),
+            message.footer(),
+        ),
+    ),
+)
+""",
     "button": """button()""",
     "card": """card.root(
     card.header(

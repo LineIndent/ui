@@ -28,6 +28,8 @@ HIGHLIGHT_SCRIPT = """
     }
 """
 
+NEW_COMP = ["Attachment", "Bubble", "Marker", "Message", "Shimmer", "Scroll Fade"]
+
 
 @dataclass
 class SidebarSection:
@@ -49,7 +51,7 @@ SIDEBAR_SECTIONS = [
 def create_menu_item(data: dict):
     """Create a single menu item."""
 
-    return button(
+    link = (
         rx.el.a(
             rx.el.p(data["title"], class_name="cursor-pointer"),
             to=f"/{data['url']}",
@@ -61,12 +63,43 @@ def create_menu_item(data: dict):
             href=f"/{data['url']}",
             text_decoration="none",
             reload_document=True,
+        )
+    )
+
+    return button(
+        link,
+        rx.cond(
+            data["title"] in NEW_COMP,
+            rx.el.div(class_name="size-2 rounded-full bg-blue-500"),
         ),
         variant="ghost",
         size="sm",
-        class_name="w-fit",
+        class_name="w-fit flex items-center",
         id=data["url"],
     )
+
+
+# def create_menu_item(data: dict):
+#     """Create a single menu item."""
+
+#     return button(
+#         rx.el.a(
+#             rx.el.p(data["title"], class_name="cursor-pointer"),
+#             to=f"/{data['url']}",
+#             text_decoration="none",
+#         )
+#         if data["url"] != "llms.txt"
+#         else rx.el.a(
+#             rx.el.p(data["title"], class_name="cursor-pointer"),
+#             href=f"/{data['url']}",
+#             text_decoration="none",
+#             reload_document=True,
+#         ),
+#         variant="ghost",
+#         size="sm",
+#         class_name="w-fit",
+#         id=data["url"],
+#     )
 
 
 def create_sidebar_menu_items(routes: List[dict]):

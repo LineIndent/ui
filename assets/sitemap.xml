@@ -16,10 +16,12 @@
   <url><loc>https://buridan.reflex.run/docs/resources/state</loc></url>
   <url><loc>https://buridan.reflex.run/docs/resources/theming</loc></url>
   <url><loc>https://buridan.reflex.run/docs/components/accordion</loc></url>
+  <url><loc>https://buridan.reflex.run/docs/components/attachment</loc></url>
   <url><loc>https://buridan.reflex.run/docs/components/autocomplete</loc></url>
   <url><loc>https://buridan.reflex.run/docs/components/avatar</loc></url>
   <url><loc>https://buridan.reflex.run/docs/components/badge</loc></url>
   <url><loc>https://buridan.reflex.run/docs/components/breadcrumb</loc></url>
+  <url><loc>https://buridan.reflex.run/docs/components/bubble</loc></url>
   <url><loc>https://buridan.reflex.run/docs/components/button</loc></url>
   <url><loc>https://buridan.reflex.run/docs/components/chart</loc></url>
   <url><loc>https://buridan.reflex.run/docs/components/checkbox</loc></url>
@@ -34,6 +36,7 @@
   <url><loc>https://buridan.reflex.run/docs/components/kbd</loc></url>
   <url><loc>https://buridan.reflex.run/docs/components/marker</loc></url>
   <url><loc>https://buridan.reflex.run/docs/components/menu</loc></url>
+  <url><loc>https://buridan.reflex.run/docs/components/message</loc></url>
   <url><loc>https://buridan.reflex.run/docs/components/popover</loc></url>
   <url><loc>https://buridan.reflex.run/docs/components/scroll-area</loc></url>
   <url><loc>https://buridan.reflex.run/docs/components/select</loc></url>
@@ -54,4 +57,6 @@
   <url><loc>https://buridan.reflex.run/docs/charts/pie-chart</loc></url>
   <url><loc>https://buridan.reflex.run/docs/charts/radar-chart</loc></url>
   <url><loc>https://buridan.reflex.run/docs/charts/scatter-chart</loc></url>
+  <url><loc>https://buridan.reflex.run/docs/utilities/scroll-fade</loc></url>
+  <url><loc>https://buridan.reflex.run/docs/utilities/shimmer</loc></url>
 </urlset>
