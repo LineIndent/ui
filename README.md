@@ -1,14 +1,15 @@
 # buridan/ui
 
-UI library for Reflex Developers. Extend, override, and ship.
+ Composable, themeable components designed for Reflex. Extend, override, and ship without fighting the framework. Open source. 
+ 
 <p align="center">
   <img src="assets/readme_image.webp" alt="Logo" width="100%" style="border-radius: 10px; box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); border: 2px solid #333;">
 </p>
 
 
-## Docs
+## Documentation
 
-Visit the [Docs](https://buridan.reflex.run/docs/getting-started/introduction) section to get started.
+Visit [Docs](https://ui.buridan.dev/docs/getting-started/introduction) section to get started.
 
 
 ## Contributing
