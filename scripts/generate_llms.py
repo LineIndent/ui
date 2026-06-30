@@ -8,6 +8,7 @@ from app.utils.routes import (
     CHARTS_URLS,
     GET_STARTED_URLS,
     RESOURCES_URLS,
+    UTILITIES,
 )
 
 BASE_URL = "https://buridan.reflex.run"
@@ -35,6 +36,7 @@ def generate_llms_txt() -> str:
 
     components = make_links(BASE_UI_COMPONENTS)
     charts = make_links(CHARTS_URLS)
+    utilities = make_links(UTILITIES)
 
     return f"""# buridan/ui
 
@@ -51,6 +53,9 @@ def generate_llms_txt() -> str:
 
 ## Charts
 {charts}
+
+## Utilities
+{utilities}
 """
 
 

@@ -62,3 +62,7 @@
 - [Pie Chart](https://buridan.reflex.run/docs/charts/pie-chart): The Pie Chart component.
 - [Radar Chart](https://buridan.reflex.run/docs/charts/radar-chart): The Radar Chart component.
 - [Scatter Chart](https://buridan.reflex.run/docs/charts/scatter-chart): The Scatter Chart component.
+
+## Utilities
+- [Scroll Fade](https://buridan.reflex.run/docs/utilities/scroll-fade): The Scroll Fade component.
+- [Shimmer](https://buridan.reflex.run/docs/utilities/shimmer): The Shimmer component.
