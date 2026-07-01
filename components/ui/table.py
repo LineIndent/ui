@@ -26,7 +26,7 @@ LiteralAlign = Literal["left", "center", "right"]
 class ClassNames:
     """Class names for table components."""
 
-    ROOT = "w-full overflow-auto rounded-radius border border-input bg-card shadow-sm"
+    ROOT = "w-full overflow-auto rounded-lg border border-input bg-card shadow-sm"
     TABLE = "w-full caption-bottom text-sm border-collapse"
     HEADER = "[&_tr]:border-b bg-secondary/50 backdrop-blur-sm sticky top-0"
     BODY = "[&_tr:last-child]:border-0"

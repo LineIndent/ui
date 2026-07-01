@@ -11,7 +11,6 @@ from ..utils.twmerge import cn
 class CoreComponent(Component):
     """Core component for all components."""
 
-    # Whether the component should be unstyled
     unstyled: Var[bool]
 
     @classmethod

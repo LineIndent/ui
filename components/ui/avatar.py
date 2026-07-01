@@ -1,126 +1,125 @@
-"""Custom avatar component."""
-
 from reflex.components.component import Component, ComponentNamespace
 from reflex.event import EventHandler, passthrough_event_spec
 from reflex.utils.imports import ImportVar
 from reflex.vars.base import Var
+from reflex_components_core.el import Div, Span
 
+from ..utils.twmerge import cn
 from .base_ui import PACKAGE_NAME, BaseUIComponent
+from .component import CoreComponent
 
 
 class ClassNames:
-    """Class names for avatar components."""
-
-    ROOT = "shrink-0 inline-flex size-8 items-center justify-center overflow-hidden rounded-full align-middle text-base font-medium select-none"
-    IMAGE = "size-full object-cover shrink-0"
-    FALLBACK = "flex size-full items-center justify-center text-sm bg-muted"
+    ROOT = "group/avatar relative flex size-8 shrink-0 rounded-full select-none after:absolute after:inset-0 after:rounded-full after:border after:border-border after:mix-blend-darken data-[size=xl]:size-14 data-[size=lg]:size-10 data-[size=sm]:size-6 dark:after:mix-blend-lighten"
+    IMAGE = "aspect-square size-full rounded-full object-cover"
+    FALLBACK = "flex size-full items-center justify-center rounded-full bg-muted text-sm text-muted-foreground group-data-[size=sm]/avatar:text-xs"
+    BADGE = "absolute right-0 bottom-0 z-10 inline-flex items-center justify-center rounded-full bg-primary text-primary-foreground bg-blend-color ring-2 ring-background select-none group-data-[size=sm]/avatar:size-2 group-data-[size=sm]/avatar:[&>svg]:hidden group-data-[size=default]/avatar:size-2.5 group-data-[size=default]/avatar:[&>svg]:size-2 group-data-[size=lg]/avatar:size-3 group-data-[size=lg]/avatar:[&>svg]:size-2"
+    GROUP = "group/avatar-group flex -space-x-2 *:data-[slot=avatar]:ring-2 *:data-[slot=avatar]:ring-background"
+    GROUP_COUNT = "relative flex size-8 shrink-0 items-center justify-center rounded-full bg-muted text-sm text-muted-foreground ring-2 ring-background group-has-data-[size=lg]/avatar-group:size-10 group-has-data-[size=sm]/avatar-group:size-6 [&>svg]:size-4 group-has-data-[size=lg]/avatar-group:[&>svg]:size-5 group-has-data-[size=sm]/avatar-group:[&>svg]:size-3"
 
 
 class AvatarBaseComponent(BaseUIComponent):
-    """Base component for avatar components."""
-
     library = f"{PACKAGE_NAME}/avatar"
 
     @property
     def import_var(self):
-        """Return the import variable for the avatar component."""
         return ImportVar(tag="Avatar", package_path="", install=False)
 
 
 class AvatarRoot(AvatarBaseComponent):
-    """Displays a user's profile picture, initials, or fallback icon."""
-
     tag = "Avatar.Root"
-
-    # The component to render
     render_: Var[Component]
 
     @classmethod
     def create(cls, *children, **props) -> BaseUIComponent:
-        """Create the avatar root component."""
+        custom_classes = props.pop("class_name", "")
+        size = props.pop("size", "default")
         props["data-slot"] = "avatar"
-        cls.set_class_name(ClassNames.ROOT, props)
-        return super().create(*children, **props)
+        props["data-size"] = size
+
+        return super().create(
+            *children, class_name=cn(ClassNames.ROOT, custom_classes), **props
+        )
 
 
 class AvatarImage(AvatarBaseComponent):
-    """The image to be displayed in the avatar."""
-
     tag = "Avatar.Image"
-
-    # The image source URL
     src: Var[str]
-
-    # Callback when loading status changes
     on_loading_status_change: EventHandler[passthrough_event_spec(str)]
-
-    # The component to render
     render_: Var[Component]
 
     @classmethod
     def create(cls, *children, **props) -> BaseUIComponent:
-        """Create the avatar image component."""
+        custom_classes = props.pop("class_name", "")
         props["data-slot"] = "avatar-image"
-        cls.set_class_name(ClassNames.IMAGE, props)
-        return super().create(*children, **props)
+
+        return super().create(
+            *children, class_name=cn(ClassNames.IMAGE, custom_classes), **props
+        )
 
 
 class AvatarFallback(AvatarBaseComponent):
-    """Rendered when the image fails to load or when no image is provided."""
-
     tag = "Avatar.Fallback"
-
-    # How long to wait before showing the fallback. Specified in milliseconds
     delay: Var[int]
-
-    # The component to render
     render_: Var[Component]
 
     @classmethod
     def create(cls, *children, **props) -> BaseUIComponent:
-        """Create the avatar fallback component."""
+        custom_classes = props.pop("class_name", "")
         props["data-slot"] = "avatar-fallback"
-        cls.set_class_name(ClassNames.FALLBACK, props)
-        return super().create(*children, **props)
+
+        return super().create(
+            *children,
+            class_name=cn(ClassNames.FALLBACK, custom_classes),
+            **props,
+        )
 
 
-class HighLevelAvatar(AvatarRoot):
-    """High level wrapper for the Avatar component."""
+class AvatarBadge(Span, CoreComponent):
+    @classmethod
+    def create(cls, *children, **props) -> Span:
+        custom_classes = props.pop("class_name", "")
+        props["data-slot"] = "avatar-badge"
 
-    # The image source URL
-    src: Var[str]
+        return super().create(
+            *children, class_name=cn(ClassNames.BADGE, custom_classes), **props
+        )
 
-    # Image props
-    _image_props = {"src", "on_loading_status_change", "render_"}
 
-    # Fallback props
-    _fallback_props = {"delay"}
+class AvatarGroup(Div, CoreComponent):
+    """The flex container wrapper for grouping multiple avatars."""
 
     @classmethod
-    def create(cls, *children, **props) -> BaseUIComponent:
-        """Create the avatar component."""
-        # Extract props for each subcomponent
-        image_props = {k: props.pop(k) for k in cls._image_props & props.keys()}
-        fallback_props = {k: props.pop(k) for k in cls._fallback_props & props.keys()}
+    def create(cls, *children, **props) -> Div:
+        custom_classes = props.pop("class_name", "")
+        props["data-slot"] = "avatar-group"
 
-        fallback_content = props.pop("fallback", "")
+        return super().create(
+            *children, class_name=cn(ClassNames.GROUP, custom_classes), **props
+        )
 
-        return AvatarRoot.create(
-            AvatarImage.create(**image_props),
-            AvatarFallback.create(fallback_content, **fallback_props),
+
+class AvatarGroupCount(Div, CoreComponent):
+    @classmethod
+    def create(cls, *children, **props) -> Div:
+        custom_classes = props.pop("class_name", "")
+        props["data-slot"] = "avatar-group-count"
+
+        return super().create(
             *children,
+            class_name=cn(ClassNames.GROUP_COUNT, custom_classes),
             **props,
         )
 
 
 class Avatar(ComponentNamespace):
-    """Namespace for Avatar components."""
-
     root = staticmethod(AvatarRoot.create)
     image = staticmethod(AvatarImage.create)
     fallback = staticmethod(AvatarFallback.create)
+    badge = staticmethod(AvatarBadge.create)
+    group = staticmethod(AvatarGroup.create)
+    group_count = staticmethod(AvatarGroupCount.create)
     class_names = ClassNames
-    __call__ = staticmethod(HighLevelAvatar.create)
 
 
 avatar = Avatar()

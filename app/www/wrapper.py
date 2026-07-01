@@ -94,7 +94,7 @@ def file_codeblock(file_path: str, source: str) -> rx.Component:
             id=f"code-panel-{toggle_height_id}",
             class_name="scrollbar-none flex-1 min-h-0 flex flex-col h-full relative overflow-x-auto",
         ),
-        class_name="rounded-radius outline outline-input flex-1 min-h-0 flex flex-col bg-secondary dark:bg-card",
+        class_name="rounded-lg outline outline-input flex-1 min-h-0 flex flex-col bg-secondary dark:bg-card",
     )
 
 
@@ -166,7 +166,7 @@ def file_codeblock_full(file_path: str, source: str) -> rx.Component:
             },
             class_name="scrollbar-none flex-1 min-h-0 flex flex-col h-full",
         ),
-        class_name="rounded-radius outline outline-input flex-1 min-h-0 flex flex-col bg-secondary dark:bg-card",
+        class_name="rounded-lg outline outline-input flex-1 min-h-0 flex flex-col bg-secondary dark:bg-card",
     )
 
 
@@ -194,7 +194,7 @@ def chart_util_wrapper(source: str):
                 ),
                 class_name="bg-secondary dark:bg-card relative overflow-hidden",
             ),
-            class_name="w-full border border-input rounded-radius mb-8 !overflow-hidden",
+            class_name="w-full border border-input rounded-lg mb-8 !overflow-hidden",
         ),
     )
 

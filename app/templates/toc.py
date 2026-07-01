@@ -45,7 +45,7 @@ def create_copy_button(url: str) -> rx.Component:
                 tooltip.positioner(
                     tooltip.popup(
                         rx.el.p("Copy Page", class_name="!text-xs"),
-                        class_name="rounded-radius p-2",
+                        class_name="rounded-lg p-2",
                     ),
                     side="bottom",
                     side_offset=8,
@@ -114,7 +114,7 @@ def _create_external_tool_links(url: str):
                     tooltip.positioner(
                         tooltip.popup(
                             rx.el.p(tooltip_content, class_name="!text-xs"),
-                            class_name="rounded-radius p-2",
+                            class_name="rounded-lg p-2",
                         ),
                         side="bottom",
                         side_offset=8,

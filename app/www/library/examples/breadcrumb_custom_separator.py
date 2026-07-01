@@ -1,34 +1,22 @@
 import reflex as rx
-from components.ui.breadcrumb import (
-    breadcrumb,
-    breadcrumb_item,
-    breadcrumb_link,
-    breadcrumb_list,
-    breadcrumb_page,
-    breadcrumb_separator,
-)
+
+from components.icons.hugeicon import hi
+from components.ui.breadcrumb import breadcrumb
 
 
-def breadcrumb_custom_separator():
-    return rx.el.div(
-        breadcrumb(
-            breadcrumb_list(
-                breadcrumb_item(
-                    breadcrumb_link("Home", href="#"),
-                ),
-                breadcrumb_separator(
-                    rx.text("/", class_name="text-[var(--muted-foreground)]")
-                ),
-                breadcrumb_item(
-                    breadcrumb_link("Blog", href="#"),
-                ),
-                breadcrumb_separator(
-                    rx.text("/", class_name="text-[var(--muted-foreground)]")
-                ),
-                breadcrumb_item(
-                    breadcrumb_page("Article"),
-                ),
+def breadcrumb_custom_separator() -> rx.Component:
+    return breadcrumb.root(
+        breadcrumb.list(
+            breadcrumb.item(
+                breadcrumb.link("Home", href="#"),
             ),
-        ),
-        class_name="p-8",
+            breadcrumb.separator(hi("LinerIcon")),
+            breadcrumb.item(
+                breadcrumb.link("Components", href="#"),
+            ),
+            breadcrumb.separator(hi("LinerIcon")),
+            breadcrumb.item(
+                breadcrumb.page("Breadcrumb"),
+            ),
+        )
     )

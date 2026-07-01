@@ -36,9 +36,9 @@ def card_one() -> rx.Component:
         ),
         rx.el.div(
             rx.el.div(
-                button("Default", variant="default", size="sm"),
-                button("Secondary", variant="secondary", size="sm"),
-                button("Outline", variant="outline", size="sm"),
+                button("Default", variant="default"),
+                button("Secondary", variant="secondary"),
+                button("Outline", variant="outline"),
                 class_name="w-full grid grid-cols-3 items-center gap-x-2",
             ),
             rx.el.div(
@@ -53,8 +53,8 @@ def card_one() -> rx.Component:
             class_name="flex flex-col gap-y-4",
         ),
         rx.el.div(
-            button("Close", variant="default", size="sm"),
-            button("Send Text", variant="outline", size="sm"),
+            button("Close", variant="default"),
+            button("Send Text", variant="outline"),
             class_name="w-full grid grid-cols-2 items-center gap-x-2",
         ),
         class_name="w-full flex flex-col gap-y-card",
@@ -65,32 +65,24 @@ def card_one() -> rx.Component:
 def card_two() -> rx.Component:
     return rx.el.div(
         rx.el.div(
-            rx.el.p("Project Team", class_name="text-lg font-semibold text-foreground"),
-            rx.el.p(
-                "Manage collaborators",
-                class_name="text-sm font-light text-muted-foreground",
-            ),
-            class_name="flex flex-col gap-y-1",
-        ),
-        rx.el.div(
-            rx.el.div(
-                avatar(
-                    src="https://avatars.githubusercontent.com/u/84860195?v=4",
-                    alt="@buridan-ui",
-                    fallback="BUI",
-                    class_name="size-12",
+            avatar.group(
+                avatar.root(
+                    avatar.image(
+                        src="https://github.com/reflex-dev.png",
+                        custom_attrs={"alt": "@reflex"},
+                    ),
+                    avatar.fallback("RD"),
+                    size="xl",
                 ),
-                avatar(
-                    src="https://avatars.githubusercontent.com/u/104714959?s=200&v=4",
-                    alt="@reflex",
-                    fallback="RE",
-                    class_name="size-12",
+                avatar.root(
+                    avatar.image(
+                        src="https://github.com/LineIndent.png",
+                        custom_attrs={"alt": "LineIndent"},
+                    ),
+                    avatar.fallback("LI"),
+                    size="xl",
                 ),
-                class_name=(
-                    "flex -space-x-2 "
-                    "*:data-[slot=avatar]:ring-2 *:data-[slot=avatar]:ring-[var(--background)] "
-                    "*:data-[slot=avatar]:grayscale"
-                ),
+                class_name="grayscale",
             ),
             rx.el.p(
                 "No Team Members", class_name="text-md font-medium text-foreground"
@@ -132,10 +124,10 @@ def card_three() -> rx.Component:
         ),
         rx.el.div(
             rx.el.div(
-                button("Cooking", variant="outline", size="sm"),
-                button("Dining", variant="outline", size="sm"),
-                button("Light", variant="outline", size="sm"),
-                button("Focus", variant="outline", size="sm"),
+                button("Cooking", variant="outline"),
+                button("Dining", variant="outline"),
+                button("Light", variant="outline"),
+                button("Focus", variant="outline"),
                 class_name="w-full grid grid-cols-4 items-center gap-x-2",
             ),
             rx.el.div(
@@ -160,7 +152,7 @@ def card_three() -> rx.Component:
                                 default_value=item["value"],
                             ),
                         ),
-                        class_name="w-full grid grid-cols-2 items-center gap-x-2 border border-input rounded-radius p-2.5",
+                        class_name="w-full grid grid-cols-2 items-center gap-x-2 border border-input rounded-lg p-2.5",
                     )
                     for item in room_controls
                 ],
@@ -354,7 +346,6 @@ def card_five() -> rx.Component:
             button(
                 hi("Cancel01Icon", class_name="size-4"),
                 variant="ghost",
-                size="sm",
                 class_name="!px-2 !py-2 self-start",
             ),
             class_name="w-full flex flex-row items-start justify-between",
@@ -391,7 +382,7 @@ def card_five() -> rx.Component:
                             "Business Account (--3301) — $5,200.00", value="business"
                         ),
                         class_name=(
-                            "w-full rounded-radius border border-input bg-secondary "
+                            "w-full rounded-lg border border-input bg-secondary "
                             "px-3 py-2 text-sm text-foreground appearance-none cursor-pointer "
                             "focus:outline-none focus:ring-1 focus:ring-input"
                         ),
@@ -409,7 +400,7 @@ def card_five() -> rx.Component:
                         ),
                         rx.el.option("Roth IRA (··7745) — $18,300.00", value="ira"),
                         class_name=(
-                            "w-full rounded-radius border border-input bg-secondary "
+                            "w-full rounded-lg border border-input bg-secondary "
                             "px-3 py-2 text-sm text-foreground appearance-none cursor-pointer "
                             "focus:outline-none focus:ring-1 focus:ring-input"
                         ),
@@ -436,7 +427,7 @@ def card_five() -> rx.Component:
                 )
                 for row in summary_rows
             ],
-            class_name="w-full flex flex-col rounded-radius border border-input px-3",
+            class_name="w-full flex flex-col rounded-lg border border-input px-3",
         ),
         rx.el.div(
             button("Confirm Transfer", variant="default", class_name="w-full"),
@@ -504,7 +495,7 @@ def card_seven() -> rx.Component:
                         "Pending Setup",
                         class_name="text-xs font-medium text-foreground",
                     ),
-                    class_name="flex flex-row items-center gap-x-2 px-3 py-1.5 rounded-radius border border-input bg-secondary w-fit",
+                    class_name="flex flex-row items-center gap-x-2 px-3 py-1.5 rounded-lg border border-input bg-secondary w-fit",
                 ),
                 class_name="w-full flex flex-col gap-y-3",
             ),
@@ -532,7 +523,7 @@ def card_seven() -> rx.Component:
                 )
                 for row in summary_rows
             ],
-            class_name="w-full flex flex-col bg-secondary rounded-radius px-3",
+            class_name="w-full flex flex-col bg-secondary rounded-lg px-3",
         ),
         # Footer note
         rx.el.div(
@@ -640,10 +631,10 @@ def card_nine() -> rx.Component:
             # Progress bar
             rx.el.div(
                 rx.el.div(
-                    class_name="h-full bg-primary rounded-radius",
+                    class_name="h-full bg-primary rounded-lg",
                     style={"width": f"{goal['percent']}%"},
                 ),
-                class_name="w-full h-1 bg-input rounded-radius overflow-hidden",
+                class_name="w-full h-1 bg-input rounded-lg overflow-hidden",
             ),
             # Percent + amount row
             rx.el.div(
@@ -657,7 +648,7 @@ def card_nine() -> rx.Component:
                 ),
                 class_name="w-full flex flex-row items-center justify-between",
             ),
-            class_name="w-full flex flex-col gap-y-3 bg-secondary rounded-radius p-4",
+            class_name="w-full flex flex-col gap-y-3 bg-secondary rounded-lg p-4",
         )
 
     return rx.el.div(
@@ -674,7 +665,7 @@ def card_nine() -> rx.Component:
                 ),
                 class_name="flex flex-col gap-y-0.5",
             ),
-            button("New Goal", variant="outline", size="sm"),
+            button("New Goal", variant="outline"),
             class_name="w-full flex flex-row items-start justify-between",
         ),
         # Goal items
@@ -756,8 +747,8 @@ def card_ten() -> rx.Component:
         ),
         # Buttons
         rx.el.div(
-            button("Discard", variant="secondary", size="sm"),
-            button("Save Changes", variant="default", size="sm"),
+            button("Discard", variant="secondary"),
+            button("Save Changes", variant="default"),
             class_name="w-full flex flex-row items-center justify-end gap-x-2",
         ),
         class_name="w-full flex flex-col gap-y-card text-foreground",
@@ -782,13 +773,11 @@ def codespaces_panel() -> rx.Component:
                 button(
                     hi("Add01Icon", class_name="size-4"),
                     variant="ghost",
-                    size="sm",
                     class_name="!px-2 !py-2",
                 ),
                 button(
                     hi("MoreHorizontalIcon", class_name="size-4"),
                     variant="ghost",
-                    size="sm",
                     class_name="!px-2 !py-2",
                 ),
                 class_name="flex flex-row items-center gap-x-1",
@@ -809,7 +798,7 @@ def codespaces_panel() -> rx.Component:
                 "You don't have any codespaces with this repository checked out",
                 class_name="text-xs font-light text-muted-foreground text-center max-w-[200px]",
             ),
-            button("Create Codespace", variant="default", size="sm"),
+            button("Create Codespace", variant="default"),
             rx.el.p(
                 "Learn more about codespaces",
                 class_name="text-xs text-muted-foreground underline underline-offset-2 cursor-pointer",
@@ -854,7 +843,7 @@ def local_panel() -> rx.Component:
                             "Clone using the web URL.",
                             class_name="text-xs font-light text-muted-foreground px-1",
                         ),
-                        class_name="w-full flex flex-col gap-y-2 border border-input rounded-radius p-2",
+                        class_name="w-full flex flex-col gap-y-2 border border-input rounded-lg p-2",
                     ),
                     class_name="w-full pt-3",
                 ),
@@ -982,7 +971,7 @@ def card_twelve() -> rx.Component:
                 ),
                 rx.el.div(
                     hi("Cancel01Icon", class_name="size-3.5 text-foreground"),
-                    class_name="p-1 flex items-center justify-center bg-secondary rounded-radius",
+                    class_name="p-1 flex items-center justify-center bg-secondary rounded-lg",
                 ),
                 class_name="w-full flex flex-row items-center justify-between",
             ),
@@ -1005,7 +994,7 @@ def card_twelve() -> rx.Component:
                     rx.el.option("EUR — Euro", value="eur"),
                     rx.el.option("GBP — British Pound", value="gbp"),
                     class_name=(
-                        "w-full rounded-radius border border-input bg-secondary "
+                        "w-full rounded-lg border border-input bg-secondary "
                         "px-3 py-2 text-sm text-foreground appearance-none cursor-pointer "
                         "focus:outline-none focus:ring-1 focus:ring-input"
                     ),
@@ -1039,8 +1028,8 @@ def card_twelve() -> rx.Component:
         ),
         # Buttons
         rx.el.div(
-            button("Reset", variant="outline", size="sm"),
-            button("Save Preferences", variant="default", size="sm"),
+            button("Reset", variant="outline"),
+            button("Save Preferences", variant="default"),
             class_name="w-full flex flex-row items-center justify-between pt-2",
         ),
         class_name="w-full flex flex-col gap-y-card text-foreground",
@@ -1144,17 +1133,17 @@ def card_fourteen() -> rx.Component:
             rx.el.div(
                 # Grey background portion (remaining capacity)
                 rx.el.div(
-                    class_name="w-full bg-secondary rounded-radius",
+                    class_name="w-full bg-secondary rounded-lg",
                     style={"height": f"{100 - day['calories']}%"},
                 ),
                 # Green filled portion
                 rx.el.div(
-                    class_name="w-full bg-chart-1 rounded-radius",
+                    class_name="w-full bg-chart-1 rounded-lg",
                     style={"height": f"{day['calories']}%"},
                 ),
                 class_name="w-full flex-1 flex flex-col justify-end gap-y-0.5 overflow-hidden",
             ),
-            class_name="flex flex-col items-center gap-y-2 border border-input rounded-radius p-2 flex-1 h-36",
+            class_name="flex flex-col items-center gap-y-2 border border-input rounded-lg p-2 flex-1 h-36",
         )
 
     return rx.el.div(
@@ -1225,7 +1214,7 @@ def card_fifteen() -> rx.Component:
 
     def bar_column(height: int, color: str) -> rx.Component:
         return rx.el.div(
-            class_name=f"w-5 rounded-radius {color}",
+            class_name=f"w-5 rounded-lg {color}",
             style={"height": f"{height}%"},
         )
 
@@ -1289,8 +1278,8 @@ def card_fifteen() -> rx.Component:
         rx.el.div(class_name="w-full h-px bg-input"),
         # Footer
         rx.el.div(
-            button("Good", variant="outline", size="sm", class_name="rounded-full"),
-            button("Details", variant="outline", size="sm"),
+            button("Good", variant="outline", class_name="rounded-full"),
+            button("Details", variant="outline"),
             class_name="w-full flex flex-row items-center justify-between pt-2",
         ),
         class_name="w-full flex flex-col gap-y-card text-foreground",
@@ -1417,7 +1406,7 @@ def card_eighteen() -> rx.Component:
                 class_name="text-sm font-semibold text-foreground",
             ),
             rx.el.div(
-                *[button(t, size="sm", variant="secondary") for t in times],
+                *[button(t, variant="secondary") for t in times],
                 class_name="w-full flex flex-row flex-wrap gap-2",
             ),
             class_name="w-full flex flex-col gap-y-3",
@@ -1429,7 +1418,7 @@ def card_eighteen() -> rx.Component:
                 "Please arrive 15 minutes early.",
                 class_name="text-sm font-light text-muted-foreground",
             ),
-            class_name="w-full flex flex-col gap-y-1 border border-input rounded-radius p-3",
+            class_name="w-full flex flex-col gap-y-1 border border-input rounded-lg p-3",
         ),
         rx.el.div(
             button("Book Appointment", class_name="w-full"),
@@ -1520,7 +1509,7 @@ def card_twenty() -> rx.Component:
         border_class = "border border-input" if color.get("border") else ""
         return rx.el.div(
             rx.el.div(
-                class_name=f"rounded-radius {color['bg']} {border_class} size-12 flex-shrink-0",
+                class_name=f"rounded-lg {color['bg']} {border_class} size-12 flex-shrink-0",
             ),
             # Updated class_name below
             rx.el.p(

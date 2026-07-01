@@ -17,129 +17,128 @@ buridan add component avatar
 ### Manual Installation
 
 ```python
-"""Custom avatar component."""
-
 from reflex.components.component import Component, ComponentNamespace
 from reflex.event import EventHandler, passthrough_event_spec
 from reflex.utils.imports import ImportVar
 from reflex.vars.base import Var
+from reflex_components_core.el import Div, Span
 
+from ..utils.twmerge import cn
 from .base_ui import PACKAGE_NAME, BaseUIComponent
+from .component import CoreComponent
 
 
 class ClassNames:
-    """Class names for avatar components."""
-
-    ROOT = "shrink-0 inline-flex size-8 items-center justify-center overflow-hidden rounded-full align-middle text-base font-medium select-none"
-    IMAGE = "size-full object-cover shrink-0"
-    FALLBACK = "flex size-full items-center justify-center text-sm bg-muted"
+    ROOT = "group/avatar relative flex size-8 shrink-0 rounded-full select-none after:absolute after:inset-0 after:rounded-full after:border after:border-border after:mix-blend-darken data-[size=xl]:size-14 data-[size=lg]:size-10 data-[size=sm]:size-6 dark:after:mix-blend-lighten"
+    IMAGE = "aspect-square size-full rounded-full object-cover"
+    FALLBACK = "flex size-full items-center justify-center rounded-full bg-muted text-sm text-muted-foreground group-data-[size=sm]/avatar:text-xs"
+    BADGE = "absolute right-0 bottom-0 z-10 inline-flex items-center justify-center rounded-full bg-primary text-primary-foreground bg-blend-color ring-2 ring-background select-none group-data-[size=sm]/avatar:size-2 group-data-[size=sm]/avatar:[&>svg]:hidden group-data-[size=default]/avatar:size-2.5 group-data-[size=default]/avatar:[&>svg]:size-2 group-data-[size=lg]/avatar:size-3 group-data-[size=lg]/avatar:[&>svg]:size-2"
+    GROUP = "group/avatar-group flex -space-x-2 *:data-[slot=avatar]:ring-2 *:data-[slot=avatar]:ring-background"
+    GROUP_COUNT = "relative flex size-8 shrink-0 items-center justify-center rounded-full bg-muted text-sm text-muted-foreground ring-2 ring-background group-has-data-[size=lg]/avatar-group:size-10 group-has-data-[size=sm]/avatar-group:size-6 [&>svg]:size-4 group-has-data-[size=lg]/avatar-group:[&>svg]:size-5 group-has-data-[size=sm]/avatar-group:[&>svg]:size-3"
 
 
 class AvatarBaseComponent(BaseUIComponent):
-    """Base component for avatar components."""
-
     library = f"{PACKAGE_NAME}/avatar"
 
     @property
     def import_var(self):
-        """Return the import variable for the avatar component."""
         return ImportVar(tag="Avatar", package_path="", install=False)
 
 
 class AvatarRoot(AvatarBaseComponent):
-    """Displays a user's profile picture, initials, or fallback icon."""
-
     tag = "Avatar.Root"
-
-    # The component to render
     render_: Var[Component]
 
     @classmethod
     def create(cls, *children, **props) -> BaseUIComponent:
-        """Create the avatar root component."""
+        custom_classes = props.pop("class_name", "")
+        size = props.pop("size", "default")
         props["data-slot"] = "avatar"
-        cls.set_class_name(ClassNames.ROOT, props)
-        return super().create(*children, **props)
+        props["data-size"] = size
+
+        return super().create(
+            *children, class_name=cn(ClassNames.ROOT, custom_classes), **props
+        )
 
 
 class AvatarImage(AvatarBaseComponent):
-    """The image to be displayed in the avatar."""
-
     tag = "Avatar.Image"
-
-    # The image source URL
     src: Var[str]
-
-    # Callback when loading status changes
     on_loading_status_change: EventHandler[passthrough_event_spec(str)]
-
-    # The component to render
     render_: Var[Component]
 
     @classmethod
     def create(cls, *children, **props) -> BaseUIComponent:
-        """Create the avatar image component."""
+        custom_classes = props.pop("class_name", "")
         props["data-slot"] = "avatar-image"
-        cls.set_class_name(ClassNames.IMAGE, props)
-        return super().create(*children, **props)
+
+        return super().create(
+            *children, class_name=cn(ClassNames.IMAGE, custom_classes), **props
+        )
 
 
 class AvatarFallback(AvatarBaseComponent):
-    """Rendered when the image fails to load or when no image is provided."""
-
     tag = "Avatar.Fallback"
-
-    # How long to wait before showing the fallback. Specified in milliseconds
     delay: Var[int]
-
-    # The component to render
     render_: Var[Component]
 
     @classmethod
     def create(cls, *children, **props) -> BaseUIComponent:
-        """Create the avatar fallback component."""
+        custom_classes = props.pop("class_name", "")
         props["data-slot"] = "avatar-fallback"
-        cls.set_class_name(ClassNames.FALLBACK, props)
-        return super().create(*children, **props)
+
+        return super().create(
+            *children,
+            class_name=cn(ClassNames.FALLBACK, custom_classes),
+            **props,
+        )
 
 
-class HighLevelAvatar(AvatarRoot):
-    """High level wrapper for the Avatar component."""
+class AvatarBadge(Span, CoreComponent):
+    @classmethod
+    def create(cls, *children, **props) -> Span:
+        custom_classes = props.pop("class_name", "")
+        props["data-slot"] = "avatar-badge"
 
-    # The image source URL
-    src: Var[str]
+        return super().create(
+            *children, class_name=cn(ClassNames.BADGE, custom_classes), **props
+        )
 
-    # Image props
-    _image_props = {"src", "on_loading_status_change", "render_"}
 
-    # Fallback props
-    _fallback_props = {"delay"}
+class AvatarGroup(Div, CoreComponent):
+    """The flex container wrapper for grouping multiple avatars."""
 
     @classmethod
-    def create(cls, *children, **props) -> BaseUIComponent:
-        """Create the avatar component."""
-        # Extract props for each subcomponent
-        image_props = {k: props.pop(k) for k in cls._image_props & props.keys()}
-        fallback_props = {k: props.pop(k) for k in cls._fallback_props & props.keys()}
+    def create(cls, *children, **props) -> Div:
+        custom_classes = props.pop("class_name", "")
+        props["data-slot"] = "avatar-group"
 
-        fallback_content = props.pop("fallback", "")
+        return super().create(
+            *children, class_name=cn(ClassNames.GROUP, custom_classes), **props
+        )
 
-        return AvatarRoot.create(
-            AvatarImage.create(**image_props),
-            AvatarFallback.create(fallback_content, **fallback_props),
+
+class AvatarGroupCount(Div, CoreComponent):
+    @classmethod
+    def create(cls, *children, **props) -> Div:
+        custom_classes = props.pop("class_name", "")
+        props["data-slot"] = "avatar-group-count"
+
+        return super().create(
             *children,
+            class_name=cn(ClassNames.GROUP_COUNT, custom_classes),
             **props,
         )
 
 
 class Avatar(ComponentNamespace):
-    """Namespace for Avatar components."""
-
     root = staticmethod(AvatarRoot.create)
     image = staticmethod(AvatarImage.create)
     fallback = staticmethod(AvatarFallback.create)
+    badge = staticmethod(AvatarBadge.create)
+    group = staticmethod(AvatarGroup.create)
+    group_count = staticmethod(AvatarGroupCount.create)
     class_names = ClassNames
-    __call__ = staticmethod(HighLevelAvatar.create)
 
 
 avatar = Avatar()
@@ -150,7 +149,7 @@ avatar = Avatar()
 
 
 ```python
-from components.ui.avatar import avatar
+from components.ui.avatar import Avatar
 ```
 
 
@@ -166,125 +165,288 @@ avatar.root(
 ```
 
 
-
 # Examples
 
+## Basic
 
-## General
-
-Displays a basic avatar with either a user image or a fallback placeholder.
+A basic avatar component with an image and a fallback.
 
 
 ```python
-def avatar_general():
-    return rx.box(
-        avatar(
+def avatar_basic() -> rx.Component:
+    return avatar.root(
+        avatar.image(
+            src="https://github.com/LineIndent.png",
+            custom_attrs={"alt": "@lineindent"},
+        ),
+        avatar.fallback("AH"),
+    )
+```
+
+
+## Badge
+
+Use the `avatar.badge` component to add a badge to the avatar. The badge is positioned at the bottom right of the avatar.
+
+
+```python
+def avatar_with_badge() -> rx.Component:
+    return avatar.root(
+        avatar.image(
             src="https://avatars.githubusercontent.com/u/84860195?v=4",
-            alt="@LineIndent",
-            fallback="CN",
+            custom_attrs={"alt": "@LineIndent"},
         ),
-        avatar(
-            src="https://avatars.githubusercontent.com/u/198465274?s=200&v=4",
-            alt="@buridan-ui",
-            fallback="BUI",
-            class_name="rounded-lg",
+        avatar.fallback("AH"),
+        avatar.badge(
+            class_name="bg-green-600 dark:bg-green-800",
         ),
-        rx.box(
-            avatar(
-                src="",
-                alt="@buridan-ui",
-                fallback="BU",
+    )
+```
+
+
+Use the `class_Name` prop to add custom styles to the badge such as custom colors, sizes, etc.
+
+```reflex
+avatar.badge(class_name="bg-green-600 dark:bg-green-800")
+```
+
+## Badge with Icon
+
+You can also use an icon inside `avatar.badge`.
+
+
+```python
+def avatar_badge_icon() -> rx.Component:
+    return avatar.root(
+        avatar.image(
+            src="https://avatars.githubusercontent.com/u/104714959?s=200&v=4",
+            custom_attrs={"alt": "Reflex Dev"},
+        ),
+        avatar.fallback("RD"),
+        avatar.badge(
+            hi("PlusSignIcon"),
+        ),
+    )
+```
+
+
+## Avatar Group
+
+Use the `avatar.group` component to add a group of avatars.
+
+
+```python
+def avatar_as_group() -> rx.Component:
+    return avatar.group(
+        avatar.root(
+            avatar.image(
+                src="/avatars/01.png",
+                custom_attrs={"alt": "@avatar-1"},
             ),
-            avatar(
-                src="https://avatars.githubusercontent.com/u/84860195?v=4",
-                alt="@buridan-ui",
-                fallback="BUI",
+            avatar.fallback("RD"),
+        ),
+        avatar.root(
+            avatar.image(
+                src="/avatars/02.png",
+                custom_attrs={"alt": "@avatar-2"},
             ),
-            avatar(
+            avatar.fallback("LI"),
+        ),
+        avatar.root(
+            avatar.fallback("AH"),
+        ),
+        class_name="grayscale",
+    )
+```
+
+
+## Avatar Group Count
+
+Use `avatar.group_count` to add a count to the group.
+
+
+```python
+def avatar_with_group_count() -> rx.Component:
+    return avatar.group(
+        avatar.root(
+            avatar.fallback("AH"),
+        ),
+        avatar.root(
+            avatar.image(
+                src="/avatars/01.png",
+                custom_attrs={"alt": "@avatar-1"},
+            ),
+            avatar.fallback("RD"),
+        ),
+        avatar.root(
+            avatar.image(
+                src="/avatars/02.png",
+                custom_attrs={"alt": "@avatar-2"},
+            ),
+            avatar.fallback("LI"),
+        ),
+        avatar.group_count("+3"),
+        class_name="grayscale",
+    )
+```
+
+
+## Avatar Group with Icon
+
+You can also use an icon inside `avatar.group_count`.
+
+
+```python
+def avatar_group_count_icon() -> rx.Component:
+    return avatar.group(
+        avatar.root(
+            avatar.fallback("AH"),
+        ),
+        avatar.root(
+            avatar.image(
                 src="https://avatars.githubusercontent.com/u/104714959?s=200&v=4",
-                alt="@reflex",
-                fallback="RE",
+                custom_attrs={"alt": "@reflex-dev"},
             ),
-            class_name=(
-                "flex -space-x-2 "
-                "*:data-[slot=avatar]:ring-2 *:data-[slot=avatar]:ring-[var(--background)] "
-                "*:data-[slot=avatar]:grayscale"
-            ),
+            avatar.fallback("CN"),
         ),
-        class_name="flex flex-row flex-wrap items-center gap-12 p-8",
+        avatar.root(
+            avatar.image(
+                src="https://avatars.githubusercontent.com/u/84860195?v=4",
+                custom_attrs={"alt": "LineIndent"},
+            ),
+            avatar.fallback("LI"),
+        ),
+        avatar.group_count(
+            hi("PlusSignIcon"),
+        ),
+        class_name="grayscale",
     )
 ```
 
 
 ## Sizes
 
-Demonstrates how to scale the avatar component using Tailwind utility classes.
+Use the `size` prop to change the size of the avatar.
 
 
 ```python
-def avatar_sizes():
-    """Example showing different avatar sizes"""
-    return rx.box(
-        avatar(
-            src="https://avatars.githubusercontent.com/u/104714959?s=200&v=4",
-            alt="@reflex",
-            fallback="RE",
-            class_name="size-6",
-        ),
-        avatar(
-            src="https://avatars.githubusercontent.com/u/104714959?s=200&v=4",
-            alt="@reflex",
-            fallback="RE",
-            class_name="size-8",
-        ),
-        avatar(
-            src="https://avatars.githubusercontent.com/u/104714959?s=200&v=4",
-            alt="@reflex",
-            fallback="RE",
-            class_name="size-10",
-        ),
-        avatar(
-            src="https://avatars.githubusercontent.com/u/104714959?s=200&v=4",
-            alt="@reflex",
-            fallback="RE",
-            class_name="size-12",
-        ),
-        avatar(
-            src="https://avatars.githubusercontent.com/u/104714959?s=200&v=4",
-            alt="@reflex",
-            fallback="RE",
-            class_name="size-16",
-        ),
-        class_name="flex items-center gap-4 p-8",
-    )
-```
-
-
-## With Badge
-
-Shows how to combine an avatar with status or notification badges for added context.
-
-
-```python
-def avatar_with_badge():
-    """Example showing avatar with status badge"""
-    return rx.box(
-        rx.box(
-            avatar(
+def avatar_sizes() -> rx.Component:
+    return rx.el.div(
+        avatar.root(
+            avatar.image(
                 src="https://avatars.githubusercontent.com/u/84860195?v=4",
-                alt="@LineIndent",
-                fallback="CN",
-                class_name="size-12",
+                custom_attrs={"alt": "@LineIndent"},
             ),
-            rx.box(
-                class_name=(
-                    "absolute bottom-0 right-0 size-3 rounded-full "
-                    "bg-green-500 border-2 border-[var(--background)]"
-                ),
-            ),
-            class_name="relative inline-block",
+            avatar.fallback("LI"),
+            size="sm",
         ),
-        class_name="p-8",
+        avatar.root(
+            avatar.image(
+                src="https://avatars.githubusercontent.com/u/84860195?v=4",
+                custom_attrs={"alt": "@LineIndent"},
+            ),
+            avatar.fallback("LI"),
+        ),
+        avatar.root(
+            avatar.image(
+                src="https://avatars.githubusercontent.com/u/84860195?v=4",
+                custom_attrs={"alt": "@LineIndent"},
+            ),
+            avatar.fallback("LI"),
+            size="lg",
+        ),
+        class_name="flex flex-wrap items-center gap-2",
     )
 ```
 
+
+## Dropdown
+
+You can use the `Avatar` component as a trigger for a dropdown menu.
+
+
+```python
+def avatar_dropdown_menu() -> rx.Component:
+    return menu.root(
+        menu.trigger(
+            render_=button(
+                avatar.root(
+                    avatar.image(
+                        src="https://github.com/LineIndent.png",
+                        custom_attrs={"alt": "lineindent"},
+                    ),
+                    avatar.fallback("LI"),
+                ),
+                variant="ghost",
+                size="icon",
+                class_name="rounded-full",
+            )
+        ),
+        menu.portal(
+            menu.positioner(
+                menu.popup(
+                    menu.group(
+                        menu.item("Profile"),
+                        menu.item("Billing"),
+                        menu.item("Settings"),
+                    ),
+                    class_name="w-32",
+                ),
+            )
+        ),
+    )
+```
+
+
+# API Reference
+
+## avatar.root
+
+The `avatar.root` component is the root component that wraps the avatar image and fallback.
+
+| Prop        | Type                        | Default     |
+| ----------- | --------------------------- | ----------- |
+| `size`      | `"default" \| "sm" \| "lg"` | `"default"` |
+| `class_name` | `string`                    | -           |
+
+## avatar.image
+
+The `avatar.image` component displays the avatar image. It accepts all Base UI Avatar Image props.
+
+| Prop        | Type     | Default |
+| ----------- | -------- | ------- |
+| `src`       | `string` | -       |
+| `alt`       | `string` | -       |
+| `class_name` | `string` | -       |
+
+## avatar.fallback
+
+The `avatar.fallback` component displays a fallback when the image fails to load. It accepts all Base UI Avatar Fallback props.
+
+| Prop        | Type     | Default |
+| ----------- | -------- | ------- |
+| `class_name` | `string` | -       |
+
+## avatar.badge
+
+The `avatar.badge` component displays a badge indicator on the avatar, typically positioned at the bottom right.
+
+| Prop        | Type     | Default |
+| ----------- | -------- | ------- |
+| `class_name` | `string` | -       |
+
+## avatar.group
+
+The `avatar.group` component displays a group of avatars with overlapping styling.
+
+| Prop        | Type     | Default |
+| ----------- | -------- | ------- |
+| `class_name` | `string` | -       |
+
+## avatar.group_count
+
+The `avatar.group_count` component displays a count indicator in an avatar group, typically showing the number of additional avatars.
+
+| Prop        | Type     | Default |
+| ----------- | -------- | ------- |
+| `class_name` | `string` | -       |

@@ -11,5 +11,5 @@ def skeleton_card():
         card.content(
             skeleton_component(class_name="aspect-video w-full rounded-md"),
         ),
-        class_name="w-full max-w-xs border border-input rounded-radius",
+        class_name="w-full max-w-xs border border-input rounded-lg",
     )

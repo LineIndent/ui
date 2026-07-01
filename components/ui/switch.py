@@ -11,7 +11,7 @@ from .base_ui import PACKAGE_NAME, BaseUIComponent
 class ClassNames:
     """Class names for switch components."""
 
-    ROOT = "relative flex h-5 w-8 rounded-full bg-secondary p-0.5 transition-colors duration-200 ease-out before:absolute before:rounded-radius before:outline-offset-2 before:outline-primary focus-visible:before:inset-0 data-[checked]:bg-primary disabled:opacity-50 disabled:cursor-not-allowed cursor-default"
+    ROOT = "relative flex h-5 w-8 rounded-full bg-secondary p-0.5 transition-colors duration-200 ease-out before:absolute before:rounded-lg before:outline-offset-2 before:outline-primary focus-visible:before:inset-0 data-[checked]:bg-primary disabled:opacity-50 disabled:cursor-not-allowed cursor-default"
     THUMB = "aspect-square h-full rounded-full bg-white transition-transform duration-200 ease-out data-[checked]:translate-x-3 shadow-small"
 
 

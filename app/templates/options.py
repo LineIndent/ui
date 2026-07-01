@@ -231,7 +231,7 @@ def menu_panel(desktop: bool = True) -> rx.Component:
                 class_name="" if desktop else "w-full",
             ),
         ),
-        name="radius_select",
+        name="menu_panel",
         default_value="Medium",
     )
 
@@ -688,7 +688,7 @@ def open_preset_menu() -> rx.Component:
                     input(
                         placeholder="ex: b2D0wqNxT",
                         id="seed-input-el",
-                        class_name="rounded-radius text-foreground",
+                        class_name="rounded-lg text-foreground",
                     ),
                     rx.el.div(
                         dialog.close(

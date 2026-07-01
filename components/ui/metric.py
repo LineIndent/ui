@@ -16,9 +16,7 @@ LiteralTrendDirection = Literal["up", "down", "neutral"]
 class ClassNames:
     """Class names for metric components."""
 
-    ROOT = (
-        "flex flex-col gap-y-2 p-4 rounded-radius border border-input bg-card shadow-sm"
-    )
+    ROOT = "flex flex-col gap-y-2 p-4 rounded-lg border border-input bg-card shadow-sm"
     LABEL = "text-sm font-medium text-muted-foreground"
     VALUE = "text-3xl font-bold tracking-tight text-foreground"
     TREND_CONTAINER = "flex flex-row items-center gap-x-1.5"

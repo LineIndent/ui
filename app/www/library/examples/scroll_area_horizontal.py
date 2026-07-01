@@ -49,5 +49,5 @@ def scroll_area_horizontal():
         ),
         scroll_area.scrollbar(scroll_area.thumb(), orientation="horizontal"),
         scroll_area.corner(),
-        class_name="w-96 rounded-radius border border-input",
+        class_name="w-96 rounded-lg border border-input",
     )

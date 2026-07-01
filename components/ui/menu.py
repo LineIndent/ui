@@ -1,18 +1,12 @@
-"""Custom menu component."""
-
 from typing import Literal
 
 from reflex.components.component import Component, ComponentNamespace
 from reflex.event import EventHandler, passthrough_event_spec
 from reflex.utils.imports import ImportVar
 from reflex.vars.base import Var
-from reflex_components_core.core.foreach import foreach
 
 from ..icons.hugeicon import hi
-from ..icons.others import select_arrow
-from ..utils.twmerge import cn
 from .base_ui import PACKAGE_NAME, BaseUIComponent
-from .button import button
 
 LiteralOpenChangeReason = Literal[
     "arrowKey",
@@ -40,7 +34,7 @@ class ClassNames:
     POPUP = (
         "z-50 max-h-[var(--available-height)] w-[var(--anchor-width)] min-w-32 "
         "origin-[var(--transform-origin)] overflow-x-hidden overflow-y-auto "
-        "rounded-radius bg-popover p-1 text-popover-foreground shadow-md "
+        "rounded-lg bg-popover p-1 text-popover-foreground shadow-md "
         "ring-1 ring-foreground/10 duration-100 outline-none "
         "data-[side=bottom]:slide-in-from-top-2 "
         "data-[side=left]:slide-in-from-right-2 "
@@ -51,7 +45,7 @@ class ClassNames:
     )
     ITEM = (
         "group/menu-item relative flex cursor-default items-center gap-1.5 "
-        "rounded-radius px-1.5 py-1 text-sm outline-hidden select-none "
+        "rounded-lg px-1.5 py-1 text-sm outline-hidden select-none "
         "focus:bg-accent focus:text-accent-foreground "
         "not-data-[variant=destructive]:focus:**:text-accent-foreground "
         "data-inset:pl-7 "
@@ -67,7 +61,7 @@ class ClassNames:
     POSITIONER_SUB = "isolate z-50 outline-none"
     POPUP_SUB = (
         "z-50 w-auto min-w-24 origin-(--transform-origin) overflow-x-hidden "
-        "overflow-y-auto rounded-radius bg-popover p-1 text-popover-foreground "
+        "overflow-y-auto rounded-lg bg-popover p-1 text-popover-foreground "
         "shadow-lg ring-1 ring-foreground/10 duration-100 "
         "data-[side=bottom]:slide-in-from-top-2 "
         "data-[side=left]:slide-in-from-right-2 "
@@ -80,7 +74,7 @@ class ClassNames:
         "px-1.5 py-1 text-xs font-medium text-muted-foreground data-inset:pl-7"
     )
     SUBMENU_TRIGGER = (
-        "flex cursor-default items-center justify-between gap-1.5 rounded-radius px-1.5 py-1 "
+        "flex cursor-default items-center justify-between gap-1.5 rounded-lg px-1.5 py-1 "
         "text-sm outline-hidden select-none "
         "focus:bg-accent focus:text-accent-foreground "
         "not-data-[variant=destructive]:focus:**:text-accent-foreground "
@@ -296,18 +290,6 @@ class MenuPopup(MenuBaseComponent):
         return super().create(
             *children,
             **props,
-            # style={
-            #     "keyframes": {
-            #         "animate-in": {
-            #             "from": {"opacity": "0", "transform": "scale(0.95)"},
-            #             "to": {"opacity": "1", "transform": "scale(1)"},
-            #         },
-            #         "animate-out": {
-            #             "from": {"opacity": "1", "transform": "scale(2)"},
-            #             "to": {"opacity": "0", "transform": "scale(0.95)"},
-            #         },
-            #     },
-            # },
         )
 
 
@@ -618,133 +600,6 @@ class MenuSeparator(MenuBaseComponent):
         return super().create(*children, **props)
 
 
-class HighLevelMenu(MenuRoot):
-    """High level wrapper for the Menu component."""
-
-    # The trigger component to use for the menu
-    trigger: Var[Component | None]
-
-    # The list of items to display in the menu dropdown - can be strings or tuples of (label, on_click_handler)
-    items: Var[list[str | tuple[str, EventHandler]]]
-
-    # The placeholder text to display when no item is selected
-    placeholder: Var[str]
-
-    # The size of the menu. Defaults to "md".
-    size: Var[LiteralMenuSize]
-
-    # Whether to close the menu when the item is clicked. Defaults to True.
-    close_on_click: Var[bool]
-
-    # Props for different component parts
-    _item_props = {"close_on_click"}
-    _trigger_props = {"placeholder", "size", "close_on_click"}
-    _positioner_props = {
-        "align",
-        "align_offset",
-        "side",
-        "arrow_padding",
-        "collision_padding",
-        "sticky",
-        "position_method",
-        "track_anchor",
-        "side_offset",
-        "collision_avoidance",
-    }
-    _portal_props = {"container"}
-
-    @classmethod
-    def create(cls, *children, **props) -> BaseUIComponent:
-        """Create a menu component.
-
-        Args:
-            *children: Additional children to include in the menu.
-            **props: Additional properties to apply to the menu component.
-
-        Returns:
-            The menu component.
-        """
-        # Extract props for different parts
-        item_props = {k: props.pop(k) for k in cls._item_props & props.keys()}
-        trigger_props = {k: props.pop(k) for k in cls._trigger_props & props.keys()}
-        positioner_props = {
-            k: props.pop(k) for k in cls._positioner_props & props.keys()
-        }
-        portal_props = {k: props.pop(k) for k in cls._portal_props & props.keys()}
-
-        trigger = props.pop("trigger", None)
-        items = props.pop("items", [])
-        size = trigger_props.get("size", "md")
-        trigger_label = trigger_props.get("placeholder", "Open Menu")
-
-        def create_menu_item(item: str | tuple[str, EventHandler]) -> BaseUIComponent:
-            if isinstance(item, tuple):
-                label, on_click_handler = item
-                return MenuItem.create(
-                    render_=button(
-                        label,
-                        variant="ghost",
-                        class_name=ClassNames.ITEM,
-                        disabled=props.get("disabled", False),
-                        on_click=on_click_handler,
-                        size=size,
-                        type="button",
-                    ),
-                    key=label,
-                    **item_props,
-                )
-            return MenuItem.create(
-                render_=button(
-                    item,
-                    variant="ghost",
-                    class_name=ClassNames.ITEM,
-                    disabled=props.get("disabled", False),
-                    size=size,
-                    type="button",
-                ),
-                key=item,
-                **item_props,
-            )
-
-        if isinstance(items, Var):
-            items_children = foreach(items, create_menu_item)
-        else:
-            items_children = [create_menu_item(item) for item in items]
-
-        return MenuRoot.create(
-            MenuTrigger.create(
-                render_=(
-                    trigger
-                    if trigger
-                    else button(
-                        trigger_label,
-                        select_arrow(class_name="size-4 text-secondary-9"),
-                        variant="outline",
-                        class_name=ClassNames.TRIGGER,
-                        disabled=props.get("disabled", False),
-                        size=size,
-                        type="button",
-                    )
-                ),
-            ),
-            MenuPortal.create(
-                MenuPositioner.create(
-                    MenuPopup.create(
-                        items_children,
-                        class_name=cn(
-                            ClassNames.POPUP,
-                            "",
-                        ),
-                    ),
-                    **positioner_props,
-                ),
-                **portal_props,
-            ),
-            *children,
-            **props,
-        )
-
-
 class Menu(ComponentNamespace):
     """Namespace for Menu components."""
 
@@ -766,7 +621,6 @@ class Menu(ComponentNamespace):
     submenu_root = staticmethod(MenuSubMenuRoot.create)
     submenu_trigger = staticmethod(MenuSubMenuTrigger.create)
     class_names = ClassNames
-    __call__ = staticmethod(HighLevelMenu.create)
 
 
 menu = Menu()

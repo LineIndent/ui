@@ -17,8 +17,6 @@ buridan add component accordion
 ### Manual Installation
 
 ```python
-"""Custom Accordion component."""
-
 from typing import Any, Literal
 
 from reflex.components.component import Component, ComponentNamespace
@@ -51,8 +49,6 @@ class ClassNames:
 
 
 class AccordionBaseComponent(BaseUIComponent):
-    """Base component for accordion components."""
-
     library = f"{PACKAGE_NAME}/accordion"
 
     @property
@@ -66,34 +62,24 @@ class AccordionRoot(AccordionBaseComponent):
 
     tag = "Accordion.Root"
 
-    # The uncontrolled value of the item(s) that should be initially expanded. To render a controlled accordion, use the `value` prop instead.
     default_value: Var[list[Any]]
 
-    # The controlled value of the item(s) that should be expanded. To render an uncontrolled accordion, use the `default_value` prop instead.
     value: Var[list[Any]]
 
-    # Event handler called when an accordion item is expanded or collapsed. Provides the new value as an argument.
     on_value_change: EventHandler[passthrough_event_spec(list[str])]
 
-    # Allows the browser's built-in page search to find and expand the panel contents. Overrides the `keep_mounted` prop and uses `hidden="until-found"` to hide the element without removing it from the DOM. Defaults to False.
     hidden_until_found: Var[bool]
 
-    # Whether multiple items can be open at the same time. Defaults to True.
     multiple: Var[bool]
 
-    # Whether the component should ignore user interaction. Defaults to False.
     disabled: Var[bool]
 
-    # Whether to loop keyboard focus back to the first item when the end of the list is reached while using the arrow keys. Defaults to True.
     loop_focus: Var[bool]
 
-    # The visual orientation of the accordion. Controls whether roving focus uses left/right or up/down arrow keys. Defaults to 'vertical'.
     orientation: Var[LiteralOrientation]
 
-    # Whether to keep the element in the DOM while the panel is closed. This prop is ignored when hidden_until_found is used. Defaults to False.
     keep_mounted: Var[bool]
 
-    # The render prop.
     render_: Var[Component]
 
     @classmethod
@@ -105,20 +91,14 @@ class AccordionRoot(AccordionBaseComponent):
 
 
 class AccordionItem(AccordionBaseComponent):
-    """Groups an accordion header with the corresponding panel."""
-
     tag = "Accordion.Item"
 
-    # The value that identifies this item.
     value: Var[str]
 
-    # Event handler called when the panel is opened or closed.
     on_open_change: EventHandler[passthrough_event_spec(bool)]
 
-    # Whether the component should ignore user interaction. Defaults to False.
     disabled: Var[bool]
 
-    # The render prop.
     render_: Var[Component]
 
     @classmethod
@@ -130,11 +110,8 @@ class AccordionItem(AccordionBaseComponent):
 
 
 class AccordionHeader(AccordionBaseComponent):
-    """A heading that labels the corresponding panel."""
-
     tag = "Accordion.Header"
 
-    # The render prop.
     render_: Var[Component]
 
     @classmethod
@@ -146,13 +123,13 @@ class AccordionHeader(AccordionBaseComponent):
 
 
 class AccordionTrigger(AccordionBaseComponent):
-    """A button that opens and closes the corresponding panel."""
-
     tag = "Accordion.Trigger"
 
     title: Var[str]
+
     native_button: Var[bool]
-    render_: Var[Component] = None
+
+    render_: Var[Component] | None = None
 
     @classmethod
     def create(cls, *children, **props) -> BaseUIComponent:
@@ -191,17 +168,12 @@ class AccordionTrigger(AccordionBaseComponent):
 
 
 class AccordionPanel(AccordionBaseComponent):
-    """A collapsible panel with the accordion item contents."""
-
     tag = "Accordion.Panel"
 
-    # Allows the browser's built-in page search to find and expand the panel contents. Overrides the `keep_mounted` prop and uses `hidden="until-found"` to hide the element without removing it from the DOM. Defaults to False.
     hidden_until_found: Var[bool]
 
-    # Whether to keep the element in the DOM while the panel is closed. This prop is ignored when `hidden_until_found` is used. Defaults to False.
     keep_mounted: Var[bool]
 
-    # The render prop.
     render_: Var[Component]
 
     @classmethod
@@ -212,132 +184,13 @@ class AccordionPanel(AccordionBaseComponent):
         return super().create(*children, **props)
 
 
-class HighLevelAccordion(AccordionRoot):
-    """High level wrapper for the Accordion component."""
-
-    items: Var[ITEMS_TYPE] | ITEMS_TYPE
-
-    _item_props = {"on_open_change", "disabled"}
-    _trigger_props = {"native_button"}
-    _panel_props = {"hidden_until_found", "keep_mounted"}
-
-    @classmethod
-    def create(
-        cls,
-        items: Var[ITEMS_TYPE] | ITEMS_TYPE,
-        **props,
-    ) -> BaseUIComponent:
-        """Create a high level accordion component.
-
-        Args:
-            items: List of dictionaries with 'trigger', 'content', and optional 'value' and 'disabled' keys.
-            **props: Additional properties to apply to the accordion component.
-
-        Returns:
-            The accordion component with all necessary subcomponents.
-        """
-        # Extract props for different parts
-        item_props = {k: props.pop(k) for k in cls._item_props & props.keys()}
-        trigger_props = {k: props.pop(k) for k in cls._trigger_props & props.keys()}
-        panel_props = {k: props.pop(k) for k in cls._panel_props & props.keys()}
-
-        if isinstance(items, Var):
-            accordion_items = foreach(
-                items,
-                lambda item: cls._create_accordion_item_dynamic(
-                    item, item_props, trigger_props, panel_props
-                ),
-            )
-            return AccordionRoot.create(accordion_items, **props)
-        accordion_items = [
-            cls._create_accordion_item(
-                item, index, item_props, trigger_props, panel_props
-            )
-            for index, item in enumerate(items)
-        ]
-        return AccordionRoot.create(*accordion_items, **props)
-
-    @classmethod
-    def _create_trigger_icon(cls) -> Component:
-        """Create the accordion trigger icon."""
-        return icon(
-            "PlusSignIcon",
-            class_name=ClassNames.TRIGGER_ICON,
-            data_slot="accordion-trigger-icon",
-        )
-
-    @classmethod
-    def _create_accordion_item(
-        cls,
-        item: dict[str, str | Component],
-        index: int,
-        item_props: dict,
-        trigger_props: dict,
-        panel_props: dict,
-    ) -> BaseUIComponent:
-        """Create a single accordion item from a dictionary (for normal lists)."""
-        return AccordionItem.create(
-            AccordionHeader.create(
-                AccordionTrigger.create(
-                    item.get("trigger"),
-                    cls._create_trigger_icon(),
-                    **trigger_props,
-                ),
-            ),
-            AccordionPanel.create(
-                Div.create(
-                    item.get("content"),
-                    class_name=ClassNames.PANEL_DIV,
-                    data_slot="accordion-panel-div",
-                ),
-                **panel_props,
-            ),
-            value=item.get("value", f"item-{index + 1}"),
-            disabled=item.get("disabled", False),
-            **item_props,
-        )
-
-    @classmethod
-    def _create_accordion_item_dynamic(
-        cls,
-        item: ObjectVar[dict[str, str | Component]],
-        item_props: dict,
-        trigger_props: dict,
-        panel_props: dict,
-    ) -> BaseUIComponent:
-        """Create a single accordion item from a dictionary (for Var items)."""
-        return AccordionItem.create(
-            AccordionHeader.create(
-                AccordionTrigger.create(
-                    item["trigger"],
-                    cls._create_trigger_icon(),
-                    **trigger_props,
-                ),
-            ),
-            AccordionPanel.create(
-                Div.create(
-                    item["content"],
-                    class_name=ClassNames.PANEL_DIV,
-                    data_slot="accordion-panel-div",
-                ),
-                **panel_props,
-            ),
-            value=item.get("value", ""),
-            disabled=item.get("disabled", False).bool(),
-            **item_props,
-        )
-
-
 class Accordion(ComponentNamespace):
-    """Namespace for Accordion components."""
-
     root = staticmethod(AccordionRoot.create)
     item = staticmethod(AccordionItem.create)
     header = staticmethod(AccordionHeader.create)
     trigger = staticmethod(AccordionTrigger.create)
     panel = staticmethod(AccordionPanel.create)
     class_names = ClassNames
-    __call__ = staticmethod(HighLevelAccordion.create)
 
 
 accordion = Accordion()
@@ -348,7 +201,7 @@ accordion = Accordion()
 
 
 ```python
-from components.ui.accordion import accordion
+from components.ui.accordion import Accordion
 ```
 
 

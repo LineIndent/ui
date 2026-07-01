@@ -22,86 +22,54 @@ from typing import Literal
 from reflex.vars.base import Var
 from reflex_components_core.el import Span
 
+from ..utils.twmerge import cn
 from .component import CoreComponent
 
-LiteralBadgeVariant = Literal["default", "secondary", "destructive", "outline"]
+LiteralBadgeVariant = Literal[
+    "default", "secondary", "destructive", "outline", "ghost", "link"
+]
 
 DEFAULT_BASE_CLASSES = (
-    "inline-flex items-center justify-center rounded-radius border px-2 py-0.5 text-xs font-medium "
-    "w-fit whitespace-nowrap shrink-0 [&>svg]:size-3 gap-1 [&>svg]:pointer-events-none "
-    "focus-visible:border-[var(--ring)] focus-visible:ring-[var(--ring)]/50 focus-visible:ring-[3px] "
-    "aria-invalid:ring-[var(--destructive)]/20 dark:aria-invalid:ring-[var(--destructive)]/40 "
-    "aria-invalid:border-[var(--destructive)] transition-[color,box-shadow] overflow-hidden"
+    "group/badge inline-flex h-5 w-fit shrink-0 items-center justify-center gap-1 overflow-hidden "
+    "rounded-4xl border border-transparent px-2 py-0.5 text-xs font-medium whitespace-nowrap "
+    "transition-all focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 "
+    "has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 aria-invalid:border-destructive "
+    "aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 [&>svg]:pointer-events-none [&>svg]:size-3!"
 )
 
 BADGE_VARIANTS = {
-    "default": (
-        "border-transparent bg-[var(--primary)] text-[var(--primary-foreground)] "
-        "[a&]:hover:bg-[var(--primary)]/90"
-    ),
-    "secondary": (
-        "border-transparent bg-[var(--secondary)] text-[var(--secondary-foreground)] "
-        "[a&]:hover:bg-[var(--secondary)]/90"
-    ),
+    "default": "bg-primary text-primary-foreground [a]:hover:bg-primary/80",
+    "secondary": "bg-secondary text-secondary-foreground [a]:hover:bg-secondary/80",
     "destructive": (
-        "border-transparent bg-[var(--destructive)] text-white "
-        "[a&]:hover:bg-[var(--destructive)]/90 "
-        "focus-visible:ring-[var(--destructive)]/20 dark:focus-visible:ring-[var(--destructive)]/40 "
-        "dark:bg-[var(--destructive)]/60"
+        "bg-destructive/10 text-destructive focus-visible:ring-destructive/20 "
+        "dark:bg-destructive/20 dark:focus-visible:ring-destructive/40 [a]:hover:bg-destructive/20"
     ),
-    "outline": (
-        "text-[var(--foreground)] border-[var(--input)] "
-        "[a&]:hover:bg-[var(--accent)] [a&]:hover:text-[var(--accent-foreground)]"
-    ),
+    "outline": "border-border text-foreground [a]:hover:bg-muted [a]:hover:text-muted-foreground",
+    "ghost": "hover:bg-muted hover:text-muted-foreground dark:hover:bg-muted/50",
+    "link": "text-primary underline-offset-4 hover:underline",
 }
 
 
-def get_badge_classes(variant: LiteralBadgeVariant) -> str:
-    """Get the complete badge class string.
-
-    Args:
-        variant: The badge variant to apply
-
-    Returns:
-        The complete class string for the badge
-    """
-    variant_classes = BADGE_VARIANTS[variant]
-    return f"{DEFAULT_BASE_CLASSES} {variant_classes}"
+def badge_variants(variant: str = "default") -> Var:
+    return cn(
+        DEFAULT_BASE_CLASSES,
+        BADGE_VARIANTS.get(variant, BADGE_VARIANTS["default"]),
+    )
 
 
 class Badge(Span, CoreComponent):
-    """A badge component that displays a label."""
-
-    # Badge variant
-    variant: Var[LiteralBadgeVariant]
-
     @classmethod
     def create(cls, *children, **props) -> Span:
-        """Create the badge component.
-
-        Args:
-            *children: The badge content
-            **props: Component properties including variant
-
-        Returns:
-            A configured Span component
-        """
+        custom_classes = props.pop("class_name", "")
         variant = props.pop("variant", "default")
+        props["data-slot"] = "badge"
+        props["data-variant"] = variant
 
-        cls.set_class_name(get_badge_classes(variant), props)
-
-        # Add data-slot attribute
-        props.setdefault("data_slot", "badge")
-
-        return super().create(*children, **props)
-
-    def _exclude_props(self) -> list[str]:
-        """Exclude component-specific props from being passed to the DOM.
-
-        Returns:
-            List of prop names to exclude
-        """
-        return [*super()._exclude_props(), "variant"]
+        return super().create(
+            *children,
+            class_name=cn(badge_variants(variant), custom_classes),
+            **props,
+        )
 
 
 badge = Badge.create
@@ -125,139 +93,131 @@ badge()
 ```
 
 
-
 # Examples
 
+## Variants
 
-## Default
-
-Displays a standard badge using the default variant, ideal for basic labeling.
+Use the `variant` prop to change the variant of the badge.
 
 
 ```python
-def badge_default():
-    return rx.box(
-        rx.box(
-            badge("Badge"),
-            badge("Secondary", variant="secondary"),
-            badge("Destructive", variant="destructive"),
-            badge("Outline", variant="outline"),
-            class_name="flex w-full flex-wrap gap-2",
-        ),
-        rx.box(
-            badge(
-                rx.icon(tag="badge-check"),
-                "Verified",
-                variant="secondary",
-                class_name="bg-blue-500 text-white dark:bg-blue-600",
-            ),
-            badge(
-                "8",
-                class_name="h-5 min-w-5 rounded-full px-1 font-mono tabular-nums",
-            ),
-            badge(
-                "99",
-                variant="destructive",
-                class_name="h-5 min-w-5 rounded-full px-1 font-mono tabular-nums",
-            ),
-            badge(
-                "20+",
-                variant="outline",
-                class_name="h-5 min-w-5 rounded-full px-1 font-mono tabular-nums",
-            ),
-            class_name="flex w-full flex-wrap gap-2",
-        ),
-        class_name="flex flex-col items-center gap-2 p-8",
+def badge_with_variants() -> rx.Component:
+    return rx.el.div(
+        badge("Default"),
+        badge("Secondary", variant="secondary"),
+        badge("Destructive", variant="destructive"),
+        badge("Outline", variant="outline"),
+        badge("Ghost", variant="ghost"),
+        class_name="flex flex-wrap gap-2",
     )
 ```
 
 
 ## With Icons
 
-Demonstrates how to include icons inside badges for visual context or emphasis.
+You can render an icon inside the badge. Use `data-icon="inline-start"` to render the icon on the left and `data-icon="inline-end"` to render the icon on the right.
 
 
 ```python
-def badge_with_icons():
-    return rx.box(
+def badge_with_icon() -> rx.Component:
+    return rx.el.div(
         badge(
-            rx.icon(tag="check"),
-            "Success",
+            hi("CheckmarkBadge01Icon", custom_attrs={"data-icon": "inline-start"}),
+            "Verified",
             variant="secondary",
-            class_name="bg-green-500 text-white dark:bg-green-600",
         ),
         badge(
-            rx.icon(tag="x"),
-            "Error",
-            variant="destructive",
+            "Bookmark",
+            hi("Bookmark02Icon", custom_attrs={"data-icon": "inline-end"}),
+            variant="outline",
         ),
-        badge(
-            rx.icon(tag="triangle-alert"),
-            "Warning",
-            variant="secondary",
-            class_name="bg-yellow-500 text-white dark:bg-yellow-600",
-        ),
-        badge(
-            rx.icon(tag="info"),
-            "Info",
-            variant="secondary",
-            class_name="bg-blue-500 text-white dark:bg-blue-600",
-        ),
-        class_name="flex flex-wrap gap-2 p-8",
+        class_name="flex flex-wrap gap-2",
     )
 ```
 
 
-## Status
+## With Spinner
 
-Showcases how badges can represent different statuses, like success or error, using color.
-
-
-```python
-def badge_status():
-    return rx.box(
-        badge("New", variant="default"),
-        badge("Popular", variant="secondary"),
-        badge("Sale", variant="destructive"),
-        badge("Draft", variant="outline"),
-        badge(
-            rx.icon(tag="star"),
-            "Featured",
-            class_name="bg-yellow-500 text-white dark:bg-yellow-600",
-        ),
-        class_name="flex flex-wrap gap-2 p-8",
-    )
-```
-
-
-## Notification Count
-
-Illustrates how to use badges for showing counts, such as unread notifications or messages.
+You can render a spinner inside the badge. Remember to add the `data-icon="inline-start"` or `data-icon="inline-end"` prop to the spinner.
 
 
 ```python
-def badge_notification_count():
-    return rx.box(
+def badge_with_spinner() -> rx.Component:
+    return rx.el.div(
         badge(
-            "1",
-            class_name="h-5 min-w-5 rounded-full px-1 font-mono tabular-nums",
-        ),
-        badge(
-            "5",
+            spinner(custom_attrs={"data-icon": "inline-start"}),
+            "Deleting",
             variant="destructive",
-            class_name="h-5 min-w-5 rounded-full px-1 font-mono tabular-nums",
         ),
         badge(
-            "10",
+            "Generating",
+            spinner(custom_attrs={"data-icon": "inline-end"}),
             variant="secondary",
-            class_name="h-5 min-w-5 rounded-full px-1 font-mono tabular-nums",
         ),
-        badge(
-            "99+",
-            variant="destructive",
-            class_name="h-5 min-w-5 rounded-full px-1 font-mono tabular-nums",
-        ),
-        class_name="flex items-center gap-2 p-8",
+        class_name="flex flex-wrap gap-2",
     )
 ```
 
+
+## Link
+
+You can pass in `rx.el.a` to turn a badge into a link. The `badge` component accepts `*children` so any interactive element can be passed to it. 
+
+
+```python
+def badge_as_link() -> rx.Component:
+    return badge(
+        rx.el.a(
+            "Open Link",
+            hi("ArrowUpRightIcon", custom_attrs={"data-icon": "inline-end"}),
+            href="#link",
+            class_name="inline-flex items-center gap-1 text-inherit no-underline",
+        ),
+    )
+```
+
+
+## Custom Colors
+
+You can customize the colors of a badge by adding custom classes such as `bg-green-50 dark:bg-green-800` to the `badge` component.
+
+
+```python
+def badge_custom_colors() -> rx.Component:
+    return rx.el.div(
+        badge(
+            "Blue",
+            class_name="bg-blue-50 text-blue-700 dark:bg-blue-950 dark:text-blue-300",
+        ),
+        badge(
+            "Green",
+            class_name="bg-green-50 text-green-700 dark:bg-green-950 dark:text-green-300",
+        ),
+        badge(
+            "Sky",
+            class_name="bg-sky-50 text-sky-700 dark:bg-sky-950 dark:text-sky-300",
+        ),
+        badge(
+            "Purple",
+            class_name="bg-purple-50 text-purple-700 dark:bg-purple-950 dark:text-purple-300",
+        ),
+        badge(
+            "Red",
+            class_name="bg-red-50 text-red-700 dark:bg-red-950 dark:text-red-300",
+        ),
+        class_name="flex flex-wrap gap-2",
+    )
+```
+
+
+
+# API Reference
+
+## badge
+
+The `badge` component displays a badge or a component that looks like a badge.
+
+| Prop        | Type                                                                          | Default     |
+| ----------- | ----------------------------------------------------------------------------- | ----------- |
+| `variant`   | `"default" \| "secondary" \| "destructive" \| "outline" \| "ghost" \| "link"` | `"default"` |
+| `class_name` | `string`                                                                      | -           |

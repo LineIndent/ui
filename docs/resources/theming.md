@@ -73,7 +73,7 @@ Make sure to pull your CSS files where your tokens are defined in your `rx.App` 
 app = rx.App(stylesheets=["globals.css"])
 ```
 
-Tailwind maps these tokens into utilities like `bg-background`, `text-foreground`, `border-border`, and `rounded-radius`. Dark mode works by overriding the same tokens inside a `.dark` selector.
+Tailwind maps these tokens into utilities like `bg-background`, `text-foreground`, `border-border`, and `rounded-lg`. Dark mode works by overriding the same tokens inside a `.dark` selector.
 
 
 # Theme Tokens
