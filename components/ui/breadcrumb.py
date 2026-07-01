@@ -1,95 +1,135 @@
 import reflex as rx
 
-
-def breadcrumb(*children, **props):
-    """Breadcrumb navigation container"""
-    return rx.el.nav(
-        *children, aria_label="breadcrumb", data_slot="breadcrumb", **props
-    )
+from ..icons.hugeicon import hi
+from ..utils.twmerge import cn
 
 
-def breadcrumb_list(*children, class_name: str = "", **props):
-    """Ordered list container for breadcrumb items"""
-    base_classes = (
-        "text-[var(--muted-foreground)] flex flex-wrap items-center gap-1 text-sm "
-        "break-words sm:gap-2.5"
-    )
+class Breadcrumb:
+    @classmethod
+    def root(cls, *children, **props) -> rx.Component:
+        custom_classes = props.pop("class_name", "")
 
-    return rx.el.ol(
-        *children,
-        data_slot="breadcrumb-list",
-        class_name=f"{base_classes} {class_name}".strip(),
-        **props,
-    )
+        props["aria-label"] = "breadcrumb"
+
+        props["data-slot"] = "breadcrumb"
+
+        return rx.el.nav(
+            *children,
+            class_name=cn(custom_classes),
+            **props,
+        )
+
+    @classmethod
+    def list(cls, *children, **props) -> rx.Component:
+        custom_classes = props.pop("class_name", "")
+
+        props["data-slot"] = "breadcrumb-list"
+
+        base_classes = (
+            "flex flex-wrap items-center gap-1.5 text-sm wrap-break-word "
+            "text-muted-foreground"
+        )
+
+        return rx.el.ol(
+            *children,
+            class_name=cn(base_classes, custom_classes),
+            **props,
+        )
+
+    @classmethod
+    def item(cls, *children, **props) -> rx.Component:
+        custom_classes = props.pop("class_name", "")
+
+        props["data-slot"] = "breadcrumb-item"
+
+        base_classes = "inline-flex items-center gap-1"
+
+        return rx.el.li(
+            *children,
+            class_name=cn(base_classes, custom_classes),
+            **props,
+        )
+
+    @classmethod
+    def link(cls, *children, **props) -> rx.Component:
+        custom_classes = props.pop("class_name", "")
+
+        props["data-slot"] = "breadcrumb-link"
+
+        props.setdefault("href", "#")
+
+        base_classes = "transition-colors hover:text-foreground no-underline"
+
+        return rx.el.a(
+            *children,
+            class_name=cn(base_classes, custom_classes),
+            **props,
+        )
+
+    @classmethod
+    def page(cls, *children, **props) -> rx.Component:
+        custom_classes = props.pop("class_name", "")
+
+        props["data-slot"] = "breadcrumb-page"
+
+        props["role"] = "link"
+
+        props["aria-disabled"] = "true"
+
+        props["aria-current"] = "page"
+
+        base_classes = "font-normal text-foreground"
+
+        return rx.el.span(
+            *children,
+            class_name=cn(base_classes, custom_classes),
+            **props,
+        )
+
+    @classmethod
+    def separator(cls, *children, **props) -> rx.Component:
+        custom_classes = props.pop("class_name", "")
+
+        props["data-slot"] = "breadcrumb-separator"
+
+        props["role"] = "presentation"
+
+        props["aria-hidden"] = "true"
+
+        base_classes = "[&>svg]:size-3.5"
+
+        if not children:
+            children = (hi("ArrowRight01Icon"),)
+
+        return rx.el.li(
+            *children,
+            class_name=cn(base_classes, custom_classes),
+            **props,
+        )
+
+    @classmethod
+    def ellipsis(cls, *children, **props) -> rx.Component:
+        custom_classes = props.pop("class_name", "")
+
+        props["data-slot"] = "breadcrumb-ellipsis"
+
+        props["role"] = "presentation"
+
+        props["aria-hidden"] = "true"
+
+        base_classes = "flex size-5 items-center justify-center [&>svg]:size-4"
+
+        if not children:
+            children = (
+                rx.icon(tag="ellipsis"),
+                rx.el.span("More", class_name="sr-only"),
+            )
+
+        return rx.el.span(
+            *children,
+            class_name=cn(base_classes, custom_classes),
+            **props,
+        )
 
 
-def breadcrumb_item(*children, class_name: str = "", **props):
-    """Individual breadcrumb item"""
-    base_classes = "inline-flex items-center gap-1.5"
-
-    return rx.el.li(
-        *children,
-        data_slot="breadcrumb-item",
-        class_name=f"{base_classes} {class_name}".strip(),
-        **props,
-    )
-
-
-def breadcrumb_link(*children, href: str = "#", class_name: str = "", **props):
-    """Breadcrumb link (clickable)"""
-    base_classes = "hover:text-[var(--foreground)] transition-colors no-underline"
-
-    return rx.el.a(
-        *children,
-        href=href,
-        data_slot="breadcrumb-link",
-        class_name=f"{base_classes} {class_name}".strip(),
-        **props,
-    )
-
-
-def breadcrumb_page(*children, class_name: str = "", **props):
-    """Current page breadcrumb (non-clickable)"""
-    base_classes = "text-[var(--foreground)] font-normal"
-
-    return rx.el.span(
-        *children,
-        role="link",
-        aria_disabled="true",
-        aria_current="page",
-        data_slot="breadcrumb-page",
-        class_name=f"{base_classes} {class_name}".strip(),
-        **props,
-    )
-
-
-def breadcrumb_separator(*children, class_name: str = "", **props):
-    """Separator between breadcrumb items"""
-    base_classes = "[&>svg]:size-3.5"
-
-    if not children:
-        children = (rx.icon(tag="chevron-right", size=14),)
-
-    return rx.el.li(
-        *children,
-        role="presentation",
-        aria_hidden="true",
-        data_slot="breadcrumb-separator",
-        class_name=f"{base_classes} {class_name}".strip(),
-        **props,
-    )
-
-
-def breadcrumb_ellipsis(class_name: str = "", **props):
-    """Ellipsis for collapsed breadcrumb items"""
-    base_classes = "flex size-9 items-center justify-center"
-
-    return rx.el.span(
-        rx.icon(tag="ellipsis", size=16),
-        rx.el.span("More", class_name="sr-only"),
-        role="presentation",
-        aria_hidden="true",
-        data_slot="breadcrumb-ellipsis",
-        class_name=f"{base_classes} {class_name}".strip(),
-        **props,
-    )
+breadcrumb = Breadcrumb

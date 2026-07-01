@@ -1,5 +1,3 @@
-"""Custom autocomplete component with flat and grouped item support."""
-
 from typing import Any
 
 from reflex.components.component import Component
@@ -396,23 +394,35 @@ function BuridanAutocompleteRoot({
 
 class BuridanAutocomplete(Component):
     tag = "BuridanAutocompleteRoot"
+
     is_default = False
 
     items: Var[Any]
+
     placeholder: Var[str]
+
     root_class: Var[str]
+
     input_class: Var[str]
+
     popup_class: Var[str]
+
     list_class: Var[str]
+
     item_class: Var[str]
+
     item_highlighted_class: Var[str]
+
     empty_class: Var[str]
+
     group_label_class: Var[str]
+
     separator_class: Var[str]
 
     set_query_on_select: Var[bool] = True
 
     on_change_query: EventHandler[passthrough_event_spec(str)]
+
     on_select_item: EventHandler[passthrough_event_spec(str)]
 
     def add_custom_code(self) -> list[str]:

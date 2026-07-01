@@ -57,19 +57,19 @@ class ClassNames:
     )
 
     TRACK = (
-        "h-1 w-full rounded-radius bg-secondary select-none "
+        "h-1 w-full rounded-lg bg-secondary select-none "
         "data-[orientation=vertical]:h-full "
         "data-[orientation=vertical]:w-1"
     )
 
     INDICATOR = (
-        "absolute h-full rounded-radius bg-primary select-none "
+        "absolute h-full rounded-lg bg-primary select-none "
         "data-[orientation=vertical]:w-full "
         "data-[orientation=vertical]:h-auto"
     )
 
     THUMB = (
-        "size-3 rounded-radius bg-white outline-[1px] outline-black "
+        "size-3 rounded-lg bg-white outline-[1px] outline-black "
         "select-none box-shadow:[0_0_0_1px_rgba(0,0,0,1),0_1px_2px_rgba(0,0,0,.04)] "
         "data-[dragging]:h-5 transition-[height,scale] hover:h-4.5"
     )

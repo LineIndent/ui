@@ -33,7 +33,7 @@ def open_in_reflex_build(
                 tooltip.positioner(
                     tooltip.popup(
                         rx.el.p(tooltip_content, class_name="!text-xs"),
-                        class_name="rounded-radius p-2",
+                        class_name="rounded-lg p-2",
                     ),
                     side="top",
                     side_offset=8,
@@ -134,7 +134,7 @@ def masonry_card(func=None, *, label="General"):
                     "break-inside-avoid",
                     "w-full",
                     "bg-card",
-                    "rounded-radius",
+                    "rounded-lg",
                     "border",
                     "border-input",
                     "p-card",

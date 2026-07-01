@@ -1,5 +1,3 @@
-"""Attachment component — file and image attachment previews for chat UI."""
-
 from typing import Literal
 
 import reflex as rx
@@ -24,7 +22,7 @@ class ClassNames:
         "data-[state=idle]:border-dashed"
     )
 
-    SIZES: dict[str, str] = {
+    SIZES = {
         "default": (
             "gap-2 text-sm "
             "has-data-[slot=attachment-content]:px-2.5 "
@@ -45,7 +43,7 @@ class ClassNames:
         ),
     }
 
-    ORIENTATIONS: dict[str, str] = {
+    ORIENTATIONS = {
         "horizontal": "min-w-40 items-center",
         "vertical": "w-24 flex-col has-data-[slot=attachment-content]:w-30",
     }
@@ -65,7 +63,7 @@ class ClassNames:
         "group-data-[size=xs]/attachment:[&_svg:not([class*='size-'])]:size-3.5"
     )
 
-    MEDIA_VARIANTS: dict[str, str] = {
+    MEDIA_VARIANTS = {
         "icon": "",
         "image": (
             "opacity-60 "
@@ -117,13 +115,7 @@ def attachment_root(
     class_name: str = "",
     **props,
 ) -> rx.Component:
-    """
-    Root attachment container.
 
-    orientation: horizontal (default) | vertical
-    size:        default | sm | xs
-    state:       idle | uploading | processing | error | done (default)
-    """
     return rx.el.div(
         *children,
         data_slot="attachment",
@@ -146,7 +138,7 @@ def attachment_media(
     class_name: str = "",
     **props,
 ) -> rx.Component:
-    """Icon or image preview slot."""
+
     return rx.el.div(
         *children,
         data_slot="attachment-media",
@@ -161,7 +153,7 @@ def attachment_media(
 
 
 def attachment_content(*children, class_name: str = "", **props) -> rx.Component:
-    """Text content area — holds title and description."""
+
     return rx.el.div(
         *children,
         data_slot="attachment-content",
@@ -171,7 +163,7 @@ def attachment_content(*children, class_name: str = "", **props) -> rx.Component
 
 
 def attachment_title(*children, class_name: str = "", **props) -> rx.Component:
-    """Filename or attachment title. Shimmers during uploading/processing."""
+
     return rx.el.span(
         *children,
         data_slot="attachment-title",
@@ -181,7 +173,7 @@ def attachment_title(*children, class_name: str = "", **props) -> rx.Component:
 
 
 def attachment_description(*children, class_name: str = "", **props) -> rx.Component:
-    """File type, size, or other metadata."""
+
     return rx.el.span(
         *children,
         data_slot="attachment-description",
@@ -191,10 +183,7 @@ def attachment_description(*children, class_name: str = "", **props) -> rx.Compo
 
 
 def attachment_actions(*children, class_name: str = "", **props) -> rx.Component:
-    """
-    Row of action buttons.
-    In vertical orientation, absolutely positioned top-right.
-    """
+
     return rx.el.div(
         *children,
         data_slot="attachment-actions",
@@ -204,9 +193,10 @@ def attachment_actions(*children, class_name: str = "", **props) -> rx.Component
 
 
 def attachment_action(*children, class_name: str = "", **props) -> rx.Component:
-    """Individual action button."""
     props.setdefault("variant", "ghost")
+
     props.setdefault("size", "icon-xs")
+
     return button(
         *children,
         data_slot="attachment-action",
@@ -231,10 +221,7 @@ def attachment_trigger(
 
 
 def attachment_group(*children, class_name: str = "", **props) -> rx.Component:
-    """
-    Horizontal scrolling row of attachments.
-    Snaps to each attachment on scroll.
-    """
+
     return rx.el.div(
         *children,
         data_slot="attachment-group",
@@ -244,8 +231,6 @@ def attachment_group(*children, class_name: str = "", **props) -> rx.Component:
 
 
 class Attachment(ComponentNamespace):
-    """Attachment namespace."""
-
     root = staticmethod(attachment_root)
     media = staticmethod(attachment_media)
     content = staticmethod(attachment_content)

@@ -23,54 +23,76 @@ Use the following composition to build a `Button` component.
 
 --ANATOMY(button)--
 
-
 # Examples
-
 
 ## Sizes
 
-Showcases buttons in different predefined sizes (default, small, large, icon, etc).
+Use the `size` prop to change the size of the button.
 
---DEMO(button_sizes)--
+--DEMO(button_size)--
 
 ## Default
-
-The default visual style for buttons with standard background and hover effects.
 
 --DEMO(button_default)--
 
 ## Secondary
 
-A more muted alternative to the default button, useful for less prominent actions.
-
 --DEMO(button_secondary)--
 
 ## Outline
-
-Buttons with a bordered outline, blending well with minimal UIs or light themes.
 
 --DEMO(button_outline)--
 
 ## Ghost
 
-A button style with no background or border, ideal for subtle UI actions.
-
 --DEMO(button_ghost)--
 
 ## Link
-
-A button styled to look like a hyperlink — useful for inline actions or navigation.
 
 --DEMO(button_link)--
 
 ## Destructive
 
-A bold style used for destructive or dangerous actions like “Delete”.
-
 --DEMO(button_destructive)--
 
 ## Icon
 
-Examples showing icon-only buttons with varying sizes for compact UI elements.
-
 --DEMO(button_icon)--
+
+## With Icon
+
+Remember to add the `data-icon="inline-start"` or `data-icon="inline-end"` attribute to the icon for the correct spacing.
+
+--DEMO(button_with_icon)--
+
+## Rounded
+
+Use the `rounded-full` class to make the button rounded.
+
+--DEMO(button_rounded)--
+
+## Spinner
+
+Render a `spinner()` component inside the button to show a loading state. Remember to add the `data-icon="inline-start"` or `data-icon="inline-end"` attribute to the spinner for the correct spacing.
+
+--DEMO(button_loading)--
+
+## As Link
+
+You can use the `button_variants` helper function to make a link look like a button.
+
+Do **not** use `button(rx.el.a(...))` for links. The Base UI `Button` component always applies `role="button"`, which overrides the semantic link role on `<a>` elements. Use `button_variants` with a plain `rx.el.a` tag instead to cleanly generate the necessary classes as a dynamic Reflex `Var`.
+
+--DEMO(button_render)--
+
+
+# API Reference
+
+## Button
+
+The `Button` component is a wrapper around the `button` element that adds a variety of styles and functionality.
+
+| Prop      | Type                                                                                 | Default     |
+| --------- | ------------------------------------------------------------------------------------ | ----------- |
+| `variant` | `"default" \| "outline" \| "ghost" \| "destructive" \| "secondary" \| "link"`        | `"default"` |
+| `size`    | `"default" \| "xs" \| "sm" \| "lg" \| "icon" \| "icon-xs" \| "icon-sm" \| "icon-lg"` | `"default"` |

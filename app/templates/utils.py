@@ -12,7 +12,7 @@ def attach_tooltip(func: rx.Component, label: str):
                     tooltip.popup(
                         tooltip.arrow(),
                         label,
-                        class_name="rounded-radius",
+                        class_name="rounded-lg",
                     ),
                     side="bottom",
                 ),

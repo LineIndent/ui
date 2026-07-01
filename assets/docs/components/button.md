@@ -20,121 +20,139 @@ buridan add component button
 from typing import Literal
 
 from reflex.vars.base import Var
-from reflex_components_core.core import cond
 from reflex_components_core.el import Button as BaseButton
 
-from ..icons.others import spinner
+from ..utils.twmerge import cn
 from .component import CoreComponent
 
 LiteralButtonVariant = Literal[
-    "primary", "destructive", "outline", "secondary", "ghost", "link", "dark"
+    "default",
+    "destructive",
+    "outline",
+    "secondary",
+    "ghost",
+    "link",
 ]
 LiteralButtonSize = Literal[
-    "default", "xs", "sm", "lg", "icon", "icon-xs", "icon-sm", "icon-lg"
+    "default",
+    "xs",
+    "sm",
+    "lg",
+    "icon",
+    "icon-xs",
+    "icon-sm",
+    "icon-lg",
 ]
 
 DEFAULT_CLASS_NAME = (
-    "font-theme inline-flex items-center justify-center gap-2 whitespace-nowrap "
-    "rounded-radius text-sm font-medium transition-all "
-    "disabled:pointer-events-none disabled:opacity-50 outline-none "
-    "[&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 "
-    "[&_svg]:shrink-0 shrink-0"
+    "group/button inline-flex shrink-0 items-center justify-center "
+    "rounded-lg border border-transparent bg-clip-padding "
+    "text-sm font-medium whitespace-nowrap transition-all outline-none select-none "
+    "focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 "
+    "active:not-aria-[haspopup]:translate-y-px "
+    "disabled:pointer-events-none disabled:opacity-50 "
+    "aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 "
+    "dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40 "
+    "[&_svg]:pointer-events-none [&_svg]:shrink-0 "
+    "[&_svg:not([class*='size-'])]:size-4"
 )
 
 BUTTON_VARIANTS = {
     "variant": {
-        "default": "bg-primary text-primary-foreground hover:bg-primary/90",
+        "default": ("bg-primary text-primary-foreground hover:bg-primary/80"),
+        "outline": (
+            "border-border bg-background hover:bg-muted hover:text-foreground "
+            "aria-expanded:bg-muted aria-expanded:text-foreground "
+            "dark:border-input dark:bg-input/30 dark:hover:bg-input/50"
+        ),
+        "secondary": (
+            "bg-secondary text-secondary-foreground "
+            "hover:bg-[color-mix(in_oklch,var(--secondary),var(--foreground)_5%)] "
+            "aria-expanded:bg-secondary aria-expanded:text-secondary-foreground"
+        ),
+        "ghost": (
+            "hover:bg-muted hover:text-foreground "
+            "aria-expanded:bg-muted aria-expanded:text-foreground "
+            "dark:hover:bg-muted/50"
+        ),
         "destructive": (
             "bg-destructive/10 text-destructive hover:bg-destructive/20 "
             "focus-visible:border-destructive/40 focus-visible:ring-destructive/20 "
-            "dark:bg-destructive/20 dark:hover:bg-destructive/30"
+            "dark:bg-destructive/20 dark:hover:bg-destructive/30 "
+            "dark:focus-visible:ring-destructive/40"
         ),
-        "outline": (
-            "border border-input bg-background shadow-xs text-foreground "
-            "hover:bg-accent hover:text-accent-foreground "
-            "dark:bg-input/30 dark:hover:bg-input/50"
-        ),
-        "secondary": "bg-secondary text-secondary-foreground hover:bg-secondary/80",
-        "ghost": "hover:bg-accent hover:text-accent-foreground dark:hover:bg-muted/50",
         "link": "text-primary underline-offset-4 hover:underline",
     },
     "size": {
-        "default": "h-8 gap-1.5 px-2.5 has-[>svg]:px-2.5",
-        "xs": "h-6 rounded-[min(calc(var(--radius) * 0.8),10px)] gap-1 px-2 text-xs",
-        "sm": "h-7 rounded-[min(calc(var(--radius) * 0.8),12px)] gap-1 px-2.5 text-[0.8rem]",
-        "lg": "h-9 gap-1.5 px-2.5",
+        "default": (
+            "h-8 gap-1.5 px-2.5 "
+            "has-data-[icon=inline-end]:pr-2 "
+            "has-data-[icon=inline-start]:pl-2"
+        ),
+        "xs": (
+            "h-6 gap-1 rounded-[min(var(--radius-md),10px)] px-2 text-xs "
+            "in-data-[slot=button-group]:rounded-lg "
+            "has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 "
+            "[&_svg:not([class*='size-'])]:size-3"
+        ),
+        "sm": (
+            "h-7 gap-1 rounded-[min(var(--radius-md),12px)] px-2.5 text-[0.8rem] "
+            "in-data-[slot=button-group]:rounded-lg "
+            "has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 "
+            "[&_svg:not([class*='size-'])]:size-3.5"
+        ),
+        "lg": (
+            "h-9 gap-1.5 px-2.5 "
+            "has-data-[icon=inline-end]:pr-2 "
+            "has-data-[icon=inline-start]:pl-2"
+        ),
         "icon": "size-8",
-        "icon-xs": "size-6 rounded-[min(calc(var(--radius) * 0.8),10px)]",
-        "icon-sm": "size-7 rounded-[min(calc(var(--radius) * 0.8),12px)]",
+        "icon-xs": (
+            "size-6 rounded-[min(var(--radius-md),10px)] "
+            "in-data-[slot=button-group]:rounded-lg "
+            "[&_svg:not([class*='size-'])]:size-3"
+        ),
+        "icon-sm": (
+            "size-7 rounded-[min(var(--radius-md),12px)] "
+            "in-data-[slot=button-group]:rounded-lg"
+        ),
         "icon-lg": "size-9",
     },
 }
 
 
 class Button(BaseButton, CoreComponent):
-    """A custom button component."""
-
-    # Button variant. Defaults to "primary".
     variant: Var[LiteralButtonVariant]
-
-    # Button size. Defaults to "md".
     size: Var[LiteralButtonSize]
-
-    # The loading state of the button
-    loading: Var[bool]
 
     @classmethod
     def create(cls, *children, **props) -> BaseButton:
-        """Create the button component."""
         variant = props.pop("variant", "default")
-        cls.validate_variant(variant)
-
         size = props.pop("size", "default")
-        cls.validate_size(size)
+        custom_classes = props.pop("class_name", "")
 
-        loading = props.pop("loading", False)
-        disabled = props.pop("disabled", False)
-
-        button_classes = f"{DEFAULT_CLASS_NAME} {BUTTON_VARIANTS['variant'][variant]} {BUTTON_VARIANTS['size'][size]}"
-
-        cls.set_class_name(button_classes, props)
-
-        children_list = list(children)
-
-        if isinstance(loading, Var):
-            props["disabled"] = cond(loading, True, disabled)
-            children_list.insert(0, cond(loading, spinner()))
-        else:
-            props["disabled"] = True if loading else disabled
-            children_list.insert(0, spinner()) if loading else None
-
-        return super().create(*children_list, **props)
-
-    @staticmethod
-    def validate_variant(variant: LiteralButtonVariant):
-        """Validate the button variant."""
-        if variant not in BUTTON_VARIANTS["variant"]:
-            available_variants = ", ".join(BUTTON_VARIANTS["variant"].keys())
-            message = (
-                f"Invalid variant: {variant}. Available variants: {available_variants}"
-            )
-            raise ValueError(message)
-
-    @staticmethod
-    def validate_size(size: LiteralButtonSize):
-        """Validate the button size."""
-        if size not in BUTTON_VARIANTS["size"]:
-            available_sizes = ", ".join(BUTTON_VARIANTS["size"].keys())
-            message = f"Invalid size: {size}. Available sizes: {available_sizes}"
-            raise ValueError(message)
+        return super().create(
+            *children,
+            data_slot="button",
+            class_name=cn(
+                DEFAULT_CLASS_NAME,
+                BUTTON_VARIANTS["variant"].get(variant, ""),
+                BUTTON_VARIANTS["size"].get(size, ""),
+                custom_classes,
+            ),
+            **props,
+        )
 
     def _exclude_props(self) -> list[str]:
-        return [
-            *super()._exclude_props(),
-            "size",
-            "variant",
-            "loading",
-        ]
+        return [*super()._exclude_props(), "size", "variant"]
+
+
+def button_variants(variant: str = "default", size: str = "default") -> Var:
+    return cn(
+        DEFAULT_CLASS_NAME,
+        BUTTON_VARIANTS["variant"].get(variant, ""),
+        BUTTON_VARIANTS["size"].get(size, ""),
+    )
 
 
 button = Button.create
@@ -158,51 +176,80 @@ button()
 ```
 
 
-
 # Examples
-
 
 ## Sizes
 
-Showcases buttons in different predefined sizes (default, small, large, icon, etc).
+Use the `size` prop to change the size of the button.
 
 
 ```python
-def button_sizes():
+def button_size() -> rx.Component:
     return rx.el.div(
-        button("Small", size="sm"),
-        button("Default", size="default"),
-        button("Large", size="lg"),
-        class_name="flex items-center gap-3",
+        rx.el.div(
+            button("Extra Small", size="xs", variant="outline"),
+            button(
+                hi("ArrowUpRight03Icon"),
+                size="icon-xs",
+                aria_label="Submit",
+                variant="outline",
+            ),
+            class_name="flex items-start gap-2",
+        ),
+        rx.el.div(
+            button("Small", size="sm", variant="outline"),
+            button(
+                hi("ArrowUpRight03Icon"),
+                size="icon-sm",
+                aria_label="Submit",
+                variant="outline",
+            ),
+            class_name="flex items-start gap-2",
+        ),
+        rx.el.div(
+            button("Default", variant="outline"),
+            button(
+                hi("ArrowUpRight03Icon"),
+                size="icon",
+                aria_label="Submit",
+                variant="outline",
+            ),
+            class_name="flex items-start gap-2",
+        ),
+        rx.el.div(
+            button("Large", variant="outline", size="lg"),
+            button(
+                hi("ArrowUpRight03Icon"),
+                size="icon-lg",
+                aria_label="Submit",
+                variant="outline",
+            ),
+            class_name="flex items-start gap-2",
+        ),
+        class_name="flex flex-col items-start gap-8 sm:flex-row",
     )
 ```
 
 
 ## Default
 
-The default visual style for buttons with standard background and hover effects.
-
 
 ```python
 def button_default():
-    return button("Default", variant="default", size="sm")
+    return button("Button")
 ```
 
 
 ## Secondary
 
-A more muted alternative to the default button, useful for less prominent actions.
-
 
 ```python
 def button_secondary():
-    return button("Secondary", variant="secondary", size="sm")
+    return button("Secondary", variant="secondary")
 ```
 
 
 ## Outline
-
-Buttons with a bordered outline, blending well with minimal UIs or light themes.
 
 
 ```python
@@ -213,8 +260,6 @@ def button_outline():
 
 ## Ghost
 
-A button style with no background or border, ideal for subtle UI actions.
-
 
 ```python
 def button_ghost():
@@ -223,8 +268,6 @@ def button_ghost():
 
 
 ## Link
-
-A button styled to look like a hyperlink — useful for inline actions or navigation.
 
 
 ```python
@@ -235,8 +278,6 @@ def button_link():
 
 ## Destructive
 
-A bold style used for destructive or dangerous actions like “Delete”.
-
 
 ```python
 def button_destructive():
@@ -246,13 +287,112 @@ def button_destructive():
 
 ## Icon
 
-Examples showing icon-only buttons with varying sizes for compact UI elements.
-
 
 ```python
 def button_icon():
     return button(
-        hi("Mail01Icon", class_name="size-4"), variant="outline", size="icon-sm"
+        hi("CircleArrowUp01Icon", class_name="size-4"),
+        variant="outline",
+        size="icon",
     )
 ```
 
+
+## With Icon
+
+Remember to add the `data-icon="inline-start"` or `data-icon="inline-end"` attribute to the icon for the correct spacing.
+
+
+```python
+def button_with_icon() -> rx.Component:
+    return rx.el.div(
+        button(
+            hi("GitBranchIcon", custom_attrs={"data-icon": "inline-start"}),
+            "New Branch",
+            variant="outline",
+        ),
+        button(
+            "Fork",
+            hi("GitForkIcon", custom_attrs={"data-icon": "inline-end"}),
+            variant="outline",
+        ),
+        class_name="flex gap-2",
+    )
+```
+
+
+## Rounded
+
+Use the `rounded-full` class to make the button rounded.
+
+
+```python
+def button_rounded() -> rx.Component:
+    return rx.el.div(
+        button(
+            "Get Started",
+            class_name="rounded-full",
+        ),
+        button(
+            hi("ArrowUp02Icon"),
+            variant="outline",
+            size="icon",
+            class_name="rounded-full",
+        ),
+        class_name="flex gap-2",
+    )
+```
+
+
+## Spinner
+
+Render a `spinner()` component inside the button to show a loading state. Remember to add the `data-icon="inline-start"` or `data-icon="inline-end"` attribute to the spinner for the correct spacing.
+
+
+```python
+def button_loading() -> rx.Component:
+    return rx.el.div(
+        button(
+            spinner(custom_attrs={"data-icon": "inline-start"}),
+            "Generating",
+            variant="outline",
+        ),
+        button(
+            "Downloading",
+            spinner(custom_attrs={"data-icon": "inline-end"}),
+            variant="secondary",
+            disabled=True,
+        ),
+        class_name="flex gap-2",
+    )
+```
+
+
+## As Link
+
+You can use the `button_variants` helper function to make a link look like a button.
+
+Do **not** use `button(rx.el.a(...))` for links. The Base UI `Button` component always applies `role="button"`, which overrides the semantic link role on `<a>` elements. Use `button_variants` with a plain `rx.el.a` tag instead to cleanly generate the necessary classes as a dynamic Reflex `Var`.
+
+
+```python
+def button_render() -> rx.Component:
+    return rx.el.a(
+        "Login",
+        href="#",
+        class_name=button_variants(variant="secondary", size="sm"),
+    )
+```
+
+
+
+# API Reference
+
+## Button
+
+The `Button` component is a wrapper around the `button` element that adds a variety of styles and functionality.
+
+| Prop      | Type                                                                                 | Default     |
+| --------- | ------------------------------------------------------------------------------------ | ----------- |
+| `variant` | `"default" \| "outline" \| "ghost" \| "destructive" \| "secondary" \| "link"`        | `"default"` |
+| `size`    | `"default" \| "xs" \| "sm" \| "lg" \| "icon" \| "icon-xs" \| "icon-sm" \| "icon-lg"` | `"default"` |

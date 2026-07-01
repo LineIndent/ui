@@ -36,7 +36,7 @@ class ClassNames:
 
     LIST = (
         "relative bg-muted text-muted-foreground inline-flex h-9 w-full w-fit items-center "
-        "justify-center rounded-radius p-[3px] "
+        "justify-center rounded-lg p-[3px] "
         "data-[orientation=vertical]:flex data-[orientation=vertical]:flex-col "
         "data-[orientation=vertical]:h-auto "
         "data-[orientation=vertical]:p-1 data-[orientation=vertical]:gap-1"
@@ -45,7 +45,7 @@ class ClassNames:
         "relative z-[1] flex items-center justify-center text-sm font-medium "
         "text-foreground dark:text-muted-foreground "
         "data-[selected]:text-foreground "
-        "rounded-radius px-2 py-1 transition-all "
+        "rounded-lg px-2 py-1 transition-all "
         "data-[orientation=vertical]:justify-start data-[orientation=vertical]:w-full "
         "data-[orientation=vertical]:text-left"
     )
@@ -55,7 +55,7 @@ class ClassNames:
     )
 
     INDICATOR = (
-        "absolute z-[0] rounded-radius bg-background shadow-sm dark:border dark:border-input dark:bg-input/30 "
+        "absolute z-[0] rounded-lg bg-background shadow-sm dark:border dark:border-input dark:bg-input/30 "
         "transition-all duration-200 ease-in-out "
         "[left:var(--active-tab-left)] [top:var(--active-tab-top)] "
         "[width:var(--active-tab-width)] [height:var(--active-tab-height)]"

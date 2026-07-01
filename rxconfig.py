@@ -55,7 +55,13 @@ config = rx.Config(
                             "theme": "var(--font-family)",
                         },
                         "borderRadius": {
-                            "radius": "var(--radius)",
+                            "sm": "var(--radius-sm)",
+                            "md": "var(--radius-md)",
+                            "lg": "var(--radius-lg)",
+                            "xl": "var(--radius-xl)",
+                            "2xl": "var(--radius-2xl)",
+                            "3xl": "var(--radius-3xl)",
+                            "4xl": "var(--radius-4xl)",
                         },
                         "padding": {
                             "card": "var(--card-padding)",
