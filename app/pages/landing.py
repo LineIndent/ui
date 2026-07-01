@@ -25,9 +25,7 @@ from components.ui.button import button
     description="Buridan UI gives you composable, themeable components designed for Reflex. Extend, override, and ship without fighting the framework.",
     ctas=[
         rx.el.a(
-            button(
-                "Build Your Own", hi("ArrowRight02Icon", class_name="size-4"), size="sm"
-            ),
+            button("Build Your Own", hi("ArrowRight02Icon", class_name="size-4")),
             href="/create",
         )
     ],

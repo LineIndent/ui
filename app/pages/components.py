@@ -46,9 +46,7 @@ def get_component_links():
     description="A collection of ready-to-use UI components for building modern applications. From simple controls to complex interface patterns, copy and paste into your apps.",
     ctas=[
         rx.el.a(
-            button(
-                "Build Your Own", hi("ArrowRight02Icon", class_name="size-4"), size="sm"
-            ),
+            button("Build Your Own", hi("ArrowRight02Icon", class_name="size-4")),
             href="/create",
         )
     ],

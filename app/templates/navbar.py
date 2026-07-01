@@ -101,7 +101,7 @@ def navbar(with_create_page_cta: bool = False) -> rx.Component:
         separator(),
         site_github(),
         separator(),
-        rx.el.a(button("New Project", size="sm"), href="/create"),
+        rx.el.a(button("New Project"), href="/create"),
     ]
 
     if with_create_page_cta:
@@ -122,10 +122,7 @@ def navbar(with_create_page_cta: bool = False) -> rx.Component:
         rx.el.div(
             rx.el.div(
                 *[
-                    rx.el.a(
-                        button(item["name"], variant="ghost", size="sm"),
-                        href=item["path"],
-                    )
+                    rx.el.a(button(item["name"], variant="ghost"), href=item["path"])
                     for item in NAV_LIST
                 ],
                 class_name="hidden md:flex flex-row items-center text-foreground",

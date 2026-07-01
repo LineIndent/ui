@@ -31,13 +31,9 @@ GRID_LAYOUT = " ".join(
     title="Beautiful Charts & Graphs",
     description="A collection of ready-to-use chart components built with Recharts. From basic charts to rich data displays, copy and paste into your apps.",
     ctas=[
+        rx.el.a(button("Browse Charts"), href="/docs/charts/area-chart"),
         rx.el.a(
-            button("Browse Charts", size="sm"),
-            href="/docs/charts/area-chart",
-        ),
-        rx.el.a(
-            button("Documentation", variant="secondary", size="sm"),
-            href="/docs/components/chart",
+            button("Documentation", variant="secondary"), href="/docs/components/chart"
         ),
     ],
 )

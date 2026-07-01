@@ -1,5 +1,3 @@
-from pathlib import Path
-
 import reflex as rx
 
 from app.examples.utils import block_card
@@ -27,23 +25,13 @@ BLOCKS = [
     {"name": "KPI Cards", "value": "kpi"},
 ]
 
-NUM_BLOCK_FILES = len(
-    [f for f in Path("app/www/library/blocks").iterdir() if f.is_file()]
-)
-
 
 @layout_decorator(
     title="Building Blocks for Dashboards",
     description="Clean, modern building blocks for Reflex dashboards. Copy and paste into your apps. Open Source. Extensible.",
     ctas=[
-        rx.el.a(
-            button("Create Your Own", size="sm"),
-            href="/create",
-        ),
-        rx.el.a(
-            button("View Components", variant="secondary", size="sm"),
-            href="/components",
-        ),
+        rx.el.a(button("Create Your Own"), href="/create"),
+        rx.el.a(button("View Components", variant="secondary"), href="/components"),
     ],
 )
 def blocks_page():

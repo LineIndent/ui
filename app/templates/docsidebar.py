@@ -73,33 +73,9 @@ def create_menu_item(data: dict):
             rx.el.div(class_name="size-2 rounded-full bg-blue-500"),
         ),
         variant="ghost",
-        size="sm",
         class_name="w-fit flex items-center",
         id=data["url"],
     )
-
-
-# def create_menu_item(data: dict):
-#     """Create a single menu item."""
-
-#     return button(
-#         rx.el.a(
-#             rx.el.p(data["title"], class_name="cursor-pointer"),
-#             to=f"/{data['url']}",
-#             text_decoration="none",
-#         )
-#         if data["url"] != "llms.txt"
-#         else rx.el.a(
-#             rx.el.p(data["title"], class_name="cursor-pointer"),
-#             href=f"/{data['url']}",
-#             text_decoration="none",
-#             reload_document=True,
-#         ),
-#         variant="ghost",
-#         size="sm",
-#         class_name="w-fit",
-#         id=data["url"],
-#     )
 
 
 def create_sidebar_menu_items(routes: List[dict]):
@@ -128,7 +104,7 @@ def sidebar_section(section: SidebarSection):
             rx.el.div(
                 rx.el.p(
                     section.title,
-                    class_name="text-muted-foreground font-medium px-2 text-xs",
+                    class_name="text-muted-foreground font-medium pl-2.5 text-xs",
                 ),
                 class_name="flex flex-row items-center gap-x-2",
             ),
