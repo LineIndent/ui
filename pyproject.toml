@@ -1,6 +1,6 @@
 [project]
 name = "buridan-create"
-version = "0.1.19"
+version = "0.1.20"
 description = "A command line interface (CLI) for adding components and themes to your project."
 requires-python = ">=3.11"
 dependencies = []
