@@ -1,5 +1,3 @@
-"""Custom Frame component."""
-
 from typing import Literal
 
 import reflex as rx
@@ -122,8 +120,6 @@ def frame_footer(*children, class_name: str = "", **props) -> rx.Component:
 
 
 class Frame(ComponentNamespace):
-    """Namespace for Frame components."""
-
     root = staticmethod(frame_root)
     panel = staticmethod(frame_panel)
     header = staticmethod(frame_header)

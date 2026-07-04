@@ -129,6 +129,8 @@ chart_tooltip_content = _ChartTooltipContent()
 
 # Examples
 
+>**Note**: The chart example charts below are wrapped in [Card](/docs/components/card). Make sure to have the component installed before using any of the examples.
+
 ## Basic
 A minimal example showing a single series with a smooth gradient fill.
 
@@ -464,17 +466,14 @@ def areachart_v5():
                 ),
                 data=SelectedRange.value,
                 width="100%",
-                height=240,
+                height=250,
             ),
-            class_name="flex flex-col items-center h-[240px]",
-        ),
-        card.footer(
             rx.el.div(
                 rx.foreach(
                     ["Desktop", "Mobile"],
                     lambda device, index: rx.el.div(
                         rx.el.div(
-                            class_name=f"w-3 h-3 rounded-sm bg-chart-{index + 1}"
+                            class_name=f"h-2 w-2 shrink-0 rounded-[2px] bg-chart-{index + 1}"
                         ),
                         rx.el.p(device, class_name="text-sm text-foreground"),
                         class_name="flex flex-row items-center gap-x-2",
@@ -482,6 +481,7 @@ def areachart_v5():
                 ),
                 class_name="py-4 px-4 flex w-full flex justify-center gap-8",
             ),
+            class_name="flex flex-col items-center",
         ),
         class_name=chart_tooltip_content([1, 2], "square") + " w-full p-0",
     )
@@ -665,8 +665,11 @@ def areachart_v8():
                     rx.foreach(
                         series,
                         lambda s: rx.hstack(
-                            rx.box(class_name="size-2 rounded-full", bg=f"var({s[2]})"),
-                            rx.text(
+                            rx.el.div(
+                                class_name="h-2 w-2 shrink-0 rounded-[2px]",
+                                bg=f"var({s[2]})",
+                            ),
+                            rx.el.p(
                                 s[1],
                                 class_name="text-xs font-medium",
                                 color=rx.color("slate", 11),
@@ -831,8 +834,11 @@ def areachart_v10():
                     rx.foreach(
                         series,
                         lambda s: rx.hstack(
-                            rx.box(class_name="size-2 rounded-full", bg=f"var({s[2]})"),
-                            rx.text(
+                            rx.el.div(
+                                class_name="h-2 w-2 shrink-0 rounded-[2px]",
+                                bg=f"var({s[2]})",
+                            ),
+                            rx.el.p(
                                 s[1],
                                 class_name="text-xs font-medium",
                                 color=rx.color("slate", 11),

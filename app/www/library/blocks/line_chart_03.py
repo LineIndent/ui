@@ -194,5 +194,6 @@ def line_chart_03():
                 class_name="flex gap-8",
             ),
         ),
-        class_name=(chart_tooltip_content([1, 2], "square") + " w-full p-0"),
+        size="sm",
+        class_name=(chart_tooltip_content([1, 2], "square") + " w-full p-0 !ring-0"),
     )

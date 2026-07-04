@@ -23,18 +23,22 @@ Use the following composition to build a `Dialog` component.
 
 --ANATOMY(dialog)--
 
-
 # Examples
 
+## Custom Close Button
 
-## High Level
+Replace the default close control with your own button. Make sure to pass in `dialog.class_names.CLOSE` to the rendered  component to ensure proper positioning.
 
-Uses the simplified dialog() API with trigger, title, description, and content props for quick implementation.
+--DEMO(dialog_close_button)--
 
---DEMO(dialog_high_level)--
+## No Close Button
 
-## Low Level
+To omit the top-right close cross icon from your dialog layout, simply exclude the `dialog.close()` sub-component containing the icon button from your composition tree.
 
-Uses the low-level dialog.root(), dialog.trigger(), dialog.portal() etc. for full control over structure and styling
+--DEMO(dialog_no_close_button)--
 
---DEMO(dialog_low_level)--
+## Sticky Footer
+
+Keep actions visible while the content scrolls.
+
+--DEMO(dialog_sticky_footer)--

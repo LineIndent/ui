@@ -15,4 +15,5 @@ def textarea_field():
             id="textarea-message",
             placeholder="Type your message here.",
         ),
+        class_name="max-w-xs",
     )

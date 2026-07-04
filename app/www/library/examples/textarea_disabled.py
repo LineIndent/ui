@@ -14,4 +14,5 @@ def textarea_disabled():
             disabled=True,
         ),
         **{"data-disabled": True},
+        class_name="max-w-xs",
     )

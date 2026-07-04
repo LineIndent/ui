@@ -23,13 +23,6 @@ def render_parse_error(msg: str):
     return rx.el.p(msg, class_name="text-sm text-red-500")
 
 
-# # --- Helper functions ---
-# def render_heading(level: int, text: str) -> rx.Component:
-#     return rx.el.header(
-#         text, class_name=HEADING_1_CLASS if level == 1 else HEADING_2_CLASS, id=text
-#     )
-
-
 def render_heading(level: int, text: str) -> rx.Component:
     normalized_id = rx.Var.create(text).to(str).lower().replace(" ", "-")
 
@@ -65,21 +58,6 @@ def render_heading(level: int, text: str) -> rx.Component:
             id=normalized_id,
         )
 
-    return rx.el.header(
-        rx.el.a(
-            rx.el.span(
-                text,
-                class_name="hover:underline hover:underline-offset-6",
-            ),
-            href=f"#{normalized_id}",
-            class_name=(
-                "after:content-['#'] after:ml-2 after:opacity-0 hover:after:opacity-100 after:text-muted-foreground"
-            ),
-        ),
-        class_name=HEADING_1_CLASS if level == 1 else HEADING_2_CLASS,
-        id=normalized_id,
-    )
-
 
 def render_paragraph(text: str) -> rx.Component:
     return rx.el.p(text, class_name=PARAGRAPH_CLASS)
@@ -98,12 +76,15 @@ def render_pre(*children, **props) -> rx.Component:
 
     return rx.el.div(
         rx.el.div(
-            rx.el.div(
-                rx.el.p(
-                    language,
-                    class_name="text-muted-foreground text-sm font-normal px-[1rem] py-2",
+            rx.cond(
+                language != "python",
+                rx.el.div(
+                    rx.el.p(
+                        language,
+                        class_name="text-muted-foreground text-sm font-normal px-[1rem] py-2",
+                    ),
+                    class_name="w-full border-b border-input/70 flex flex-row items-center justify-between",
                 ),
-                class_name="w-full border-b border-input/70 flex flex-row items-center justify-between",
             ),
             rx.el.div(
                 rx.el.pre(
@@ -112,10 +93,11 @@ def render_pre(*children, **props) -> rx.Component:
                         style={
                             "white-space": "pre",
                             "color": "var(--foreground)",
-                            "font-size": "13px",
+                            "font-size": "13px !important",
                             "padding": "1rem 1rem",
                             "display": "block",
                         },
+                        class_name="language-python",
                     ),
                 ),
                 class_name="overflow-x-auto overflow-y-auto scrollbar-none flex-1 min-h-0 pr-[1rem]",

@@ -23,21 +23,52 @@ Use the following composition to build a `Menu` component.
 
 --ANATOMY(menu)--
 
-
 # Example
-A basic dropdown menu that opens when the user clicks a trigger button.
 
-## High Level
-Uses low-level API to create a menu component.
+## Basic
 
---DEMO(menu_high_level)--
+A basic dropdown menu with labels and separators.
+
+--DEMO(menu_basic)--
 
 ## Submenu
-Use `menu.submenu_root()` to nest secondary actions.
+
+Use `menu.submenu_root` to nest secondary actions.
 
 --DEMO(menu_submenu)--
 
+## Shortcuts
+
+Add `menu.shortcut` to show keyboard hints.
+
+--DEMO(menu_shortcuts)--
+
+## Icons
+
+Combine icons with labels for quick scanning.
+
+--DEMO(menu_icons)--
+
 ## Checkboxes
-Use `menu.checkbox_item()` for toggles. 
+
+Use `menu.checkbox_item` for toggles. 
 
 --DEMO(menu_checkboxes)--
+
+## Checkboxes Icons
+
+Add icons to checkbox items.
+
+--DEMO(menu_checkboxes_icons)--
+
+## Radio Group
+
+Use `menu.radio_group` for exclusive choices.
+
+--DEMO(menu_radio_group)--
+
+## Avatar 
+
+An account switcher dropdown triggered by an avatar.
+
+--DEMO(menu_avatar)--

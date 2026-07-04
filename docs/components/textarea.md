@@ -25,7 +25,7 @@ Use the following composition to build a `Textarea` component.
 
 # Examples
 
-## Basic Demo
+## Basic
 A standard multiline text area for general text input.
 
 --DEMO(textarea_basic_demo)--
@@ -41,6 +41,6 @@ Use the `disabled` prop on textarea to disable user input. Apply `data-disabled`
 --DEMO(textarea_disabled)--
 
 ## Invalid
-Apply `data-disabled` on Field to represent a disabled state and propagate styling, and apply data-invalid to represent validation errors.
+Use the `aria-invalid` prop to mark the textarea as invalid. To style the invalid state, add the `data-invalid` attribute to the `field.root` component.
 
 --DEMO(textarea_invalid)--

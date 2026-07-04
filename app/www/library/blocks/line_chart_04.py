@@ -70,12 +70,10 @@ def line_chart_04():
         ),
         card.content(
             rx.el.div(
-                # Y-axis label rotated on the left
                 rx.el.p(
                     "Spend Category",
                     class_name="-rotate-90 text-xs text-muted-foreground whitespace-nowrap self-center h-fit w-[1rem]",
                 ),
-                # Chart
                 rx.el.div(
                     rx.el.div(_chart(show_y_axis=False), class_name="sm:hidden"),
                     rx.el.div(_chart(show_y_axis=True), class_name="hidden sm:block"),
@@ -83,12 +81,10 @@ def line_chart_04():
                 ),
                 class_name="flex flex-row gap-2 w-full",
             ),
-            # X-axis label
             rx.el.p(
                 "Month",
                 class_name="text-xs text-muted-foreground text-center mt-1",
             ),
-            # Legend
             rx.el.div(
                 *[
                     rx.el.div(
@@ -102,5 +98,6 @@ def line_chart_04():
             ),
             class_name="relative",
         ),
-        class_name=chart_tooltip_content([1, 2], "line") + " w-full p-0",
+        size="sm",
+        class_name=chart_tooltip_content([1, 2], "line") + " w-full p-0 !ring-0",
     )

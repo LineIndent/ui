@@ -1,4 +1,4 @@
-"""Custom switch component."""
+from typing import Literal
 
 from reflex.components.component import Component, ComponentNamespace
 from reflex.event import EventHandler, passthrough_event_spec
@@ -7,112 +7,90 @@ from reflex.vars.base import Var
 
 from .base_ui import PACKAGE_NAME, BaseUIComponent
 
+LiteralSwitchSize = Literal["default", "sm"]
+
 
 class ClassNames:
-    """Class names for switch components."""
+    ROOT = (
+        "peer group/switch relative inline-flex shrink-0 items-center rounded-full "
+        "border border-transparent transition-all outline-none "
+        "after:absolute after:-inset-x-3 after:-inset-y-2 "
+        "focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 "
+        "aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 "
+        "data-[size=default]:h-[18.4px] data-[size=default]:w-[32px] "
+        "data-[size=sm]:h-[14px] data-[size=sm]:w-[24px] "
+        "dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40 "
+        "data-checked:bg-primary data-unchecked:bg-input dark:data-unchecked:bg-input/80 "
+        "data-disabled:cursor-not-allowed data-disabled:opacity-50"
+    )
 
-    ROOT = "relative flex h-5 w-8 rounded-full bg-secondary p-0.5 transition-colors duration-200 ease-out before:absolute before:rounded-lg before:outline-offset-2 before:outline-primary focus-visible:before:inset-0 data-[checked]:bg-primary disabled:opacity-50 disabled:cursor-not-allowed cursor-default"
-    THUMB = "aspect-square h-full rounded-full bg-white transition-transform duration-200 ease-out data-[checked]:translate-x-3 shadow-small"
+    THUMB = (
+        "pointer-events-none block rounded-full bg-background ring-0 transition-transform "
+        "group-data-[size=default]/switch:size-4 group-data-[size=sm]/switch:size-3 "
+        "group-data-[size=default]/switch:data-checked:translate-x-[calc(100%-2px)] "
+        "group-data-[size=sm]/switch:data-checked:translate-x-[calc(100%-2px)] "
+        "dark:data-checked:bg-primary-foreground "
+        "group-data-[size=default]/switch:data-unchecked:translate-x-0 "
+        "group-data-[size=sm]/switch:data-unchecked:translate-x-0 "
+        "dark:data-unchecked:bg-foreground"
+    )
 
 
 class SwitchBaseComponent(BaseUIComponent):
-    """Base component for switch components."""
-
     library = f"{PACKAGE_NAME}/switch"
 
     @property
     def import_var(self):
-        """Return the import variable for the switch component."""
         return ImportVar(tag="Switch", package_path="", install=False)
 
 
 class SwitchRoot(SwitchBaseComponent):
-    """Represents the switch itself. Renders a button element and a hidden input beside."""
-
     tag = "Switch.Root"
 
-    # Identifies the field when a form is submitted.
     name: Var[str]
-
-    # Whether the switch is initially active. To render a controlled switch, use the checked prop instead. Defaults to False.
     default_checked: Var[bool]
-
-    # Whether the switch is currently active. To render an uncontrolled switch, use the default_checked prop instead.
     checked: Var[bool]
-
-    # Event handler called when the switch is activated or deactivated.
     on_checked_change: EventHandler[passthrough_event_spec(bool)]
-
-    # Whether the component renders a native <button> element when replacing it via the render prop. Set to false if the rendered element is not a button (e.g. <div>). Defaults to True.
     native_button: Var[bool]
-
-    # Whether the component should ignore user interaction. Defaults to False.
     disabled: Var[bool]
-
-    # Whether the user should be unable to activate or deactivate the switch. Defaults to False.
     read_only: Var[bool]
-
-    # Whether the user must activate the switch before submitting a form. Defaults to False.
     required: Var[bool]
-
-    # A ref to access the hidden <input> element.
     input_ref: Var[str]
-
-    # The render prop
+    size: Var[LiteralSwitchSize]
     render_: Var[Component]
 
     @classmethod
     def create(cls, *children, **props) -> BaseUIComponent:
-        """Create the switch root component."""
         props["data-slot"] = "switch"
+
+        # Pull or default size prop and put it in data attribute
+        size = props.pop("size", "default")
+        props["data-size"] = size
+
         cls.set_class_name(ClassNames.ROOT, props)
+
+        # If no explicit thumb/child is given, auto-inject it like Shadcn does!
+        if not children:
+            children = (SwitchThumb.create(),)
+
         return super().create(*children, **props)
 
 
 class SwitchThumb(SwitchBaseComponent):
-    """The movable part of the switch that indicates whether the switch is on or off. Renders a span."""
-
     tag = "Switch.Thumb"
-
-    # The render prop
     render_: Var[Component]
 
     @classmethod
     def create(cls, *children, **props) -> BaseUIComponent:
-        """Create the switch thumb component."""
         props["data-slot"] = "switch-thumb"
         cls.set_class_name(ClassNames.THUMB, props)
         return super().create(*children, **props)
 
 
-class HighLevelSwitch(SwitchRoot):
-    """High-level wrapper for the Switch component."""
-
-    @classmethod
-    def create(cls, *children, **props) -> BaseUIComponent:
-        """Create a complete switch component.
-
-        Args:
-            *children: Additional children to include in the switch.
-            **props: Additional properties to apply to the switch component.
-
-        Returns:
-            The switch component.
-        """
-        return SwitchRoot.create(
-            SwitchThumb.create(),
-            *children,
-            **props,
-        )
-
-
 class Switch(ComponentNamespace):
-    """Namespace for Switch components."""
-
     root = staticmethod(SwitchRoot.create)
     thumb = staticmethod(SwitchThumb.create)
     class_names = ClassNames
-    __call__ = staticmethod(HighLevelSwitch.create)
 
 
 switch = Switch()

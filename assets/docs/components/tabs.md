@@ -17,8 +17,6 @@ buridan add component tabs
 ### Manual Installation
 
 ```python
-"""Custom tabs component."""
-
 from typing import Literal
 
 from reflex.components.component import Component, ComponentNamespace
@@ -32,155 +30,132 @@ LiteralOrientation = Literal["horizontal", "vertical"]
 
 
 class ClassNames:
-    """Class names for tabs components."""
-
-    LIST = (
-        "relative bg-muted text-muted-foreground inline-flex h-9 w-full w-fit items-center "
-        "justify-center rounded-lg p-[3px] "
-        "data-[orientation=vertical]:flex data-[orientation=vertical]:flex-col "
-        "data-[orientation=vertical]:h-auto "
-        "data-[orientation=vertical]:p-1 data-[orientation=vertical]:gap-1"
-    )
-    TAB = (
-        "relative z-[1] flex items-center justify-center text-sm font-medium "
-        "text-foreground dark:text-muted-foreground "
-        "data-[selected]:text-foreground "
-        "rounded-lg px-2 py-1 transition-all "
-        "data-[orientation=vertical]:justify-start data-[orientation=vertical]:w-full "
-        "data-[orientation=vertical]:text-left"
-    )
     ROOT = (
-        "flex flex-col gap-2 "
+        "group/tabs flex gap-2 data-[orientation=horizontal]:flex-col "
         "data-[orientation=vertical]:flex-row data-[orientation=vertical]:gap-4"
     )
 
+    LIST = (
+        "group/tabs-list relative inline-flex w-fit items-center justify-center rounded-lg p-[3px] "
+        "text-muted-foreground bg-muted "
+        "group-data-[orientation=horizontal]/tabs:h-8 group-data-[orientation=vertical]/tabs:h-fit "
+        "group-data-[orientation=vertical]/tabs:flex-col group-data-[orientation=vertical]/tabs:p-1 group-data-[orientation=vertical]/tabs:gap-1 "
+        "data-[variant=line]:rounded-none data-[variant=line]:bg-transparent data-[variant=line]:gap-1"
+    )
+
+    TAB = (
+        "relative inline-flex h-[calc(100%-1px)] flex-1 items-center justify-center gap-1.5 "
+        "rounded-md border border-transparent px-1.5 py-0.5 text-sm font-medium whitespace-nowrap "
+        "text-foreground/60 transition-all hover:text-foreground "
+        "focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:outline-1 "
+        "disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none "
+        "dark:text-muted-foreground dark:hover:text-foreground "
+        "group-data-[orientation=vertical]/tabs:w-full group-data-[orientation=vertical]/tabs:justify-start "
+        "data-[active]:text-foreground "
+        "group-data-[variant=default]/tabs-list:data-[active]:bg-background "
+        "dark:group-data-[variant=default]/tabs-list:data-[active]:border-input "
+        "dark:group-data-[variant=default]/tabs-list:data-[active]:bg-input/30 "
+        "group-data-[variant=default]/tabs-list:data-[active]:shadow-sm "
+        "group-data-[variant=line]/tabs-list:data-[active]:bg-transparent "
+        "[&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4"
+    )
+
     INDICATOR = (
-        "absolute z-[0] rounded-lg bg-background shadow-sm dark:border dark:border-input dark:bg-input/30 "
-        "transition-all duration-200 ease-in-out "
+        "absolute z-[0] transition-all duration-200 ease-in-out "
+        "group-data-[variant=default]/tabs-list:rounded-lg "
+        "group-data-[variant=default]/tabs-list:bg-background "
+        "group-data-[variant=default]/tabs-list:shadow-sm "
+        "dark:group-data-[variant=default]/tabs-list:border dark:group-data-[variant=default]/tabs-list:border-input "
+        "dark:group-data-[variant=default]/tabs-list:bg-input/30 "
+        "group-data-[variant=line]/tabs-list:bg-foreground "
+        "group-data-[variant=line]/tabs-list:!h-[2px] "
+        "group-data-[variant=line]/tabs-list:!top-[auto] "
+        "group-data-[variant=line]/tabs-list:!bottom-0 "
         "[left:var(--active-tab-left)] [top:var(--active-tab-top)] "
         "[width:var(--active-tab-width)] [height:var(--active-tab-height)]"
     )
-    PANEL = "flex flex-col gap-2"
+
+    PANEL = "flex-1 text-sm outline-none flex flex-col gap-2"
 
 
 class TabsBaseComponent(BaseUIComponent):
-    """Base component for tabs components."""
-
     library = f"{PACKAGE_NAME}/tabs"
 
     @property
     def import_var(self):
-        """Return the import variable for the tabs component."""
         return ImportVar(tag="Tabs", package_path="", install=False)
 
 
 class TabsRoot(TabsBaseComponent):
-    """Groups the tabs and the corresponding panels. Renders a <div> element."""
-
     tag = "Tabs.Root"
-
-    # The default value. Use when the component is not controlled. When the value is null, no Tab will be selected. Defaults to 0.
     default_value: Var[str | int]
-
-    # The value of the currently selected Tab. Use when the component is controlled. When the value is null, no Tab will be selected.
     value: Var[str | int]
-
-    # Callback invoked when new value is being set.
     on_value_change: EventHandler[passthrough_event_spec(str | dict)]
-
-    # The component orientation (layout flow direction). Defaults to "horizontal".
     orientation: Var[LiteralOrientation]
-
-    # The render prop
     render_: Var[Component]
 
     @classmethod
     def create(cls, *children, **props) -> BaseUIComponent:
-        """Create the tabs root component."""
         props["data-slot"] = "tabs"
         cls.set_class_name(ClassNames.ROOT, props)
         return super().create(*children, **props)
 
 
 class TabsList(TabsBaseComponent):
-    """Groups the individual tab buttons. Renders a <div> element."""
-
     tag = "Tabs.List"
-
-    # Whether to automatically change the active tab on arrow key focus. Otherwise, tabs will be activated using Enter or Spacebar key press. Defaults to True.
     activate_on_focus: Var[bool]
-
-    # Whether to loop keyboard focus back to the first item when the end of the list is reached while using the arrow keys. Defaults to True.
     loop: Var[bool]
+    variant: Var[Literal["default", "line"]]
 
     @classmethod
     def create(cls, *children, **props) -> BaseUIComponent:
-        """Create the tabs list component."""
         props["data-slot"] = "tabs-list"
+        if "variant" in props:
+            props["data-variant"] = props.pop("variant")
+        else:
+            props["data-variant"] = "default"
+
         cls.set_class_name(ClassNames.LIST, props)
         return super().create(*children, **props)
 
 
 class TabsTab(TabsBaseComponent):
-    """An individual interactive tab button that toggles the corresponding panel. Renders a <button> element."""
-
     tag = "Tabs.Tab"
-
-    # The value of the Tab. When not specified, the value is the child position index.
     value: Var[str | int]
-
-    # Whether the component renders a native <button> element when replacing it via the render prop. Set to false if the rendered element is not a button (e.g. <div>). Defaults to True.
     native_button: Var[bool]
-
-    # Whether the Tab is disabled. Defaults to false.
     disabled: Var[bool]
 
     @classmethod
     def create(cls, *children, **props) -> BaseUIComponent:
-        """Create the tabs tab component."""
-        props["data-slot"] = "tabs-tab"
+        props["data-slot"] = "tabs-trigger"
         cls.set_class_name(ClassNames.TAB, props)
         return super().create(*children, **props)
 
 
 class TabsIndicator(TabsBaseComponent):
-    """A visual indicator that can be styled to match the position of the currently active tab. Renders a <span> element."""
-
     tag = "Tabs.Indicator"
-
-    # Whether to render itself before React hydrates. This minimizes the time that the indicator isn't visible after server-side rendering. Defaults to False.
     render_before_hydration: Var[bool]
 
     @classmethod
     def create(cls, *children, **props) -> BaseUIComponent:
-        """Create the tabs indicator component."""
         props["data-slot"] = "tabs-indicator"
         cls.set_class_name(ClassNames.INDICATOR, props)
         return super().create(*children, **props)
 
 
 class TabsPanel(TabsBaseComponent):
-    """A panel displayed when the corresponding tab is active. Renders a <div> element."""
-
     tag = "Tabs.Panel"
-
-    # The value of the TabPanel. It will be shown when the Tab with the corresponding value is selected. If not provided, it will fall back to the index of the panel. It is recommended to explicitly provide it, as it's required for the tab panel to be rendered on the server.
     value: Var[str | int]
-
-    # Whether to keep the HTML element in the DOM while the panel is hidden. Defaults to False.
     keep_mounted: Var[bool]
 
     @classmethod
     def create(cls, *children, **props) -> BaseUIComponent:
-        """Create the tabs panel component."""
-        props["data-slot"] = "tabs-panel"
+        props["data-slot"] = "tabs-content"
         cls.set_class_name(ClassNames.PANEL, props)
         return super().create(*children, **props)
 
 
 class Tabs(ComponentNamespace):
-    """Namespace for Tabs components."""
-
     root = __call__ = staticmethod(TabsRoot.create)
     list = staticmethod(TabsList.create)
     tab = staticmethod(TabsTab.create)
@@ -214,7 +189,6 @@ tabs.root(
     tabs.panel(),
 )
 ```
-
 
 
 # Example
@@ -292,6 +266,24 @@ def tabs_basic():
 ```
 
 
+## Line
+Use the `variant="line"` prop on `tabs.list` for a line style.
+
+```python
+def tabs_line() -> rx.Component:
+    return tabs.root(
+        tabs.list(
+            tabs.indicator(),
+            tabs.tab("Overview", value="overview"),
+            tabs.tab("Analytics", value="analytics"),
+            tabs.tab("Reports", value="reports"),
+            variant="line",
+        ),
+        default_value="overview",
+    )
+```
+
+
 ## Vertical
 Use `orientation="vertical"` for vertical tabs.
 
@@ -332,6 +324,29 @@ def tabs_disabled():
             ),
         ),
         default_value="home",
+    )
+```
+
+
+## Icons
+
+```python
+def tabs_icons() -> rx.Component:
+    return tabs.root(
+        tabs.list(
+            tabs.indicator(),
+            tabs.tab(
+                hi("BrowserIcon"),
+                "Preview",
+                value="preview",
+            ),
+            tabs.tab(
+                hi("CodeIcon"),
+                "Code",
+                value="code",
+            ),
+        ),
+        default_value="preview",
     )
 ```
 

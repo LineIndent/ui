@@ -26,6 +26,8 @@
 - [Breadcrumb](https://buridan.reflex.run/docs/components/breadcrumb): The Breadcrumb component.
 - [Bubble](https://buridan.reflex.run/docs/components/bubble): The Bubble component.
 - [Button](https://buridan.reflex.run/docs/components/button): The Button component.
+- [Button Group](https://buridan.reflex.run/docs/components/button-group): The Button Group component.
+- [Card](https://buridan.reflex.run/docs/components/card): The Card component.
 - [Chart](https://buridan.reflex.run/docs/components/chart): The Chart component.
 - [Checkbox](https://buridan.reflex.run/docs/components/checkbox): The Checkbox component.
 - [Collapsible](https://buridan.reflex.run/docs/components/collapsible): The Collapsible component.
@@ -43,9 +45,11 @@
 - [Popover](https://buridan.reflex.run/docs/components/popover): The Popover component.
 - [Scroll Area](https://buridan.reflex.run/docs/components/scroll-area): The Scroll Area component.
 - [Select](https://buridan.reflex.run/docs/components/select): The Select component.
+- [Separator](https://buridan.reflex.run/docs/components/separator): The Separator component.
 - [Skeleton](https://buridan.reflex.run/docs/components/skeleton): The Skeleton component.
 - [Slider](https://buridan.reflex.run/docs/components/slider): The Slider component.
 - [Spinner](https://buridan.reflex.run/docs/components/spinner): The Spinner component.
+- [Switch](https://buridan.reflex.run/docs/components/switch): The Switch component.
 - [Tabs](https://buridan.reflex.run/docs/components/tabs): The Tabs component.
 - [Textarea](https://buridan.reflex.run/docs/components/textarea): The Textarea component.
 - [Timeline](https://buridan.reflex.run/docs/components/timeline): The Timeline component.

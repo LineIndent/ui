@@ -41,6 +41,15 @@ class SidebarSection:
 
 SIDEBAR_SECTIONS = [
     SidebarSection(title="Getting Started", routes=routes.GET_STARTED_URLS),
+    SidebarSection(
+        title="@buridan/ui",
+        routes=[
+            {
+                "title": "pypi 0.1.19",
+                "url": "https://pypi.org/project/buridan-create/",
+            }
+        ],
+    ),
     SidebarSection(title="Resources", routes=routes.RESOURCES_URLS),
     SidebarSection(title="Utilities", routes=routes.UTILITIES),
     SidebarSection(title="Charts", routes=routes.CHARTS_URLS),
@@ -51,20 +60,28 @@ SIDEBAR_SECTIONS = [
 def create_menu_item(data: dict):
     """Create a single menu item."""
 
-    link = (
-        rx.el.a(
+    if data["title"].startswith("pypi"):
+        link = rx.el.a(
             rx.el.p(data["title"], class_name="cursor-pointer"),
-            to=f"/{data['url']}",
+            href=data["url"],
             text_decoration="none",
+            reload_document=True,
         )
-        if data["url"] != "llms.txt"
-        else rx.el.a(
+
+    elif data["url"] == "llms.txt":
+        link = rx.el.a(
             rx.el.p(data["title"], class_name="cursor-pointer"),
             href=f"/{data['url']}",
             text_decoration="none",
             reload_document=True,
         )
-    )
+
+    else:
+        link = rx.el.a(
+            rx.el.p(data["title"], class_name="cursor-pointer"),
+            to=f"/{data['url']}",
+            text_decoration="none",
+        )
 
     return button(
         link,

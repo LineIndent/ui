@@ -87,8 +87,6 @@ class AvatarBadge(Span, CoreComponent):
 
 
 class AvatarGroup(Div, CoreComponent):
-    """The flex container wrapper for grouping multiple avatars."""
-
     @classmethod
     def create(cls, *children, **props) -> Div:
         custom_classes = props.pop("class_name", "")

@@ -113,5 +113,6 @@ def area_chart_02():
                 class_name="mt-4 w-full",
             ),
         ),
-        class_name=chart_tooltip_content([1, 2], "square") + " w-full p-0",
+        size="sm",
+        class_name=chart_tooltip_content([1, 2], "square") + " w-full p-0 !ring-0",
     )

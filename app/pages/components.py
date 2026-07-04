@@ -58,7 +58,7 @@ def components_page():
             class_name=" ".join(
                 [
                     "grid",
-                    "grid-cols-1",
+                    "grid-cols-2",
                     "sm:grid-cols-2",
                     "md:grid-cols-3",
                     "lg:grid-cols-4",

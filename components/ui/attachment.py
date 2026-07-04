@@ -211,7 +211,7 @@ def attachment_trigger(
 
     component_fn = rx.el.a if link else rx.el.button
 
-    props.setdefault("data_slot", "attachment-trigger")
+    props.setdefault("data-slot", "attachment-trigger")
     props.setdefault("class_name", cn(ClassNames.TRIGGER, class_name))
 
     if not link:

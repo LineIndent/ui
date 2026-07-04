@@ -9,10 +9,7 @@ from components.ui.badge import badge
 from components.ui.button import button
 from components.ui.checkbox import checkbox
 from components.ui.input import input
-from components.ui.input_group import (
-    input_with_addons,
-    textarea_with_footer,
-)
+from components.ui.input_group import input_group
 from components.ui.metric import metric
 from components.ui.slider import slider
 from components.ui.switch import switch
@@ -42,11 +39,16 @@ def card_one() -> rx.Component:
                 class_name="w-full grid grid-cols-3 items-center gap-x-2",
             ),
             rx.el.div(
-                input(placeholder="name", class_name="!bg-secondary"),
-                textarea_with_footer(
-                    placeholder="Enter your message",
-                    footer_text="120 characters left",
-                    class_name="!bg-secondary",
+                input(placeholder="name"),
+                input_group.root(
+                    input_group.textarea(
+                        id="block-end-textarea",
+                        placeholder="Write a comment...",
+                    ),
+                    input_group.addon(
+                        input_group.text("0/280"),
+                        align="block-end",
+                    ),
                 ),
                 class_name="flex flex-col gap-y-2",
             ),
@@ -358,11 +360,16 @@ def card_five() -> rx.Component:
                     "Amount to Transfer",
                     class_name="text-sm font-semibold text-foreground",
                 ),
-                input_with_addons(
-                    placeholder="1,200.00",
-                    class_name="!bg-secondary px-1",
-                    prefix="$",
-                    suffix="USD",
+                input_group.root(
+                    input_group.addon(
+                        input_group.text("$"),
+                        align="inline-start",
+                    ),
+                    input_group.input(placeholder="0.00"),
+                    input_group.addon(
+                        input_group.text("USD"),
+                        align="inline-end",
+                    ),
                 ),
                 class_name="w-full flex flex-col gap-y-2 relative",
             ),
@@ -732,12 +739,15 @@ def card_ten() -> rx.Component:
                         field["label"],
                         class_name="text-sm font-semibold text-foreground",
                     ),
-                    input_with_addons(
-                        placeholder=field["placeholder"],
-                        prefix=hi(
-                            field["icon"], class_name="size-4 text-muted-foreground"
+                    input_group.root(
+                        input_group.input(
+                            id="inline-start-input",
+                            placeholder=field["placeholder"],
                         ),
-                        class_name="!bg-secondary pl-2",
+                        input_group.addon(
+                            hi(field["icon"], class_name="text-muted-foreground"),
+                            align="inline-start",
+                        ),
                     ),
                     class_name="w-full flex flex-col gap-y-2",
                 )
@@ -830,14 +840,20 @@ def local_panel() -> rx.Component:
             tabs.panel(
                 rx.el.div(
                     rx.el.div(
-                        input_with_addons(
-                            value="https://github.com/LineIndent/ui.git",
-                            placeholder="",
-                            suffix=hi(
-                                "Copy01Icon",
-                                class_name="size-4 text-muted-foreground cursor-pointer",
+                        input_group.root(
+                            input_group.input(
+                                placeholder="https://github.com/LineIndent/ui.git",
+                                read_only=True,
                             ),
-                            class_name="!bg-secondary text-xs pr-2",
+                            input_group.addon(
+                                input_group.button(
+                                    hi("Copy01Icon"),
+                                    aria_label="Copy",
+                                    title="Copy",
+                                    size="icon-xs",
+                                ),
+                                align="inline-end",
+                            ),
                         ),
                         rx.el.p(
                             "Clone using the web URL.",
@@ -853,14 +869,20 @@ def local_panel() -> rx.Component:
             # SSH panel
             tabs.panel(
                 rx.el.div(
-                    input_with_addons(
-                        value="git@github.com:LineIndent/ui.git",
-                        placeholder="",
-                        suffix=hi(
-                            "Copy01Icon",
-                            class_name="size-4 text-muted-foreground cursor-pointer",
+                    input_group.root(
+                        input_group.input(
+                            placeholder="git@github.com:LineIndent/ui.git",
+                            read_only=True,
                         ),
-                        class_name="!bg-secondary text-xs pr-2",
+                        input_group.addon(
+                            input_group.button(
+                                hi("Copy01Icon"),
+                                aria_label="Copy",
+                                title="Copy",
+                                size="icon-xs",
+                            ),
+                            align="inline-end",
+                        ),
                     ),
                     class_name="w-full pt-3",
                 ),
@@ -870,14 +892,20 @@ def local_panel() -> rx.Component:
             # GitHub CLI panel
             tabs.panel(
                 rx.el.div(
-                    input_with_addons(
-                        value="gh repo clone LineIndent/ui",
-                        placeholder="",
-                        suffix=hi(
-                            "Copy01Icon",
-                            class_name="size-4 text-muted-foreground cursor-pointer",
+                    input_group.root(
+                        input_group.input(
+                            placeholder="gh repo clone LineIndent/ui",
+                            read_only=True,
                         ),
-                        class_name="!bg-secondary text-xs pr-2",
+                        input_group.addon(
+                            input_group.button(
+                                hi("Copy01Icon"),
+                                aria_label="Copy",
+                                title="Copy",
+                                size="icon-xs",
+                            ),
+                            align="inline-end",
+                        ),
                     ),
                     class_name="w-full pt-3",
                 ),
@@ -1017,7 +1045,7 @@ def card_twelve() -> rx.Component:
                             ),
                             class_name="flex flex-col gap-y-0.5 flex-1",
                         ),
-                        switch(default_checked=row["default"]),
+                        switch.root(switch.thumb(), default_checked=row["default"]),
                         class_name="w-full flex flex-row items-start justify-between gap-x-4 py-3 border-b border-input last:border-b-0",
                     )
                     for row in toggle_rows
@@ -1335,9 +1363,20 @@ def card_sixteen() -> rx.Component:
                 "Or share invite link",
                 class_name="text-sm font-semibold text-foreground",
             ),
-            input_with_addons(
-                default_value="https://app.co/invite/x8f2k",
-                suffix=hi("Copy01Icon", class_name="size-4 text-muted-foreground mr-2"),
+            input_group.root(
+                input_group.input(
+                    placeholder="https://app.co/invite/x8f2k",
+                    read_only=True,
+                ),
+                input_group.addon(
+                    input_group.button(
+                        hi("Copy01Icon"),
+                        aria_label="Copy",
+                        title="Copy",
+                        size="icon-xs",
+                    ),
+                    align="inline-end",
+                ),
             ),
             class_name="w-full flex flex-col gap-y-2",
         ),
@@ -1366,8 +1405,11 @@ def card_seventeen() -> rx.Component:
         ),
         # Search input
         rx.el.div(
-            input_with_addons(
-                placeholder="example.com",
+            input_group.root(
+                input_group.input(
+                    placeholder="example.com",
+                    read_only=True,
+                ),
             ),
             class_name="w-full max-w-md mx-auto",
         ),

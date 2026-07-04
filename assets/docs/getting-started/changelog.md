@@ -4,6 +4,14 @@
 
 Latest updates and announcements.
 
+# July 2026 - API Consolidation & High Fidelity
+
+Following the introduction of our theming engine, the focus shifted entirely toward refining and consolidating the underlying component APIs. The core mission of this release was to bring the library's structural orchestration and code patterns into complete alignment with the high-fidelity standards established by `shadcn/ui`.
+
+This update moves away from standalone, fluid function parameters in favor of a unified namespace pattern. Components are now split cleanly into dedicated structural elements, such as `.root()` and `.item()`. This pattern allows users to build composite layouts with declarative precision, ensuring clean, intuitive component hierarchies across any application.
+
+Alongside structural improvements, the underlying style aggregation engine was rebuilt to natively support strict Tailwind merge inheritance `(cn)`. Custom, per-instance layout parameters (such as explicit dimension overrides) are now safely appended at the end of the style cascade. This eliminates utility specificity conflicts and gives developers reliable, uncompromised control over layout sizes and layouts.
+
 
 # June 2026 - buridan/create
 

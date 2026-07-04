@@ -18,9 +18,7 @@ def select_groups():
     return select.root(
         select.trigger(
             select.value(),
-            select.icon(
-                # hi("ArrowDown01Icon", classs_name="size-4"),
-            ),
+            select.icon(),
             class_name="w-full max-w-48 flex items-center justify-between",
         ),
         select.portal(
@@ -31,9 +29,7 @@ def select_groups():
                         *[
                             select.item(
                                 select.item_text(item["label"]),
-                                select.item_indicator(
-                                    # hi("Tick02Icon", class_name="size-4")
-                                ),
+                                select.item_indicator(),
                                 value=item["value"],
                                 class_name="flex flex-row items-center justify-between",
                             )
@@ -46,9 +42,7 @@ def select_groups():
                         *[
                             select.item(
                                 select.item_text(item["label"]),
-                                select.item_indicator(
-                                    # hi("Tick02Icon", class_name="size-4")
-                                ),
+                                select.item_indicator(),
                                 value=item["value"],
                                 class_name="flex flex-row items-center justify-between",
                             )

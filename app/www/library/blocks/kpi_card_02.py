@@ -105,8 +105,9 @@ def _kpi_mini_chart(
             ),
             _mini_chart(key, color),
         ),
+        size="sm",
         class_name=chart_tooltip_content([color], "square")
-        + " w-full px-4 pt-4 pb-0 border border-input/80 rounded-2xl",
+        + " w-full px-2 pt-4 pb-0 border border-input/80 rounded-2xl !ring-0",
     )
 
 

@@ -15,7 +15,7 @@ from app.www.library.blocks.line_chart_01 import line_chart_01
 from app.www.library.blocks.line_chart_02 import line_chart_02
 from app.www.library.blocks.line_chart_03 import line_chart_03
 from app.www.library.blocks.line_chart_04 import line_chart_04
-from components.ui.button import BUTTON_VARIANTS, button
+from components.ui.button import button
 
 BLOCKS = [
     {"name": "All", "value": "all"},
@@ -38,15 +38,13 @@ def blocks_page():
     return rx.el.div(
         rx.el.div(
             *[
-                button(
+                rx.el.button(
                     item["name"],
-                    size="sm",
                     on_click=selected_blocks_category.set_value(item["value"]),
-                    class_name="transition-none "
-                    + rx.cond(
+                    class_name=rx.cond(
                         selected_blocks_category.value == item["value"],
-                        BUTTON_VARIANTS["variant"]["default"],
-                        BUTTON_VARIANTS["variant"]["outline"],
+                        "text-foreground font-medium cursor-pointer",
+                        "text-muted-foreground font-normal hover:text-foreground cursor-pointer",
                     ).to(str),
                 )
                 for item in BLOCKS

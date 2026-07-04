@@ -65,6 +65,10 @@ COMPONENT_REGISTRY = {
         "files": ["components/ui/button.py"],
         "dependencies": ["others_icons", "component"],
     },
+    "button_group": {
+        "files": ["components/ui/button_group.py"],
+        "dependencies": ["separator", "component", "base_ui"],
+    },
     "card": {
         "files": ["components/ui/card.py"],
         "dependencies": ["component"],
@@ -79,7 +83,7 @@ COMPONENT_REGISTRY = {
     },
     "context_menu": {
         "files": ["components/ui/context_menu.py"],
-        "dependencies": ["twmerge", "base_ui", "button"],
+        "dependencies": ["twmerge", "base_ui", "component", "hugeicon"],
     },
     "dialog": {
         "files": ["components/ui/dialog.py"],
@@ -136,6 +140,10 @@ COMPONENT_REGISTRY = {
     "scroll_area": {
         "files": ["components/ui/scroll_area.py"],
         "dependencies": ["twmerge", "base_ui"],
+    },
+    "separator": {
+        "files": ["components/ui/separator.py"],
+        "dependencies": ["base_ui"],
     },
     "select": {
         "files": ["components/ui/select.py"],

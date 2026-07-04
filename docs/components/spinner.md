@@ -14,6 +14,10 @@ Copy the following code into your app directory.
 
 --INSTALL(spinner)--
 
+# Usage
+
+--USAGE(spinner)--
+
 # Anatomy
 Use the following composition to build a `Spinner` component.
 

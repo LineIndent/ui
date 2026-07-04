@@ -144,5 +144,6 @@ def line_chart_01():
                 class_name="mt-4 flex items-start gap-6",
             ),
         ),
-        class_name=chart_tooltip_content([1], "square") + " w-full p-0",
+        size="sm",
+        class_name=chart_tooltip_content([1], "square") + " w-full p-0 !ring-0",
     )

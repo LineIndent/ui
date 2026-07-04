@@ -83,17 +83,18 @@ def bar_chart_02():
             ),
             rx.el.li(
                 rx.el.div(
-                    rx.el.div(class_name="w-3 h-3 rounded-sm bg-chart-2"),
+                    rx.el.div(class_name="w-3 h-3 bg-chart-2"),
                     rx.el.p("Last year", class_name="text-sm text-muted-foreground"),
                     class_name="flex items-center gap-1.5",
                 ),
                 rx.el.p("$0.7M", class_name="mt-0.5 text-base font-semibold"),
             ),
-            class_name="flex gap-10",
+            class_name="flex gap-10 px-4",
         ),
         card.content(
             rx.el.div(_chart(show_y_axis=False), class_name="sm:hidden"),
             rx.el.div(_chart(show_y_axis=True), class_name="hidden sm:block"),
         ),
-        class_name=chart_tooltip_content([1, 2], "square") + " w-full p-0",
+        size="sm",
+        class_name=chart_tooltip_content([1, 2], "square") + " w-full p-0 !ring-0",
     )

@@ -26,10 +26,14 @@ Use the following composition to build a `Toggle` component.
 
 # Examples
 
-## Icon Toggle Variants
-Use `toggle()` for a pressable on/off control. Control icon behavior with `icon_variant="fill"` to fill icons on press, or omit it and style manually using `data-[pressed] selectors` (e.g. text-* or fill-*).
+## Toggle Variants
+Use `toggle` for a pressable on/off control. Control icon behavior with `icon_variant="fill"` to fill icons on press, or omit it and style manually using `data-[pressed] selectors` (e.g. text-* or fill-*).
 
 --DEMO(toggle_general)--
+
+## Sizes
+Use the `size` prop to change the size of the toggle.
+--DEMO(toggle_sizes)--
 
 ## Pressed State
 Use `default_pressed=True` to set the default pressed state of a toggle.

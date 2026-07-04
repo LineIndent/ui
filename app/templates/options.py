@@ -99,7 +99,7 @@ def component_panel(desktop: bool = True) -> rx.Component:
                 hi("KeyframesMultipleIcon", class_name="size-5"),
                 class_name="w-full flex flex-row justify-between items-center",
             ),
-            class_name="w-full rounded-xl p-2 !bg-transparent hover:!bg-secondary",
+            class_name="!h-14 w-full rounded-xl p-2 !bg-transparent hover:!bg-secondary",
         ),
         select.portal(
             select.positioner(
@@ -177,7 +177,7 @@ def component_panel(desktop: bool = True) -> rx.Component:
                     ),
                     class_name="rounded-xl border-0 dark bg-card/90 backdrop-blur-xl w-[250px]"
                     if desktop
-                    else "rounded-xl border-0 dark bg-card/90 backdrop-blur-xl",
+                    else "rounded-xl border-0 dark bg-card/90 backdrop-blur-xl w-full",
                 ),
                 side_offset=25,
                 side="right" if desktop else "top",
@@ -196,7 +196,7 @@ def menu_panel(desktop: bool = True) -> rx.Component:
         select.trigger(
             rx.el.p("Menu", class_name="text-primary"),
             hi("EqualSignIcon", class_name="size-5"),
-            class_name="w-full rounded-xl p-2 !bg-transparent hover:!bg-secondary",
+            class_name="!h-10 w-full rounded-xl p-2 !bg-transparent hover:!bg-secondary",
         ),
         select.portal(
             select.positioner(
@@ -248,7 +248,7 @@ def style_panel(desktop: bool = True) -> rx.Component:
                 style_icon(),
                 class_name="w-full flex flex-row justify-between items-center",
             ),
-            class_name="w-full rounded-xl p-2 !bg-transparent hover:!bg-secondary",
+            class_name="w-full !h-14 rounded-xl p-2 !bg-transparent hover:!bg-secondary",
         ),
         select.portal(
             select.positioner(
@@ -270,9 +270,9 @@ def style_panel(desktop: bool = True) -> rx.Component:
                         ],
                         class_name="p-1",
                     ),
-                    class_name="rounded-xl border-0 dark bg-card/90 backdrop-blur-xl w-[250px]"
+                    class_name="border-0 dark bg-card/90 backdrop-blur-xl w-[250px]"
                     if desktop
-                    else "rounded-xl border-0 dark bg-card/90 backdrop-blur-xl",
+                    else "border-0 dark bg-card/90 backdrop-blur-xl w-full",
                 ),
                 side_offset=25,
                 side="right" if desktop else "top",
@@ -300,7 +300,7 @@ def font_panel(desktop: bool = True) -> rx.Component:
                 hi("TextFontIcon", class_name="size-4"),
                 class_name="w-full flex flex-row justify-between items-center",
             ),
-            class_name="w-full rounded-xl p-2 !bg-transparent hover:!bg-secondary",
+            class_name="!h-14 w-full rounded-xl p-2 !bg-transparent hover:!bg-secondary",
         ),
         select.portal(
             select.positioner(
@@ -330,7 +330,7 @@ def font_panel(desktop: bool = True) -> rx.Component:
                     ],
                     class_name="h-[40vh] overflow-y-auto rounded-xl border-0 dark bg-card/90 backdrop-blur-xl w-[250px] scrollbar-none"
                     if desktop
-                    else "h-[40vh] overflow-y-auto rounded-xl border-0 dark bg-card/90 backdrop-blur-xl scrollbar-none",
+                    else "h-[40vh] overflow-y-auto rounded-xl border-0 dark bg-card/90 backdrop-blur-xl scrollbar-none w-full",
                 ),
                 side_offset=25,
                 side="right" if desktop else "top",
@@ -361,7 +361,7 @@ def base_color_panel(desktop: bool = True) -> rx.Component:
                 ),
                 class_name="w-full flex flex-row justify-between items-center",
             ),
-            class_name="w-full rounded-xl p-2 !bg-transparent hover:!bg-secondary",
+            class_name="!h-14 w-full rounded-xl p-2 !bg-transparent hover:!bg-secondary",
         ),
         select.portal(
             select.positioner(
@@ -390,7 +390,7 @@ def base_color_panel(desktop: bool = True) -> rx.Component:
                     ),
                     class_name="rounded-xl border-0 dark bg-card/90 backdrop-blur-xl w-[250px]"
                     if desktop
-                    else "rounded-xl border-0 dark bg-card/90 backdrop-blur-xl",
+                    else "rounded-xl border-0 dark bg-card/90 backdrop-blur-xl w-full",
                 ),
                 side_offset=25,
                 side="right" if desktop else "top",
@@ -436,7 +436,7 @@ def theme_panel(desktop: bool = True) -> rx.Component:
                 ),
                 class_name="w-full flex flex-row justify-between items-center",
             ),
-            class_name="w-full rounded-xl p-2 !bg-transparent hover:!bg-secondary",
+            class_name="!h-14 w-full rounded-xl p-2 !bg-transparent hover:!bg-secondary",
         ),
         select.portal(
             select.positioner(
@@ -479,7 +479,7 @@ def theme_panel(desktop: bool = True) -> rx.Component:
                     ),
                     class_name="rounded-xl border-0 dark bg-card/90 backdrop-blur-xl w-[250px]"
                     if desktop
-                    else "rounded-xl border-0 dark bg-card/90 backdrop-blur-xl",
+                    else "rounded-xl border-0 dark bg-card/90 backdrop-blur-xl w-full",
                 ),
                 side_offset=25,
                 side="right" if desktop else "top",
@@ -525,7 +525,7 @@ def chart_color_panel(desktop: bool = True) -> rx.Component:
                 ),
                 class_name="w-full flex flex-row justify-between items-center",
             ),
-            class_name="w-full rounded-xl p-2 !bg-transparent hover:!bg-secondary",
+            class_name="!h-14 w-full rounded-xl p-2 !bg-transparent hover:!bg-secondary",
         ),
         select.portal(
             select.positioner(
@@ -568,7 +568,7 @@ def chart_color_panel(desktop: bool = True) -> rx.Component:
                     ),
                     class_name="rounded-xl border-0 dark bg-card/90 backdrop-blur-xl w-[250px]"
                     if desktop
-                    else "rounded-xl border-0 dark bg-card/90 backdrop-blur-xl",
+                    else "rounded-xl border-0 dark bg-card/90 backdrop-blur-xl w-full",
                 ),
                 side_offset=25,
                 side="right" if desktop else "top",
@@ -594,7 +594,7 @@ def radius_panel(desktop: bool = True) -> rx.Component:
                 radius_icon(),
                 class_name="w-full flex flex-row justify-between items-center",
             ),
-            class_name="w-full rounded-xl p-2 !bg-transparent hover:!bg-secondary",
+            class_name="!h-14 w-full rounded-xl p-2 !bg-transparent hover:!bg-secondary",
         ),
         select.portal(
             select.positioner(
@@ -618,7 +618,7 @@ def radius_panel(desktop: bool = True) -> rx.Component:
                     ),
                     class_name="rounded-xl border-0 dark bg-card/90 backdrop-blur-xl w-[250px]"
                     if desktop
-                    else "rounded-xl border-0 dark bg-card/90 backdrop-blur-xl",
+                    else "rounded-xl border-0 dark bg-card/90 backdrop-blur-xl w-full",
                 ),
                 side_offset=25,
                 side="right" if desktop else "top",
@@ -635,7 +635,7 @@ def shuffle_button() -> rx.Component:
     return button(
         "Shuffle",
         variant="outline",
-        class_name="w-full rounded-xl !bg-transparent hover:!bg-secondary",
+        class_name="w-full !bg-transparent hover:!bg-secondary",
         on_click=rx.call_script(SHUFFLE_JS),
     )
 
@@ -648,7 +648,7 @@ def preset_copy_button() -> rx.Component:
             f"--preset {seed.value}",
         ),
         variant="outline",
-        class_name="w-full rounded-xl !bg-transparent hover:!bg-secondary",
+        class_name="w-full !bg-transparent hover:!bg-secondary",
         on_click=[
             rx.call_function(copy_preset_value.set_value(True)),
             rx.set_clipboard(f"{seed.value}"),
@@ -665,7 +665,7 @@ def open_preset_menu() -> rx.Component:
             button(
                 "Open Preset",
                 variant="outline",
-                class_name="w-full rounded-xl !bg-transparent hover:!bg-secondary",
+                class_name="w-full !bg-transparent hover:!bg-secondary",
                 id="preset-trigger-btn",
             ),
             class_name="w-full",
@@ -690,20 +690,24 @@ def open_preset_menu() -> rx.Component:
                         id="seed-input-el",
                         class_name="rounded-lg text-foreground",
                     ),
-                    rx.el.div(
-                        dialog.close(
-                            button("Cancel", variant="outline", class_name="w-full"),
-                            class_name="flex-1",
-                        ),
-                        dialog.close(
-                            button(
-                                "Open",
-                                class_name="w-full",
-                                on_click=rx.call_script(APPLY_SEED_JS),
+                    dialog.footer(
+                        rx.el.div(
+                            dialog.close(
+                                render_=button(
+                                    "Cancel", variant="outline", class_name="w-full"
+                                ),
+                                class_name="flex-1",
                             ),
-                            class_name="flex-1",
+                            dialog.close(
+                                render_=button(
+                                    "Open",
+                                    class_name="w-full",
+                                    on_click=rx.call_script(APPLY_SEED_JS),
+                                ),
+                                class_name="flex-1",
+                            ),
+                            class_name="w-full flex flex-row gap-x-6",
                         ),
-                        class_name="flex flex-row gap-x-6",
                     ),
                     class_name="flex flex-col gap-y-4 w-full",
                 ),

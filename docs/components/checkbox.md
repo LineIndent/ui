@@ -39,7 +39,7 @@ Use `field.description` for helper text.
 
 ## Disabled
 
-Use the `disabled` prop to prevent interaction and add the `data-disabled` attribute to the component for disabled styles.
+Use the `disabled` prop to prevent interaction and add the `data_disabled=True` attribute to the component for disabled styles.
 
 --DEMO(checkbox_disabled)--
 

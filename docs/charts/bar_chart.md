@@ -16,6 +16,8 @@ The chart tooltip components are available in the `base_ui` library.
 
 # Examples
 
+>**Note**: The chart example charts below are wrapped in [Card](/docs/components/card). Make sure to have the component installed before using any of the examples.
+
 ## Multiple Series
 A simple vertical bar chart comparing data categories.
 --DEMO(barchart_v1)--

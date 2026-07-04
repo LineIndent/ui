@@ -16,8 +16,6 @@ buridan add component marker
 ### Manual Installation
 
 ```python
-"""Marker component — a flexible inline label with icon and content slots."""
-
 from typing import Literal
 
 import reflex as rx
@@ -57,7 +55,7 @@ def marker_root(
     class_name: str = "",
     **props,
 ) -> rx.Component:
-    """Root marker container."""
+
     return rx.el.div(
         *children,
         data_slot="marker",
@@ -72,7 +70,7 @@ def marker_root(
 
 
 def marker_icon(*children, class_name: str = "", **props) -> rx.Component:
-    """Icon slot — wraps any icon at a fixed size-4."""
+
     return rx.el.span(
         *children,
         data_slot="marker-icon",
@@ -83,7 +81,7 @@ def marker_icon(*children, class_name: str = "", **props) -> rx.Component:
 
 
 def marker_content(*children, class_name: str = "", **props) -> rx.Component:
-    """Content slot — handles text wrapping and separator alignment."""
+
     return rx.el.span(
         *children,
         data_slot="marker-content",
@@ -93,8 +91,6 @@ def marker_content(*children, class_name: str = "", **props) -> rx.Component:
 
 
 class Marker(ComponentNamespace):
-    """Marker namespace."""
-
     root = staticmethod(marker_root)
     icon = staticmethod(marker_icon)
     content = staticmethod(marker_content)

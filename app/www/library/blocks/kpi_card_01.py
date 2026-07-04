@@ -38,13 +38,14 @@ def _kpi_card(name: str, stat: str, change: str, color: str) -> rx.Component:
                 ),
                 class_name="flex w-full items-center justify-between gap-3 truncate",
             ),
-            class_name="flex gap-3",
+            class_name="flex gap-3 px-4",
         ),
         rx.el.div(
             rx.el.p(stat, class_name="text-3xl font-semibold"),
             class_name="mt-2 pl-4",
         ),
-        class_name="w-full border border-input/80 rounded-2xl",
+        size="sm",
+        class_name="w-full border border-input/80 rounded-2xl !ring-0",
     )
 
 

@@ -25,14 +25,38 @@ Use the following composition to build a `Toggle Group` component.
 
 # Examples
 
-## General
+## Outline
 
-A basic toggle group with single-selection mode, allowing only one active toggle at a time.
+Use `variant="outline"` for an outline style.
 
---DEMO(toggle_group_general)--
+--DEMO(toggle_group_outline)--
 
-## Multiple Selection
+## Sizes
 
-Set `multiple=True` on the `toggle_group()` to allow multiple selections at the same time. 
+Use the `size` prop to change the size of the toggle group.
 
---DEMO(toggle_group_multiple_selection)--
+--DEMO(toggle_group_sizes)--
+
+## Spacing
+
+Use `spacing` to add spacing between toggle group items.
+
+--DEMO(toggle_group_spacing)--
+
+## Vertical
+
+Use `orientation="vertical"` for vertical toggle groups.
+
+--DEMO(toggle_group_vertical)--
+
+## Disabled
+
+--DEMO(toggle_group_disabled)--
+
+## Custom
+
+A custom toggle group example.
+
+--DEMO(toggle_group_custom)--
+
+>The default spacing is **2** so toggle groups render with space between items by default. Use **spacing={0}** for connected items.

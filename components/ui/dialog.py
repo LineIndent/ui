@@ -1,5 +1,3 @@
-"""Custom dialog component."""
-
 from typing import Literal
 
 from reflex.components.component import Component, ComponentNamespace
@@ -8,260 +6,151 @@ from reflex.utils.imports import ImportVar
 from reflex.vars.base import Var
 from reflex_components_core.el import Div
 
-from ..icons.hugeicon import hi
 from .base_ui import PACKAGE_NAME, BaseUIComponent
-from .button import button
+from .component import CoreComponent
 
 
 class ClassNames:
-    """Class names for dialog components."""
-
-    BACKDROP = "data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 fixed inset-0 z-50"
-    POPUP = "w-full bg-background data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 fixed top-[50%] left-[50%] z-50 grid w-full translate-x-[-50%] translate-y-[-50%] gap-4 rounded-lg border border-input p-6 shadow-lg duration-200"
-    TITLE = "text-lg leading-none font-medium text-foreground"
-    DESCRIPTION = "text-muted-foreground text-sm"
-    HEADER = "flex flex-col"
-    CONTENT = "flex flex-col"
+    BACKDROP = "fixed inset-0 z-50 bg-black/10 duration-100 supports-backdrop-filter:backdrop-blur-xs data-open:animate-in data-closed:animate-out data-closed:fade-out-0 data-open:fade-in-0"
+    POPUP = "fixed left-[50%] top-[50%] z-50 grid w-full max-w-[calc(100%-2rem)] translate-x-[-50%] translate-y-[-50%] gap-4 rounded-xl bg-popover p-4 text-sm text-popover-foreground ring-1 ring-foreground/10 duration-100 outline-hidden sm:max-w-sm data-open:animate-in data-closed:animate-out data-closed:fade-out-0 data-open:fade-in-0 data-closed:zoom-out-95 data-open:zoom-in-95"
+    HEADER = "flex flex-col gap-2"
+    TITLE = "cn-font-heading text-base leading-none font-medium text-foreground"
+    DESCRIPTION = "text-sm text-muted-foreground"
+    FOOTER = "-mx-4 -mb-4 flex flex-col-reverse gap-2 rounded-b-xl border-t border-foreground/10 bg-muted/50 p-4 sm:flex-row sm:justify-end"
     TRIGGER = ""
-    CLOSE = "text-foreground"
+    CLOSE = "!absolute !top-2 !right-2 rounded-xs opacity-70 transition-opacity hover:opacity-100 focus:outline-hidden text-muted-foreground"
 
 
 class DialogBaseComponent(BaseUIComponent):
-    """Base component for dialog components."""
-
     library = f"{PACKAGE_NAME}/dialog"
 
     @property
     def import_var(self):
-        """Return the import variable for the dialog component."""
         return ImportVar(tag="Dialog", package_path="", install=False)
 
 
 class DialogRoot(DialogBaseComponent):
-    """Groups all parts of the dialog. Doesn't render its own HTML element."""
-
     tag = "Dialog.Root"
 
-    # Whether the dialog is initially open. To render a controlled dialog, use the open prop instead.
     default_open: Var[bool]
-
-    # Whether the dialog is currently open.
     open: Var[bool]
-
-    # Event handler called when the dialog is opened or closed
     on_open_change: EventHandler[passthrough_event_spec(bool, dict)]
-
-    # Determines whether the dialog should close on outside clicks. Defaults to True.
     dismissible: Var[bool]
-
-    # Determines if the dialog enters a modal state when open.
-    # - True: user interaction is limited to just the dialog: focus is trapped, document page scroll is locked, and pointer interactions on outside elements are disabled.
-    # - False: user interaction with the rest of the document is allowed.
-    # - 'trap-focus': focus is trapped inside the dialog, but document page scroll is not locked and pointer interactions outside of it remain enabled.
     modal: Var[bool | Literal["trap-focus"]]
-
-    # Event handler called after any animations complete when the dialog is opened or closed.
     on_open_change_complete: EventHandler[passthrough_event_spec(bool)]
 
     @classmethod
     def create(cls, *children, **props) -> BaseUIComponent:
-        """Create the dialog root component."""
         props["data-slot"] = "dialog"
         return super().create(*children, **props)
 
 
 class DialogTrigger(DialogBaseComponent):
-    """A button that opens the dialog. Renders a <button> element."""
-
     tag = "Dialog.Trigger"
 
-    # Whether the component renders a native <button> element when replacing it via the render prop. Set to false if the rendered element is not a button (e.g. <div>). Defaults to True.
     native_button: Var[bool]
-
-    # The render prop
     render_: Var[Component]
 
     @classmethod
     def create(cls, *children, **props) -> BaseUIComponent:
-        """Create the dialog trigger component."""
         props["data-slot"] = "dialog-trigger"
         cls.set_class_name(ClassNames.TRIGGER, props)
         return super().create(*children, **props)
 
 
 class DialogPortal(DialogBaseComponent):
-    """A portal element that moves the popup to a different part of the DOM. By default, the portal element is appended to <body>."""
-
     tag = "Dialog.Portal"
 
-    # A parent element to render the portal element into.
     container: Var[str]
-
-    # Whether to keep the portal mounted in the DOM while the popup is hidden. Defaults to False.
     keep_mounted: Var[bool]
+
+    @classmethod
+    def create(cls, *children, **props) -> BaseUIComponent:
+        props["data-slot"] = "dialog-portal"
+        return super().create(*children, **props)
 
 
 class DialogBackdrop(DialogBaseComponent):
-    """An overlay displayed beneath the popup. Renders a <div> element."""
-
     tag = "Dialog.Backdrop"
 
-    # Whether the backdrop is forced to render even when nested. Defaults to False.
     force_render: Var[bool]
-
-    # The render prop
     render_: Var[Component]
 
     @classmethod
     def create(cls, *children, **props) -> BaseUIComponent:
-        """Create the dialog backdrop component."""
-        props["data-slot"] = "dialog-backdrop"
+        props["data-slot"] = "dialog-overlay"
         cls.set_class_name(ClassNames.BACKDROP, props)
         return super().create(*children, **props)
 
 
 class DialogPopup(DialogBaseComponent):
-    """A container for the dialog contents. Renders a <div> element."""
-
     tag = "Dialog.Popup"
 
-    # Determines the element to focus when the dialog is opened. By default, the first focusable element is focused.
     initial_focus: Var[str]
-
-    # Determines the element to focus when the dialog is closed. By default, focus returns to the trigger.
     final_focus: Var[str]
-
-    # The render prop
     render_: Var[Component]
 
     @classmethod
     def create(cls, *children, **props) -> BaseUIComponent:
-        """Create the dialog popup component."""
-        props["data-slot"] = "dialog-popup"
+        props["data-slot"] = "dialog-content"
         cls.set_class_name(ClassNames.POPUP, props)
         return super().create(*children, **props)
 
 
 class DialogTitle(DialogBaseComponent):
-    """A heading that labels the dialog. Renders an <h2> element."""
-
     tag = "Dialog.Title"
 
-    # The render prop
     render_: Var[Component]
 
     @classmethod
     def create(cls, *children, **props) -> BaseUIComponent:
-        """Create the dialog title component."""
         props["data-slot"] = "dialog-title"
         cls.set_class_name(ClassNames.TITLE, props)
         return super().create(*children, **props)
 
 
 class DialogDescription(DialogBaseComponent):
-    """A paragraph with additional information about the dialog. Renders a <p> element.."""
-
     tag = "Dialog.Description"
 
-    # The render prop
     render_: Var[Component]
 
     @classmethod
     def create(cls, *children, **props) -> BaseUIComponent:
-        """Create the dialog description component."""
         props["data-slot"] = "dialog-description"
         cls.set_class_name(ClassNames.DESCRIPTION, props)
         return super().create(*children, **props)
 
 
 class DialogClose(DialogBaseComponent):
-    """A paragraph with additional information about the dialog. Renders a <p> element."""
-
     tag = "Dialog.Close"
 
-    # Whether the component renders a native <button> element when replacing it via the render prop. Set to false if the rendered element is not a button (e.g. <div>). Defaults to True.
     native_button: Var[bool]
-
-    # The render prop
     render_: Var[Component]
 
     @classmethod
     def create(cls, *children, **props) -> BaseUIComponent:
-        """Create the dialog close component."""
         props["data-slot"] = "dialog-close"
         cls.set_class_name(ClassNames.CLOSE, props)
         return super().create(*children, **props)
 
 
-class HighLevelDialog(DialogRoot):
-    """High level dialog component."""
-
-    # Dialog props
-    trigger: Var[Component | None]
-    content: Var[str | Component | None]
-    title: Var[str | Component | None]
-    description: Var[str | Component | None]
-
+class DialogHeader(Div, CoreComponent):
     @classmethod
-    def create(cls, *children, **props) -> BaseUIComponent:
-        """Create the dialog component."""
-        trigger = props.pop("trigger", None)
-        content = props.pop("content", None)
-        title = props.pop("title", None)
-        description = props.pop("description", None)
-        class_name = props.pop("class_name", "")
+    def create(cls, *children, **props) -> Div:
+        props["data-slot"] = "dialog-header"
+        cls.set_class_name(ClassNames.HEADER, props)
+        return super().create(*children, **props)
 
-        return DialogRoot.create(
-            DialogTrigger.create(render_=trigger) if trigger is not None else None,
-            DialogPortal.create(
-                DialogBackdrop.create(class_name="backdrop-blur-[5px]"),
-                DialogPopup.create(
-                    Div.create(
-                        Div.create(
-                            DialogTitle.create(title) if title is not None else None,
-                            DialogClose.create(
-                                render_=button(
-                                    hi("Cancel01Icon"),
-                                    variant="ghost",
-                                    size="icon-sm",
-                                    class_name=ClassNames.CLOSE,
-                                ),
-                            ),
-                            class_name="flex flex-row justify-between items-baseline gap-1",
-                        ),
-                        (
-                            DialogDescription.create(description)
-                            if description is not None
-                            else None
-                        ),
-                        data_slot="dialog-header",
-                        class_name=ClassNames.HEADER,
-                    ),
-                    Div.create(
-                        content,
-                        data_slot="dialog-content",
-                        class_name=ClassNames.CONTENT,
-                    ),
-                    *children,
-                    class_name=class_name,
-                ),
-            ),
-            **props,
-        )
 
-    def _exclude_props(self) -> list[str]:
-        return [
-            *super()._exclude_props(),
-            "trigger",
-            "content",
-            "title",
-            "description",
-        ]
+class DialogFooter(Div, CoreComponent):
+    @classmethod
+    def create(cls, *children, **props) -> Div:
+        props["data-slot"] = "dialog-footer"
+        cls.set_class_name(ClassNames.FOOTER, props)
+        return super().create(*children, **props)
 
 
 class Dialog(ComponentNamespace):
-    """Namespace for Dialog components."""
-
     root = staticmethod(DialogRoot.create)
     trigger = staticmethod(DialogTrigger.create)
     portal = staticmethod(DialogPortal.create)
@@ -270,8 +159,9 @@ class Dialog(ComponentNamespace):
     title = staticmethod(DialogTitle.create)
     description = staticmethod(DialogDescription.create)
     close = staticmethod(DialogClose.create)
+    header = staticmethod(DialogHeader.create)
+    footer = staticmethod(DialogFooter.create)
     class_names = ClassNames
-    __call__ = staticmethod(HighLevelDialog.create)
 
 
 dialog = Dialog()

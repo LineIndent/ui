@@ -130,6 +130,8 @@ chart_tooltip_content = _ChartTooltipContent()
 
 # Examples
 
+>**Note**: The chart example charts below are wrapped in [Card](/docs/components/card). Make sure to have the component installed before using any of the examples.
+
 ## Multiple Series
 A simple vertical bar chart comparing data categories.
 

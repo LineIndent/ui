@@ -6,6 +6,8 @@ Scatter Charts are ideal for showing changes over time or the magnitude of multi
 
 # Examples
 
+>**Note**: The chart example charts below are wrapped in [Card](/docs/components/card). Make sure to have the component installed before using any of the examples.
+
 ## Basic
 A minimal example showing the relationship between two variables with individual data points.
 

@@ -23,6 +23,8 @@
   <url><loc>https://buridan.reflex.run/docs/components/breadcrumb</loc></url>
   <url><loc>https://buridan.reflex.run/docs/components/bubble</loc></url>
   <url><loc>https://buridan.reflex.run/docs/components/button</loc></url>
+  <url><loc>https://buridan.reflex.run/docs/components/button-group</loc></url>
+  <url><loc>https://buridan.reflex.run/docs/components/card</loc></url>
   <url><loc>https://buridan.reflex.run/docs/components/chart</loc></url>
   <url><loc>https://buridan.reflex.run/docs/components/checkbox</loc></url>
   <url><loc>https://buridan.reflex.run/docs/components/collapsible</loc></url>
@@ -40,9 +42,11 @@
   <url><loc>https://buridan.reflex.run/docs/components/popover</loc></url>
   <url><loc>https://buridan.reflex.run/docs/components/scroll-area</loc></url>
   <url><loc>https://buridan.reflex.run/docs/components/select</loc></url>
+  <url><loc>https://buridan.reflex.run/docs/components/separator</loc></url>
   <url><loc>https://buridan.reflex.run/docs/components/skeleton</loc></url>
   <url><loc>https://buridan.reflex.run/docs/components/slider</loc></url>
   <url><loc>https://buridan.reflex.run/docs/components/spinner</loc></url>
+  <url><loc>https://buridan.reflex.run/docs/components/switch</loc></url>
   <url><loc>https://buridan.reflex.run/docs/components/tabs</loc></url>
   <url><loc>https://buridan.reflex.run/docs/components/textarea</loc></url>
   <url><loc>https://buridan.reflex.run/docs/components/timeline</loc></url>

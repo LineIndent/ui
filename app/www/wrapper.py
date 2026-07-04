@@ -204,7 +204,7 @@ def demo_wrapper(component: rx.Component, source: str) -> rx.Component:
     return rx.el.div(
         rx.el.div(
             component,
-            class_name="min-h-[250px] flex items-center justify-center p-6",
+            class_name="w-full min-h-[250px] flex items-center justify-center !p-2 !sm:p-6 my-10",
         ),
         rx.el.div(
             rx.el.div(
@@ -381,7 +381,7 @@ def tooltip_indicator(color: str, swatch: Swatch) -> rx.Component:
             ),
             style={"display": "flex", "flexDirection": "column", "gap": "2px"},
         )
-    return rx.fragment()  # "border" swatch uses CSS border on the row itself
+    return rx.fragment()
 
 
 def tooltip_row(

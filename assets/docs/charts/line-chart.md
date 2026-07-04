@@ -129,6 +129,8 @@ chart_tooltip_content = _ChartTooltipContent()
 
 # Examples
 
+>**Note**: The chart example charts below are wrapped in [Card](/docs/components/card). Make sure to have the component installed before using any of the examples.
+
 ## Basic
 A minimal example showing a single series with a smooth line connection.
 

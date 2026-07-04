@@ -1,6 +1,7 @@
 # app/www/anatomy.py
 
 ANATOMY = {
+    "separator": """separator()""",
     "bubble": """bubble.root(
     bubble.content(),
     bubble.reactions(),
@@ -70,10 +71,15 @@ ANATOMY = {
 )
 """,
     "button": """button()""",
+    "button_group": """button_group.root(
+    button(),
+    button_group.separator(),
+)""",
     "card": """card.root(
     card.header(
         card.title(),
         card.description(),
+        card.action(),
     ),
     card.content(),
     card.footer(),
@@ -104,12 +110,10 @@ ANATOMY = {
                         context_menu.radio_item_indicator(),
                     ),
                 ),
-                context_menu.submenu_root(
-                    context_menu.submenu_trigger(),
-                    context_menu.portal(
-                        context_menu.positioner(
-                            context_menu.popup(),
-                        ),
+                context_menu.sub(
+                    context_menu.sub_trigger(),
+                    context_menu.positioner(
+                        context_menu.popup(),
                     ),
                 ),
             ),
@@ -128,21 +132,13 @@ ANATOMY = {
     ),
 )""",
     "input": """input()""",
-    "input_group": """# Input with addons
-input_with_addons(
-    prefix=...,
-    suffix=...,
-)
-
-# Textarea with footer
-textarea_with_footer(
-    footer_text=...,
+    "input_group": """input_group.root(
+    input_group.input(placeholder="Search..."),
+    input_group.addon(),
 )""",
-    "kbd": """kbd()
-# or
-kbd_group(
-    kbd(),
-    kbd(),
+    "kbd": """kbd.group(
+    kbd.root(),
+    kbd.root(),
 )""",
     "link": """link()""",
     "marker": """marker.root(
@@ -268,8 +264,8 @@ kbd_group(
     "theme_switcher": """theme_switcher()""",
     "toggle": """toggle()""",
     "toggle_group": """toggle_group(
-    toggle(),
-    toggle(),
+    toggle_group.item("Option 1", value="1"),
+    toggle_group.item("Option 2", value="2"),
 )""",
     "tooltip": """tooltip.root(
     tooltip.trigger(),
@@ -283,12 +279,12 @@ kbd_group(
     ),
 )""",
     "field": """field.root(
-    field.label(),
-    field.control(),
-    field.description(),
-    field.item(),
+    field.content(
+        field.label(),
+        field.title(),
+        field.description(),
+    ),
     field.error(),
-    field.validity(),
 )
 """,
     "timeline": """timeline.root(

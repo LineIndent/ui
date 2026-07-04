@@ -5,14 +5,15 @@ from components.ui.field import field
 
 
 def checkbox_description() -> rx.Component:
-    return rx.el.div(
+    return field.group(
         field.root(
-            checkbox(
+            checkbox.root(
+                checkbox.indicator(),
                 id="terms-checkbox-desc",
                 name="terms-checkbox-desc",
                 default_checked=True,
             ),
-            rx.el.div(
+            field.content(
                 field.label(
                     "Accept terms and conditions",
                     html_for="terms-checkbox-desc",
@@ -20,7 +21,6 @@ def checkbox_description() -> rx.Component:
                 field.description(
                     "By clicking this checkbox, you agree to the terms and conditions."
                 ),
-                class_name="flex flex-col",
             ),
             orientation="horizontal",
         ),

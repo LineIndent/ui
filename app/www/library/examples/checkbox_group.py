@@ -16,21 +16,32 @@ def checkbox_group() -> rx.Component:
         ),
         rx.el.div(
             field.root(
-                checkbox(id="hard-disks", default_checked=True),
+                checkbox.root(
+                    checkbox.indicator(),
+                    id="hard-disks",
+                    default_checked=True,
+                ),
                 field.label(
                     "Hard disks", html_for="hard-disks", class_name="font-normal"
                 ),
                 orientation="horizontal",
             ),
             field.root(
-                checkbox(id="ext-disks", default_checked=True),
+                checkbox.root(
+                    checkbox.indicator(),
+                    id="ext-disks",
+                    default_checked=True,
+                ),
                 field.label(
                     "External disks", html_for="ext-disks", class_name="font-normal"
                 ),
                 orientation="horizontal",
             ),
             field.root(
-                checkbox(id="cds-dvds"),
+                checkbox.root(
+                    checkbox.indicator(),
+                    id="cds-dvds",
+                ),
                 field.label(
                     "CDs, DVDs, and iPods",
                     html_for="cds-dvds",
@@ -39,7 +50,10 @@ def checkbox_group() -> rx.Component:
                 orientation="horizontal",
             ),
             field.root(
-                checkbox(id="servers"),
+                checkbox.root(
+                    checkbox.indicator(),
+                    id="servers",
+                ),
                 field.label(
                     "Connected servers", html_for="servers", class_name="font-normal"
                 ),

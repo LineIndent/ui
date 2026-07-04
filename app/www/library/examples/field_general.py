@@ -4,89 +4,174 @@ from components.ui.button import button
 from components.ui.checkbox import checkbox
 from components.ui.field import field
 from components.ui.input import input
+from components.ui.select import select
 from components.ui.textarea import textarea
+
+months = [
+    {"label": "MM", "value": ""},
+    {"label": "01", "value": "01"},
+    {"label": "02", "value": "02"},
+    {"label": "03", "value": "03"},
+    {"label": "04", "value": "04"},
+    {"label": "05", "value": "05"},
+    {"label": "06", "value": "06"},
+    {"label": "07", "value": "07"},
+    {"label": "08", "value": "08"},
+    {"label": "09", "value": "09"},
+    {"label": "10", "value": "10"},
+    {"label": "11", "value": "11"},
+    {"label": "12", "value": "12"},
+]
+
+years = [
+    {"label": "YYYY", "value": ""},
+    {"label": "2024", "value": "2024"},
+    {"label": "2025", "value": "2025"},
+    {"label": "2026", "value": "2026"},
+    {"label": "2027", "value": "2027"},
+    {"label": "2028", "value": "2028"},
+    {"label": "2029", "value": "2029"},
+]
 
 
 def field_demo() -> rx.Component:
     return rx.el.div(
         rx.el.form(
-            rx.el.div(
-                rx.el.fieldset(
-                    rx.el.legend("Payment Method", class_name="font-medium mb-1"),
-                    rx.el.p(
-                        "All transactions are secure and encrypted",
-                        class_name="text-sm text-muted-foreground mb-4",
-                    ),
-                    rx.el.div(
+            field.group(
+                field.set(
+                    field.legend("Payment Method"),
+                    field.description("All transactions are secure and encrypted"),
+                    field.group(
                         field.root(
-                            field.label("Name on Card", html_for="name"),
-                            field.control(
-                                render_=input(
-                                    id="name",
-                                    placeholder="Evil Rabbit",
-                                    class_name="!w-full",
-                                ),
-                                class_name="w-full",
+                            field.label("Name on Card", html_for="checkout-card-name"),
+                            input(
+                                id="checkout-card-name",
+                                placeholder="Evil Rabbit",
+                                required=True,
                             ),
-                            orientation="vertical",
                         ),
                         field.root(
-                            field.label("Card Number", html_for="card"),
-                            field.control(
-                                render_=rx.el.div(
-                                    input(
-                                        id="card",
-                                        placeholder="1234 5678 9012 3456",
-                                        class_name="!w-full",
-                                    ),
-                                    class_name="w-full flex-1",
-                                ),
-                                class_name="w-full",
+                            field.label("Card Number", html_for="checkout-card-number"),
+                            input(
+                                id="checkout-card-number",
+                                placeholder="1234 5678 9012 3456",
+                                required=True,
                             ),
                             field.description("Enter your 16-digit card number"),
-                            orientation="vertical",
                         ),
-                        class_name="flex flex-col w-full gap-y-2",
+                        rx.el.div(
+                            field.root(
+                                field.label("Month", html_for="checkout-exp-month"),
+                                select.root(
+                                    select.trigger(
+                                        select.value(),
+                                        select.icon(),
+                                        id="checkout-exp-month",
+                                    ),
+                                    select.portal(
+                                        select.positioner(
+                                            select.popup(
+                                                select.group(
+                                                    *[
+                                                        select.item(
+                                                            select.item_text(
+                                                                item["label"]
+                                                            ),
+                                                            select.item_indicator(),
+                                                            value=item["value"],
+                                                        )
+                                                        for item in months
+                                                    ]
+                                                )
+                                            )
+                                        )
+                                    ),
+                                    items=months,
+                                    default_value="MM",
+                                ),
+                            ),
+                            field.root(
+                                field.label("Year", html_for="checkout-exp-year"),
+                                select.root(
+                                    select.trigger(
+                                        select.value(),
+                                        select.icon(),
+                                        id="checkout-exp-year",
+                                    ),
+                                    select.portal(
+                                        select.positioner(
+                                            select.popup(
+                                                select.group(
+                                                    *[
+                                                        select.item(
+                                                            select.item_text(
+                                                                item["label"]
+                                                            ),
+                                                            select.item_indicator(),
+                                                            value=item["value"],
+                                                        )
+                                                        for item in years
+                                                    ]
+                                                )
+                                            )
+                                        )
+                                    ),
+                                    items=years,
+                                    default_value="YYYY",
+                                ),
+                            ),
+                            field.root(
+                                field.label("CVV", html_for="checkout-cvv"),
+                                input(
+                                    id="checkout-cvv",
+                                    placeholder="123",
+                                    required=True,
+                                ),
+                            ),
+                            class_name="grid grid-cols-3 gap-4",
+                        ),
                     ),
                 ),
-                rx.el.fieldset(
-                    rx.el.legend("Billing Address", class_name="font-medium mb-2"),
-                    rx.el.p(
-                        "The billing address associated with your payment method",
-                        class_name="text-sm text-muted-foreground mb-3",
+                field.separator(),
+                field.set(
+                    field.legend("Billing Address"),
+                    field.description(
+                        "The billing address associated with your payment method"
                     ),
-                    field.root(
-                        field.control(render_=checkbox()),
-                        field.label(
-                            "Same as shipping address",
-                            html_for="shipping",
-                            class_name="text-sm",
-                        ),
-                        orientation="horizontal",
-                    ),
-                ),
-                field.root(
-                    field.label("Comments", html_for="comments"),
-                    field.control(
-                        render_=textarea(
-                            id="comments",
-                            placeholder="Add any additional comments",
-                            class_name="resize-none",
+                    field.group(
+                        field.root(
+                            checkbox.root(
+                                checkbox.indicator(),
+                                id="checkout-same-as-shipping",
+                                default_checked=True,
+                            ),
+                            field.label(
+                                "Same as shipping address",
+                                html_for="checkout-same-as-shipping",
+                                class_name="font-normal",
+                            ),
+                            orientation="horizontal",
                         )
                     ),
-                    orientation="vertical",
+                ),
+                field.set(
+                    field.group(
+                        field.root(
+                            field.label("Comments", html_for="checkout-comments"),
+                            textarea(
+                                id="checkout-comments",
+                                placeholder="Add any additional comments",
+                                class_name="resize-none",
+                            ),
+                        )
+                    )
                 ),
                 field.root(
-                    rx.el.div(
-                        button("Submit", type="submit"),
-                        button("Cancel", variant="outline", type="button"),
-                        class_name="flex flex-row gap-x-4",
-                    ),
+                    button("Submit", type="submit"),
+                    button("Cancel", variant="outline", type="button"),
                     orientation="horizontal",
                 ),
-                class_name="w-full flex flex-col gap-y-4",
-            ),
-            class_name="w-full flex",
+            )
         ),
-        class_name="w-full max-w-md py-4",
+        class_name="w-full max-w-md my-10",
     )

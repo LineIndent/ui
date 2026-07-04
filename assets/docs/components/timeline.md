@@ -17,8 +17,6 @@ buridan add component timeline
 ### Manual Installation
 
 ```python
-"""Custom Timeline component."""
-
 from typing import Literal
 
 import reflex as rx
@@ -152,8 +150,6 @@ def timeline_separator(
 
 
 class Timeline(ComponentNamespace):
-    """Namespace for Timeline components."""
-
     root = staticmethod(timeline_root)
     item = staticmethod(timeline_item)
     header = staticmethod(timeline_header)

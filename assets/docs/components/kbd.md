@@ -8,65 +8,14 @@ Used to display textual user input from keyboard.
 
 Copy the following code into your app directory.
 
-### CLI
 
-```bash
-buridan add component kbd
-```
-
-### Manual Installation
-
-```python
-import reflex as rx
+> **Error: 'kbd' not found in registry**
 
 
-def kbd(*children, class_name: str = "", **props):
-    """
-    Keyboard key component matching shadcn/ui styling.
-    Uses CSS variables from your theme for colors.
-
-    Args:
-        *children: Key content (text, symbols, icons)
-        class_name: Additional classes
-        **props: Additional props for the kbd element
-    """
-    base_classes = (
-        "bg-[var(--muted)] text-[var(--muted-foreground)] "
-        "pointer-events-none inline-flex h-5 w-fit min-w-5 items-center justify-center gap-1 "
-        "rounded-sm px-1 font-sans text-xs font-medium select-none "
-        "[&_svg:not([class*='size-'])]:size-3 "
-        "[[data-slot=tooltip-content]_&]:bg-[var(--background)]/20 "
-        "[[data-slot=tooltip-content]_&]:text-[var(--background)] "
-        "dark:[[data-slot=tooltip-content]_&]:bg-[var(--background)]/10"
-    )
-
-    return rx.el.kbd(
-        *children,
-        data_slot="kbd",
-        class_name=f"{base_classes} {class_name}".strip(),
-        **props,
-    )
+# Usage
 
 
-def kbd_group(*children, class_name: str = "", **props):
-    """
-    Group multiple kbd elements together with spacing.
-
-    Args:
-        *children: Multiple kbd elements
-        class_name: Additional classes
-        **props: Additional props for the group element
-    """
-    base_classes = "inline-flex items-center gap-1"
-
-    return rx.el.kbd(
-        *children,
-        data_slot="kbd-group",
-        class_name=f"{base_classes} {class_name}".strip(),
-        **props,
-    )
-```
-
+> **Error: 'kbd' not found in registry**
 
 
 # Anatomy 
@@ -74,183 +23,158 @@ Use the following composition to build a `Kbd` component.
 
 
 ```python
-kbd()
-# or
-kbd_group(
-    kbd(),
-    kbd(),
+kbd.group(
+    kbd.root(),
+    kbd.root(),
 )
 ```
 
 
 # Examples
 
-## Default
-A basic example showing a single styled keyboard key.
+## Group
+
+Use the `kbd.group` component to group keyboard keys together.
 
 
 ```python
-def kbd_default():
-    """
-    Example matching the shadcn KbdDemo component.
-    Shows keyboard shortcuts with modifier keys.
-    """
-    return rx.box(
-        # Mac modifier keys
-        kbd_group(
-            kbd("⌘"),
-            kbd("⇧"),
-            kbd("⌥"),
-            kbd("⌃"),
+def kbd_as_group() -> rx.Component:
+    return rx.el.div(
+        rx.el.p(
+            "Use ",
+            kbd.group(
+                kbd.root("Ctrl + B"),
+                kbd.root("Ctrl + K"),
+            ),
+            " to open the command palette",
+            class_name="text-sm text-muted-foreground",
         ),
-        # Keyboard shortcut combination
-        kbd_group(
-            kbd("Ctrl"),
-            rx.el.span("+"),
-            kbd("B"),
-        ),
-        class_name="flex flex-col items-center gap-4 p-8",
+        class_name="flex flex-col items-center gap-4",
     )
 ```
 
 
-## Common Shortcuts
-Displays familiar keyboard shortcuts like copy or paste.
+## Button
+
+Use the `kbd.root` component inside a `Button` component to display a keyboard key inside a button.
 
 
 ```python
-def kbd_common_shortcuts():
-    """Common keyboard shortcuts"""
-    return rx.box(
-        rx.box(
-            rx.text("Save:", class_name="text-sm font-medium mr-2"),
-            kbd_group(
-                kbd("Ctrl"),
-                rx.el.span("+"),
-                kbd("S"),
-            ),
-            class_name="flex items-center",
+def kbd_button() -> rx.Component:
+    return button(
+        "Accept ",
+        kbd.root(
+            "⏎",
+            data_icon="inline-end",
+            class_name="translate-x-0.5",
         ),
-        rx.box(
-            rx.text("Copy:", class_name="text-sm font-medium mr-2"),
-            kbd_group(
-                kbd("Ctrl"),
-                rx.el.span("+"),
-                kbd("C"),
-            ),
-            class_name="flex items-center",
-        ),
-        rx.box(
-            rx.text("Paste:", class_name="text-sm font-medium mr-2"),
-            kbd_group(
-                kbd("Ctrl"),
-                rx.el.span("+"),
-                kbd("V"),
-            ),
-            class_name="flex items-center",
-        ),
-        rx.box(
-            rx.text("Undo:", class_name="text-sm font-medium mr-2"),
-            kbd_group(
-                kbd("Ctrl"),
-                rx.el.span("+"),
-                kbd("Z"),
-            ),
-            class_name="flex items-center",
-        ),
-        class_name="flex flex-col gap-3 p-8",
+        variant="outline",
     )
 ```
 
 
-## Special Keys
-Shows styling for special keys such as Enter, Tab, or Esc.
+## Tooltip
+
+You can use the `kbd.root` component inside a `Tooltip` component to display a tooltip with a keyboard key.
 
 
 ```python
-def kbd_special_keys():
-    """Special key examples"""
-    return rx.box(
-        kbd("Enter"),
-        kbd("Esc"),
-        kbd("Tab"),
-        kbd("Space"),
-        kbd("←"),
-        kbd("→"),
-        kbd("↑"),
-        kbd("↓"),
-        kbd("Delete"),
-        kbd("Backspace"),
-        class_name="flex flex-wrap gap-2 p-8",
+def kbd_tooltip() -> rx.Component:
+    return rx.el.div(
+        button_group.root(
+            tooltip.provider(
+                tooltip.root(
+                    tooltip.trigger(
+                        render_=button("Save", variant="outline"),
+                    ),
+                    tooltip.portal(
+                        tooltip.positioner(
+                            tooltip.popup(
+                                tooltip.arrow(),
+                                "Save Changes ",
+                                kbd.root("S"),
+                            ),
+                        ),
+                    ),
+                ),
+                delay=0,
+            ),
+            tooltip.provider(
+                tooltip.root(
+                    tooltip.trigger(
+                        render_=button("Print", variant="outline"),
+                    ),
+                    tooltip.portal(
+                        tooltip.positioner(
+                            tooltip.popup(
+                                tooltip.arrow(),
+                                "Print Document ",
+                                kbd.group(
+                                    kbd.root("Ctrl"),
+                                    kbd.root("P"),
+                                ),
+                            ),
+                        ),
+                    ),
+                ),
+                delay=0,
+            ),
+        ),
+        class_name="flex flex-wrap gap-4",
     )
 ```
 
 
-## Complex Shortcuts
-Demonstrates multi-key combinations for advanced shortcuts.
+## Input Group
+
+You can use the `kbd.root` component inside a `input_group.addon` component to display a keyboard key inside an input group.
 
 
 ```python
-def kbd_complex_shortcuts():
-    """Complex multi-key shortcuts"""
-    return rx.box(
-        # Three modifier keys
-        rx.box(
-            rx.text("Screenshot:", class_name="text-sm font-medium mr-2"),
-            kbd_group(
-                kbd("Ctrl"),
-                rx.el.span("+"),
-                kbd("Shift"),
-                rx.el.span("+"),
-                kbd("S"),
+def kbd_input_group() -> rx.Component:
+    return rx.el.div(
+        input_group.root(
+            input_group.input(placeholder="Search..."),
+            input_group.addon(
+                hi("Search01Icon"),
+                align="inline-start",
             ),
-            class_name="flex items-center mb-3",
-        ),
-        # Mac command
-        rx.box(
-            rx.text("Quit:", class_name="text-sm font-medium mr-2"),
-            kbd_group(
-                kbd("⌘"),
-                rx.el.span("+"),
-                kbd("Q"),
+            input_group.addon(
+                kbd.root("⌘"),
+                kbd.root("K"),
+                align="inline-end",
             ),
-            class_name="flex items-center mb-3",
         ),
-        # Function key
-        rx.box(
-            rx.text("Full Screen:", class_name="text-sm font-medium mr-2"),
-            kbd("F11"),
-            class_name="flex items-center",
-        ),
-        class_name="p-8",
+        class_name="flex w-full max-w-xs flex-col gap-6",
     )
 ```
 
 
-## With Icons
-Displays keyboard shortcuts paired with icons for clarity.
+# API Reference
 
+## kbd.root
+
+Use the `kbd.root` component to display a keyboard key.
+
+| Prop        | Type     | Default |
+| ----------- | -------- | ------- |
+| `class_name` | `string` | ``      |
 
 ```python
-def kbd_with_icons():
-    """Kbd with icons"""
-    return rx.box(
-        kbd_group(
-            kbd(
-                rx.icon(tag="command", size=12),
-            ),
-            rx.el.span("+"),
-            kbd("K"),
-        ),
-        kbd_group(
-            kbd(
-                rx.icon(tag="arrow-left", size=12),
-            ),
-            kbd(
-                rx.icon(tag="arrow-right", size=12),
-            ),
-        ),
-        class_name="flex flex-col items-center gap-4 p-8",
-    )
+kbd.root('Ctrl')
 ```
 
+## kbd.group
+
+Use the `kbd.group` component to group `kbd.root` components together.
+
+| Prop        | Type     | Default |
+| ----------- | -------- | ------- |
+| `class_name` | `string` | ``      |
+
+```python
+kbd.group(
+    kbd.root('Ctrl')
+    kbd.root('B')
+)
+```

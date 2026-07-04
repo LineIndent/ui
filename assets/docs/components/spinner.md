@@ -42,6 +42,14 @@ def spinner(class_name: str = "", **props) -> rx.Component:
 ```
 
 
+# Usage
+
+
+```python
+from components.ui.spinner import spinner
+```
+
+
 # Anatomy
 Use the following composition to build a `Spinner` component.
 

@@ -15,16 +15,7 @@ from app.www.library.charts.radar.v6 import radar_v6
 from app.www.library.charts.scatter.v1 import scatterchart_v1
 from components.ui.button import button
 
-GRID_LAYOUT = " ".join(
-    [
-        "grid grid-cols-1 lg:grid-cols-3",
-        "divide-y lg:divide-y-0",
-        "lg:divide-x",
-        "[&>div]:p-7",
-        "divide-input/40",
-        "border-x border-input/40",
-    ]
-)
+GRID_LAYOUT = " ".join(["grid grid-cols-1 lg:grid-cols-3", "gap-10 sm:gap-7"])
 
 
 @layout_decorator(
@@ -39,26 +30,31 @@ GRID_LAYOUT = " ".join(
 )
 def chart_page():
     return rx.el.div(
-        rx.el.div(areachart_v5(), class_name="w-full p-7"),
-        rx.el.hr(class_name="border border-input/40"),
+        rx.el.div(areachart_v5(), class_name="w-full"),
         rx.el.div(
-            linechart_v8(), barchart_v1(), doughnutchart_v1(), class_name=GRID_LAYOUT
+            barchart_v1(),
+            areachart_v9(),
+            doughnutchart_v1(),
+            class_name=GRID_LAYOUT,
         ),
-        rx.el.hr(class_name="border border-input/40"),
-        rx.el.div(barchart_v5(), class_name="w-full p-7"),
-        rx.el.hr(class_name="border border-input/40"),
+        rx.el.div(barchart_v5(), class_name="w-full"),
         rx.el.div(
-            areachart_v9(), radar_v6(), scatterchart_v1(), class_name=GRID_LAYOUT
+            linechart_v8(),
+            barchart_v9(),
+            scatterchart_v1(),
+            class_name=GRID_LAYOUT,
         ),
-        rx.el.hr(class_name="border border-input/40"),
-        rx.el.div(linechart_v7(), class_name="w-full p-7"),
-        rx.el.hr(class_name="border border-input/40"),
-        rx.el.div(linechart_v5(), barchart_v9(), piechart_v1(), class_name=GRID_LAYOUT),
-        rx.el.hr(class_name="border border-input/40"),
+        rx.el.div(linechart_v7(), class_name="w-full"),
+        rx.el.div(
+            linechart_v5(),
+            radar_v6(),
+            piechart_v1(),
+            class_name=GRID_LAYOUT,
+        ),
         class_name=" ".join(
             [
-                "max-w-[96rem] mx-auto px-0 md:px-8",
-                "py-6 space-y-10",
+                "flex flex-col max-w-[96rem] mx-auto px-4 md:px-8",
+                "py-6 gap-10 sm:gap-7",
             ]
         ),
     )

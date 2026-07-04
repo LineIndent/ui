@@ -28,24 +28,28 @@ def reset_theme_button() -> rx.Component:
                         ),
                         class_name="w-full flex flex-col gap-y-1",
                     ),
-                    rx.el.div(
-                        dialog.close(
-                            button("Cancel", variant="outline", class_name="w-full"),
-                            class_name="flex-1",
-                        ),
-                        dialog.close(
-                            button(
-                                "Reset",
-                                variant="destructive",
-                                class_name="w-full",
-                                on_click=[
-                                    rx.call_script(RESET_JS),
-                                    selected_component_category.set_value("All"),
-                                ],
+                    dialog.footer(
+                        rx.el.div(
+                            dialog.close(
+                                render_=button(
+                                    "Cancel", variant="outline", class_name="w-full"
+                                ),
+                                class_name="flex-1",
                             ),
-                            class_name="flex-1",
+                            dialog.close(
+                                render_=button(
+                                    "Reset",
+                                    variant="destructive",
+                                    class_name="w-full",
+                                    on_click=[
+                                        rx.call_script(RESET_JS),
+                                        selected_component_category.set_value("All"),
+                                    ],
+                                ),
+                                class_name="flex-1",
+                            ),
+                            class_name="w-full flex flex-row gap-x-6",
                         ),
-                        class_name="flex flex-row gap-x-6",
                     ),
                     class_name="flex flex-col gap-y-4 w-full",
                 ),

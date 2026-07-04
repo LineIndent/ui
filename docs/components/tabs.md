@@ -23,11 +23,14 @@ Use the following composition to build a `Tabs` component.
 
 --ANATOMY(tabs)--
 
-
 # Example
 
 ## Basic
 --DEMO(tabs_basic)--
+
+## Line
+Use the `variant="line"` prop on `tabs.list` for a line style.
+--DEMO(tabs_line)--
 
 ## Vertical
 Use `orientation="vertical"` for vertical tabs.
@@ -36,3 +39,6 @@ Use `orientation="vertical"` for vertical tabs.
 ## Disabled
 Use `disabled=True` to disable a tab.
 --DEMO(tabs_disabled)--
+
+## Icons
+--DEMO(tabs_icons)--

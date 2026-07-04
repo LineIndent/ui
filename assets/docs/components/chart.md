@@ -306,7 +306,10 @@ To add a tooltip, we'll use the custom `chart_tooltip` and `chart_tooltip_conten
 To use the custom tooltip, first import it at the top of your chart file.
 
 ```chart_example.py
-from components.charts.chart_tooltip import chart_tooltip, chart_tooltip_content
+from components.charts.chart_tooltip import (
+    chart_tooltip,
+    chart_tooltip_content,
+)
 ```
 
 Add the component to your chart and pass in the props.

@@ -14,6 +14,9 @@ Copy the following code into your app directory.
 
 --INSTALL(kbd)--
 
+# Usage
+
+--USAGE(kbd)--
 
 # Anatomy 
 Use the following composition to build a `Kbd` component.
@@ -22,27 +25,55 @@ Use the following composition to build a `Kbd` component.
 
 # Examples
 
-## Default
-A basic example showing a single styled keyboard key.
+## Group
 
---DEMO(kbd_default)--
+Use the `kbd.group` component to group keyboard keys together.
 
-## Common Shortcuts
-Displays familiar keyboard shortcuts like copy or paste.
+--DEMO(kbd_as_group)--
 
---DEMO(kbd_common_shortcuts)--
+## Button
 
-## Special Keys
-Shows styling for special keys such as Enter, Tab, or Esc.
+Use the `kbd.root` component inside a `Button` component to display a keyboard key inside a button.
 
---DEMO(kbd_special_keys)--
+--DEMO(kbd_button)--
 
-## Complex Shortcuts
-Demonstrates multi-key combinations for advanced shortcuts.
+## Tooltip
 
---DEMO(kbd_complex_shortcuts)--
+You can use the `kbd.root` component inside a `Tooltip` component to display a tooltip with a keyboard key.
 
-## With Icons
-Displays keyboard shortcuts paired with icons for clarity.
+--DEMO(kbd_tooltip)--
 
---DEMO(kbd_with_icons)--
+## Input Group
+
+You can use the `kbd.root` component inside a `input_group.addon` component to display a keyboard key inside an input group.
+
+--DEMO(kbd_input_group)--
+
+# API Reference
+
+## kbd.root
+
+Use the `kbd.root` component to display a keyboard key.
+
+| Prop        | Type     | Default |
+| ----------- | -------- | ------- |
+| `class_name` | `string` | ``      |
+
+```python
+kbd.root('Ctrl')
+```
+
+## kbd.group
+
+Use the `kbd.group` component to group `kbd.root` components together.
+
+| Prop        | Type     | Default |
+| ----------- | -------- | ------- |
+| `class_name` | `string` | ``      |
+
+```python
+kbd.group(
+    kbd.root('Ctrl')
+    kbd.root('B')
+)
+```

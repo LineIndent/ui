@@ -147,6 +147,14 @@ class SelectTrigger(SelectBaseComponent):
     def create(cls, *children, **props) -> BaseUIComponent:
         """Create the select trigger component."""
         props["data-slot"] = "select-trigger"
+
+        # 1. Pull out the size prop (defaulting to "default" just like shadcn)
+        size = props.pop("size", "default")
+
+        # 2. Explicitly bind it as the data-size attribute
+        props["data_size"] = size
+
+        # 3. Apply the base CSS classes
         cls.set_class_name(ClassNames.TRIGGER, props)
         return super().create(*children, **props)
 

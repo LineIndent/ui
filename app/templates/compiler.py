@@ -11,7 +11,6 @@ from app.hooks import (
     theme_preset_option,
 )
 from app.templates.config import rxconfig
-from app.www.wrapper import styled_tab_trigger
 from components.icons.hugeicon import hi
 from components.ui.button import button
 from components.ui.dialog import dialog
@@ -240,8 +239,8 @@ def theme_cli_prompt() -> rx.Component:
                 rx.el.code(
                     rx.cond(
                         theme_export_method.value == "local",
-                        f"uv run buridan init --preset {seed.value} --include {theme_preset_option.value}  ",
-                        f"Run this in the project terminal: `pip install buridan-create && buridan init --preset {seed.value} --include {theme_preset_option.value}` Then add this to your main app file: `app = rx.App(stylesheets=['globals.css'])`",
+                        f"uv run buridan apply --preset {seed.value}",
+                        f"Run this in the project terminal: `pip install buridan-create && buridan init && buridan apply --preset {seed.value}` Then add this to the main app file: `app = rx.App(stylesheets=['globals.css'])`",
                     ),
                     style={
                         "white-space": "pre",
@@ -299,7 +298,7 @@ def theme_export_compiler() -> rx.Component:
             button(
                 "Get Code",
                 variant="default",
-                class_name="w-full rounded-xl",
+                class_name="w-full",
                 id="get-code-btn",
                 on_click=[rx.call_script(FORMAT_CSS_JS), rx.call_script(open_script)],
             ),
@@ -327,6 +326,7 @@ def theme_export_compiler() -> rx.Component:
                                 on_click=rx.call_script(ADD_SWATCHES_JS),
                             ),
                             class_name="relative z-0 flex gap-1 rounded-none bg-transparent w-full mb-4",
+                            variant="line",
                         ),
                         tabs.panel(
                             rx.el.div(
@@ -378,10 +378,7 @@ def theme_export_compiler() -> rx.Component:
                                     ),
                                     class_name="w-full flex flex-col gap-y-0 py-3",
                                 ),
-                                rx.el.div(
-                                    theme_cli_prompt(),
-                                    class_name="w-full flex flex-col gap-y-0 py-3",
-                                ),
+                                theme_cli_prompt(),
                                 class_name="w-full flex flex-col gap-y-0",
                             ),
                             value="project",
@@ -541,7 +538,7 @@ def theme_export_compiler() -> rx.Component:
                     ),
                     class_name="flex flex-col gap-y-4 !w-full h-full",
                 ),
-                class_name="!w-full max-w-md rounded-2xl dark bg-card h-[92vh] p-6 flex flex-col",
+                class_name="!w-full !max-w-md rounded-2xl dark bg-card h-[640px] p-6 flex flex-col",
             ),
         ),
         on_open_change=rx.call_script(open_script),

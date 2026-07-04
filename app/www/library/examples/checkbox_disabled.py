@@ -7,7 +7,8 @@ from components.ui.field import field
 def checkbox_disabled() -> rx.Component:
     return rx.el.div(
         field.root(
-            checkbox(
+            checkbox.root(
+                checkbox.indicator(),
                 id="toggle-checkbox-disabled",
                 name="toggle-checkbox-disabled",
                 disabled=True,
@@ -17,7 +18,7 @@ def checkbox_disabled() -> rx.Component:
                 html_for="toggle-checkbox-disabled",
             ),
             orientation="horizontal",
-            disabled=True,
+            data_disabled=True,
         ),
         class_name="mx-auto w-56",
     )

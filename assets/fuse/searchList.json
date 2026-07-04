@@ -111,6 +111,16 @@
   },
   {
     "section": "Components",
+    "title": "Button Group",
+    "url": "docs/components/button-group"
+  },
+  {
+    "section": "Components",
+    "title": "Card",
+    "url": "docs/components/card"
+  },
+  {
+    "section": "Components",
     "title": "Chart",
     "url": "docs/components/chart"
   },
@@ -196,6 +206,11 @@
   },
   {
     "section": "Components",
+    "title": "Separator",
+    "url": "docs/components/separator"
+  },
+  {
+    "section": "Components",
     "title": "Skeleton",
     "url": "docs/components/skeleton"
   },
@@ -208,6 +223,11 @@
     "section": "Components",
     "title": "Spinner",
     "url": "docs/components/spinner"
+  },
+  {
+    "section": "Components",
+    "title": "Switch",
+    "url": "docs/components/switch"
   },
   {
     "section": "Components",

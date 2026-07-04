@@ -161,8 +161,7 @@ from components.ui.message import Message
 
 **Note:** `Message` owns the row layout—avatar, alignment, header, and footer.
 Render the visible message surface inside it with
-[`Bubble`](/docs/components/bubble). For the scroll container around a
-conversation, use [`MessageScroller`](/docs/components/message-scroller).
+[`Bubble`](/docs/components/bubble).
 
 # Anatomy 
 Use the following composition to build a `Message` component.

@@ -43,8 +43,11 @@ def areachart_v8():
                     rx.foreach(
                         series,
                         lambda s: rx.hstack(
-                            rx.box(class_name="size-2 rounded-full", bg=f"var({s[2]})"),
-                            rx.text(
+                            rx.el.div(
+                                class_name="h-2 w-2 shrink-0 rounded-[2px]",
+                                bg=f"var({s[2]})",
+                            ),
+                            rx.el.p(
                                 s[1],
                                 class_name="text-xs font-medium",
                                 color=rx.color("slate", 11),

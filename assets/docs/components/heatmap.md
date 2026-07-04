@@ -19,8 +19,6 @@ buridan add component heatmap
 ### Manual Installation
 
 ```python
-"""Custom GitHub-style heatmap component for Reflex — no external dependencies."""
-
 from typing import Any
 
 from reflex.components.component import Component
@@ -354,8 +352,6 @@ function BuridanHeatmapSSR(props) {
 
 class BuridanHeatmap(Component):
     """
-    A GitHub-style activity heatmap component.
-
     Data structure:
         data = [
             {"date": "2025-01-01", "value": 3},

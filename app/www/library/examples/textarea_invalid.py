@@ -17,4 +17,5 @@ def textarea_invalid():
             "Please enter a valid message.",
         ),
         **{"data-invalid": True},
+        class_name="max-w-xs",
     )

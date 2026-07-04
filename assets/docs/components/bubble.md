@@ -21,8 +21,6 @@ buridan add component bubble
 ### Manual Installation
 
 ```python
-"""Bubble component — chat message bubble with variants, content, and reactions slots."""
-
 from typing import Literal
 
 import reflex as rx
@@ -31,10 +29,22 @@ from reflex.components.component import ComponentNamespace
 from ..utils.twmerge import cn
 
 BubbleVariant = Literal[
-    "default", "secondary", "muted", "tinted", "outline", "ghost", "destructive"
+    "default",
+    "secondary",
+    "muted",
+    "tinted",
+    "outline",
+    "ghost",
+    "destructive",
 ]
-BubbleAlign = Literal["start", "end"]
-BubbleSide = Literal["top", "bottom"]
+BubbleAlign = Literal[
+    "start",
+    "end",
+]
+BubbleSide = Literal[
+    "top",
+    "bottom",
+]
 
 
 class ClassNames:
@@ -102,7 +112,7 @@ class ClassNames:
 
 
 def bubble_group(*children, class_name: str = "", **props) -> rx.Component:
-    """Vertical stack of bubbles."""
+
     return rx.el.div(
         *children,
         data_slot="bubble-group",
@@ -118,12 +128,7 @@ def bubble_root(
     class_name: str = "",
     **props,
 ) -> rx.Component:
-    """
-    Bubble root container.
 
-    Variants: default, secondary, muted, tinted, outline, ghost, destructive
-    Align:    start (incoming), end (outgoing)
-    """
     return rx.el.div(
         *children,
         data_slot="bubble",
@@ -139,7 +144,7 @@ def bubble_root(
 
 
 def bubble_content(*children, class_name: str = "", **props) -> rx.Component:
-    """The bubble content pill — rounded, padded, colored by the parent variant."""
+
     return rx.el.div(
         *children,
         data_slot="bubble-content",
@@ -155,12 +160,7 @@ def bubble_reactions(
     class_name: str = "",
     **props,
 ) -> rx.Component:
-    """
-    Emoji reactions overlay — positioned relative to the bubble.
 
-    Side:  top | bottom (default: bottom)
-    Align: start | end  (default: end)
-    """
     return rx.el.div(
         *children,
         data_slot="bubble-reactions",
@@ -177,8 +177,6 @@ def bubble_reactions(
 
 
 class Bubble(ComponentNamespace):
-    """Bubble namespace."""
-
     group = staticmethod(bubble_group)
     root = staticmethod(bubble_root)
     content = staticmethod(bubble_content)

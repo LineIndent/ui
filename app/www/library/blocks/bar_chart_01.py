@@ -79,27 +79,26 @@ def bar_chart_01():
             rx.cond(
                 ShowComparison.value,
                 rx.el.div(
-                    rx.el.div(class_name="w-3 h-3 rounded-sm bg-chart-2"),
+                    rx.el.div(class_name="w-3 h-3 bg-chart-2"),
                     "Last Year",
                     class_name="text-sm flex flex-row gap-x-2 items-center",
                 ),
             ),
             rx.el.div(
-                rx.el.div(class_name="w-3 h-3 rounded-sm bg-chart-1"),
+                rx.el.div(class_name="w-3 h-3 bg-chart-1"),
                 "This Year",
                 class_name="text-sm flex flex-row gap-x-2 items-center",
             ),
             class_name="flex flex-row gap-x-2 justify-end items-center",
         ),
         card.content(
-            # Mobile: no y-axis
             rx.el.div(_chart(show_y_axis=False), class_name="sm:hidden"),
-            # Desktop: with y-axis
             rx.el.div(_chart(show_y_axis=True), class_name="hidden sm:block"),
         ),
         card.footer(
             field.root(
-                checkbox(
+                checkbox.root(
+                    checkbox.indicator(),
                     id="terms-checkbox-basic",
                     on_checked_change=ShowComparison.set_value(~ShowComparison.value),
                 ),
@@ -110,5 +109,6 @@ def bar_chart_01():
                 orientation="horizontal",
             ),
         ),
-        class_name=chart_tooltip_content([1, 2], "square") + " w-full p-0",
+        size="sm",
+        class_name=chart_tooltip_content([1, 2], "square") + " w-full p-0 !ring-0",
     )

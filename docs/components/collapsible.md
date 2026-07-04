@@ -23,18 +23,41 @@ Use the following composition to build a `Collapsible` component.
 
 --ANATOMY(collapsible)--
 
+# Controlled State
+
+Use the `open` and `on_open_change` props to control the state.
+
+```python
+import reflex as rx
+from components.ui.collapsible import collapsible
+
+class ControlledCollapsibleState(rx.State):
+    is_open: bool = False
+
+    def toggle_open(self, open_state: bool):
+        self.is_open = open_state
+
+def controlled_example() -> rx.Component:
+    return collapsible.root(
+        collapsible.trigger(Toggle),
+        collapsible.panel("Content"),
+        open=ControlledCollapsibleState.is_open,
+        on_open_change=ControlledCollapsibleState.toggle_open,
+    )
+```
 
 # Examples
 
+## Basic
 
-## High Level Demo
+--DEMO(collapsible_basic)--
 
-Uses the simplified collapsible() API with trigger and content props for quick implementation.
+## Nested
 
---DEMO(collapsible_high_level_demo)--
+Use nested collapsibles to build a file tree.
 
-## Low Level Demo
+--DEMO(collapsible_nested)--
 
-Uses the low-level collapsible.root(), collapsible.panel(), and ClientStateVar for full control over state and structure.
+## Interactive
 
---DEMO(collapsible_low_level_demo)--
+--DEMO(collapsible_interactive)--
