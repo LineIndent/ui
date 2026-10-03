@@ -741,7 +741,6 @@ def card_ten() -> rx.Component:
                     ),
                     input_group.root(
                         input_group.input(
-                            id="inline-start-input",
                             placeholder=field["placeholder"],
                         ),
                         input_group.addon(
