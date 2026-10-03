@@ -52,42 +52,12 @@ def seed_engine() -> rx.Script:
         return out;
     }}
 
-    function toBase62(n, len) {{
-        let res = "";
-        for (let i = 0; i < len; i++) {{
-            res += CHARS[n % 62];
-            n = Math.floor(n / 62);
-        }}
-        return res;
-    }}
-
     function fromBase62(s) {{
         let n = 0;
         for (let i = s.length - 1; i >= 0; i--) {{
             n = n * 62 + CHARS.indexOf(s[i]);
         }}
         return n;
-    }}
-
-    function encodeConfig(theme) {{
-        const bIdx  = BASE_THEMES.findIndex(b => b.id === theme['__base_id']);
-        const cIdx  = theme['__color_id'] ? COLOR_THEMES.findIndex(c => c.id === theme['__color_id']) + 1 : 0;
-        const chIdx = theme['__chart_id'] ? COLOR_THEMES.findIndex(c => c.id === theme['__chart_id']) + 1 : 0;
-        const sIdx  = STYLE_REGISTRY.findIndex(s => s.id === theme['__style_id']);
-        const fIdx  = FONT_REGISTRY.findIndex(f => f.id === theme['__font_id']);
-        const rIdx  = RADIUS_OPTIONS.findIndex(r => r[1] === theme['--radius']);
-
-        if (bIdx === -1 || sIdx === -1 || fIdx === -1 || rIdx === -1) return null;
-
-        // Default state special case
-        if (bIdx === 0 && cIdx === 0 && chIdx === 0 && sIdx === 0 && fIdx === 0 && rIdx === 2) return "b0";
-
-        // State space: 6 * 11 * 11 * 5 * 5 * 4 = 72600
-        let n = (((((bIdx * 11 + cIdx) * 11 + chIdx) * 5 + sIdx) * 5 + fIdx) * 4 + rIdx);
-
-        // Encode as 9 chars: [Base62(N, 4)] + [Base62(Checksum(N), 5)]
-        const checksum = (n * 12345) % 916132832; // 62^5
-        return toBase62(n, 4) + toBase62(checksum, 5);
     }}
 
     function decodeSeed(seed) {{
@@ -210,12 +180,6 @@ def seed_engine() -> rx.Script:
         return theme;
     }}
 
-    function randomSeed() {{
-        const n = Math.floor(Math.random() * 72600);
-        const checksum = (n * 12345) % 916132832;
-        return toBase62(n, 4) + toBase62(checksum, 5);
-    }}
-
     window.__STYLE_REGISTRY = STYLE_REGISTRY;
     window.__BASE_THEMES    = BASE_THEMES;
     window.__COLOR_THEMES   = COLOR_THEMES;
@@ -223,8 +187,6 @@ def seed_engine() -> rx.Script:
     window.__RADIUS_OPTIONS = RADIUS_OPTIONS;
     window.__generateFromSeed = generateFromSeed;
     window.__rebuildTheme     = rebuildTheme;
-    window.__randomSeed       = randomSeed;
     window.__flattenVars      = flattenVars;
-    window.__encodeConfig     = encodeConfig;
     window.__decodeSeed       = decodeSeed;
     """)
