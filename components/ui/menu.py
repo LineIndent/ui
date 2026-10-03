@@ -9,23 +9,11 @@ from reflex_components_core.el import Span
 from ..icons.hugeicon import hi
 from .core import PACKAGE_NAME, BaseUIComponent, CoreComponent
 
-LiteralOpenChangeReason = Literal[
-    "arrowKey",
-    "escapeKey",
-    "select",
-    "hover",
-    "click",
-    "focus",
-    "dismiss",
-    "typeahead",
-    "tab",
-]
 LiteralMenuOrientation = Literal["vertical", "horizontal"]
 LiteralSide = Literal["top", "right", "bottom", "left"]
 LiteralAlign = Literal["start", "center", "end"]
 LiteralPositionMethod = Literal["absolute", "fixed"]
 LiteralCollisionAvoidance = Literal["flip", "shift", "auto"]
-LiteralMenuSize = Literal["xs", "sm", "md", "lg", "xl"]
 
 
 class ClassNames:
@@ -59,18 +47,6 @@ class ClassNames:
         "[&_svg:not([class*='size-'])]:size-4"
     )
     SEPARATOR = "-mx-1 my-1 h-px bg-border"
-    POSITIONER_SUB = "isolate z-50 outline-none"
-    POPUP_SUB = (
-        "z-50 w-auto min-w-24 origin-(--transform-origin) overflow-x-hidden "
-        "overflow-y-auto rounded-lg bg-popover p-1 text-popover-foreground "
-        "shadow-lg ring-1 ring-foreground/10 duration-100 "
-        "data-[side=bottom]:slide-in-from-top-2 "
-        "data-[side=left]:slide-in-from-right-2 "
-        "data-[side=right]:slide-in-from-left-2 "
-        "data-[side=top]:slide-in-from-bottom-2 "
-        "data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 "
-        "data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95"
-    )
     GROUP_LABEL = (
         "px-1.5 py-1 text-xs font-medium text-muted-foreground data-inset:pl-7"
     )
@@ -117,7 +93,6 @@ class ClassNames:
     GROUP = ""
     RADIO_GROUP = ""
     ITEM_TEXT = "text-start"
-    ITEM_INDICATOR = "text-current"
     SHORTCUT = (
         "ml-auto text-xs tracking-widest text-muted-foreground "
         "group-focus/menu-item:text-accent-foreground"
