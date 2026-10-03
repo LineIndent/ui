@@ -165,17 +165,6 @@ def _sync_sidebar_js() -> str:
     return "if (window.__syncSidebar) window.__syncSidebar(config);"
 
 
-# ── helpers used by multiple actions ─────────────────────────────────────────
-
-
-def _set_refs(seed_val: str = "newSeed") -> str:
-    """Sync ClientStateVars that are still needed for reactive UI."""
-    return f"""
-        // Still needed: seed display, copy button, css_output rendering
-        if (refs['_client_state_setSeed'])  refs['_client_state_setSeed']({seed_val});
-    """
-
-
 # ── actions ───────────────────────────────────────────────────────────────────
 
 SHUFFLE_JS = f"""
