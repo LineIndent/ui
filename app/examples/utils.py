@@ -57,23 +57,24 @@ def block_card(func=None, *, label=""):
         inner_component = func(*args, **kwargs)
         cmd = f"uv run buridan add {func.__qualname__}"
         btn_id = generate_component_id()
+        text_id = f"text-{btn_id}"
         return rx.el.div(
             rx.el.div(
                 button(
                     hi("TerminalIcon", class_name="size-4 shrink-0"),
-                    cmd,
+                    rx.el.span(cmd, id=text_id),
                     variant="outline",
                     size="sm",
                     id=btn_id,
                     on_click=rx.call_script(f"""
-                        const btn = document.getElementById({btn_id!r});
+                        const text = document.getElementById({text_id!r});
                         navigator.clipboard.writeText({cmd!r});
 
-                        const original = btn.innerText;
-                        btn.innerText = "Copied!";
+                        const original = text.innerText;
+                        text.innerText = "Copied!";
 
                         setTimeout(() => {{
-                            btn.innerText = original;
+                            text.innerText = original;
                         }}, 1000);
                     """),
                     class_name="min-w-3xs",
