@@ -1143,13 +1143,13 @@ def card_thirteen() -> rx.Component:
 @masonry_card(label="Healthcare")
 def card_fourteen() -> rx.Component:
     days = [
-        {"label": "M", "calories": 75, "load": 60},
-        {"label": "T", "calories": 30, "load": 25},
-        {"label": "W", "calories": 55, "load": 45},
-        {"label": "T", "calories": 45, "load": 35},
-        {"label": "F", "calories": 80, "load": 65},
-        {"label": "S", "calories": 25, "load": 20},
-        {"label": "S", "calories": 40, "load": 30},
+        {"label": "M", "calories": 75},
+        {"label": "T", "calories": 30},
+        {"label": "W", "calories": 55},
+        {"label": "T", "calories": 45},
+        {"label": "F", "calories": 80},
+        {"label": "S", "calories": 25},
+        {"label": "S", "calories": 40},
     ]
 
     def day_bar(day: dict) -> rx.Component:
