@@ -41,49 +41,6 @@ SYNC_BUTTON_STYLES_JS = """
 """
 
 
-def select_radio_option_row(
-    title: str, description: str, group_name: str, value: str, default_on: bool = False
-) -> rx.Component:
-    return rx.el.label(
-        rx.el.div(
-            rx.el.p(title, class_name="text-foreground font-medium text-sm"),
-            rx.el.p(
-                description,
-                class_name="text-muted-foreground max-w-[24rem] text-xs font-light leading-normal",
-            ),
-            class_name="flex flex-col gap-y-1",
-        ),
-        rx.el.div(
-            rx.el.input(
-                type="radio",
-                name=group_name,
-                value=value,
-                default_checked=default_on,
-                class_name="peer sr-only",
-            ),
-            rx.el.div(
-                rx.el.span(
-                    "✓",
-                    class_name="text-primary-foreground text-[11px] font-bold hidden",
-                ),
-                class_name=(
-                    "flex size-4 items-center justify-center rounded-[4px] transition-colors "
-                    "border border-input bg-transparent "
-                    "peer-checked:bg-primary peer-checked:border-primary "
-                    "[&_span]:peer-checked:block"
-                ),
-            ),
-            class_name="flex items-center",
-        ),
-        class_name=(
-            "w-full rounded-2xl px-4 py-2.5 flex flex-row items-center justify-between "
-            "text-left transition-all cursor-pointer border-1 "
-            "border-input/90 bg-transparent hover:bg-secondary/20 "
-            "has-[:checked]:border-primary has-[:checked]:dark:border-input has-[:checked]:bg-secondary/60"
-        ),
-    )
-
-
 def select_local_or_reflex_build_option(
     title: str,
     description: str,
