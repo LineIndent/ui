@@ -344,7 +344,7 @@ class ContextMenuShortcut(Span, CoreComponent):
     @classmethod
     def create(cls, *children, **props) -> Span:
         props["data-slot"] = "context-menu-shortcut"
-        props["class_name"] = ClassNames.SHORTCUT
+        cls.set_class_name(ClassNames.SHORTCUT, props)
         return super().create(*children, **props)
 
 
