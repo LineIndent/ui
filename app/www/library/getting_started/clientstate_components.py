@@ -1,21 +1,5 @@
 import reflex as rx
 from reflex.experimental import ClientStateVar
-from dataclasses import dataclass  # Added for Session class placeholder
-
-
-# Placeholder for Session class used in Complex Example
-@dataclass
-class Session:
-    session_id: str
-    name: str
-    blocks: list  # Assuming blocks is a list, adjust as needed
-
-    def copy(self, update: dict):
-        # Simple copy for demonstration
-        new_session = Session(self.session_id, self.name, self.blocks)
-        if "name" in update:
-            new_session.name = update["name"]
-        return new_session
 
 
 # Used in --show_code(tab_navigation_example)--
